@@ -479,3 +479,6 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
 - **2026-10-21 — Settings in the title bar.** The app's Settings (gear) has its own
   title-bar button. It replaces the Appearance menu: theme and title-bar style are in
   Settings → General (and the palette).
+- **2026-10-21 — Tooltips on keyboard focus only.** Tooltips open on focus only after
+  keyboard input. Focus that a closing menu hands back to its button after a mouse click
+  no longer brings one up (and leaves it on screen).

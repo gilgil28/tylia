@@ -43,6 +43,8 @@ can change behaviour.
   - A fetch you start now confirms success too.
   - After success, the button shows a check mark, and its tooltip keeps the last result
     with the time. Success messages stay up 6 seconds instead of 4.
+- A button's tooltip no longer stays on screen after its menu closes with a click
+  elsewhere.
 
 ## [0.1.0] - 2026-10-21
 

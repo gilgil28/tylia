@@ -1,6 +1,7 @@
 import { Tooltip as T } from "radix-ui";
 import type { ReactNode } from "react";
 
+import { lastInputWasKeyboard } from "./inputModality";
 import { Kbd } from "./Kbd";
 
 export const TooltipProvider = ({ children }: { children: ReactNode }) => (
@@ -19,7 +20,16 @@ interface TooltipProps {
 export function Tooltip({ content, shortcut, side = "bottom", children }: TooltipProps) {
   return (
     <T.Root>
-      <T.Trigger asChild>{children}</T.Trigger>
+      <T.Trigger
+        asChild
+        // Open on focus only when the keyboard moved it. A menu or dialog closed with the
+        // mouse hands focus back to its button, which must not bring up a tooltip that stays.
+        onFocus={(e) => {
+          if (!lastInputWasKeyboard()) e.preventDefault();
+        }}
+      >
+        {children}
+      </T.Trigger>
       <T.Portal>
         <T.Content
           side={side}
