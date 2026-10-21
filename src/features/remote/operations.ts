@@ -31,8 +31,23 @@ export interface RunningOperation {
   background: boolean;
 }
 
+/** The last operation that succeeded in a repository, for its button's check and tooltip. */
+export interface OperationSuccess {
+  kind: OperationKind;
+  /** The success message, e.g. "Pushed main to origin/main". */
+  message: string;
+  /** `Date.now()` when it finished. */
+  at: number;
+  /** For a few seconds after: the button shows a check mark. */
+  fresh: boolean;
+}
+
+/** How long a button shows its check mark after its operation succeeded. */
+const FRESH_MS = 5000;
+
 interface OperationsState {
   byRepo: Record<string, RunningOperation>;
+  lastSuccess: Record<string, OperationSuccess>;
   /** The repository whose Push dialog is open. */
   pushDialog: string | null;
   openPushDialog(repo: string | null): void;
@@ -40,6 +55,7 @@ interface OperationsState {
 
 export const useOperations = create<OperationsState>((set) => ({
   byRepo: {},
+  lastSuccess: {},
   pushDialog: null,
   openPushDialog: (pushDialog) => set({ pushDialog }),
 }));
@@ -100,7 +116,12 @@ async function run<T>(
   call: (id: number, onProgress: (p: Progress) => void) => Promise<T>,
 ): Promise<Outcome<T> | null> {
   const current = useOperations.getState().byRepo[repo];
-  if (current && !(current.background && !background)) return null;
+  if (current && !(current.background && !background)) {
+    // Never silently: the user asked for this.
+    if (!background)
+      toast({ kind: "error", title: t("ops.busyWith", { operation: current.title }) });
+    return null;
+  }
   if (!background) clearErrors(repo);
   const id = nextOperationId();
   setRunning(repo, { id, kind, title, progress: null, cancelling: false, background });
@@ -126,6 +147,23 @@ async function run<T>(
     if (useOperations.getState().byRepo[repo]?.id === id) setRunning(repo, null);
     refresh(repo, kind === "pull");
   }
+}
+
+/** Toasts a success and keeps it for the operation's button (check mark, tooltip). */
+function succeeded(repo: string, kind: OperationKind, message: string) {
+  toast({ kind: "success", title: message });
+  const at = Date.now();
+  useOperations.setState((s) => ({
+    lastSuccess: { ...s.lastSuccess, [repo]: { kind, message, at, fresh: true } },
+  }));
+  setTimeout(() => {
+    useOperations.setState((s) => {
+      const last = s.lastSuccess[repo];
+      return last?.at === at
+        ? { lastSuccess: { ...s.lastSuccess, [repo]: { ...last, fresh: false } } }
+        : s;
+    });
+  }, FRESH_MS);
 }
 
 function cachedRefs(repo: string): RefsSnapshot | undefined {
@@ -199,6 +237,7 @@ export async function fetchRepo(repo: string, { background = false } = {}) {
   if (!outcome) return;
   if (outcome.ok) {
     quietFailures.delete(repo);
+    if (!background) succeeded(repo, "fetch", t("ops.fetched"));
     return;
   }
   if (background) {
@@ -243,16 +282,16 @@ export async function pullRepo(
   const name = branch?.name ?? "HEAD";
   switch (outcome.value) {
     case "upToDate":
-      toast({ kind: "success", title: t("ops.pullUpToDate", { branch: name }) });
+      succeeded(repo, "pull", t("ops.pullUpToDate", { branch: name }));
       break;
     case "updated":
-      toast({
-        kind: "success",
-        title:
-          incoming > 0
-            ? t("ops.pulledCount", { commits: plural("count.commits", incoming), branch: name })
-            : t("ops.pulled", { branch: name }),
-      });
+      succeeded(
+        repo,
+        "pull",
+        incoming > 0
+          ? t("ops.pulledCount", { commits: plural("count.commits", incoming), branch: name })
+          : t("ops.pulled", { branch: name }),
+      );
       break;
     case "conflicts":
       errorToast(repo, {
@@ -302,13 +341,13 @@ export async function pushRepo(repo: string, request?: PushRequest) {
   );
   if (!outcome) return;
   if (outcome.ok) {
-    toast({
-      kind: "success",
-      title:
-        outcome.value === "upToDate"
-          ? t("ops.pushUpToDate", { destination })
-          : t("ops.pushed", { branch: req.branch, destination }),
-    });
+    succeeded(
+      repo,
+      "push",
+      outcome.value === "upToDate"
+        ? t("ops.pushUpToDate", { destination })
+        : t("ops.pushed", { branch: req.branch, destination }),
+    );
     return;
   }
   const { error } = outcome;

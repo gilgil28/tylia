@@ -1,6 +1,7 @@
-import { ArrowDownToLine, ArrowUpFromLine, RefreshCw, type LucideIcon } from "lucide-react";
+import { ArrowDownToLine, ArrowUpFromLine, Check, RefreshCw, type LucideIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
+import { clockTime } from "@/app/format";
 import { useSettings } from "@/app/settings";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { t } from "@/i18n";
@@ -101,6 +102,9 @@ function OperationButton({
 }) {
   const op = useOperations((s) => s.byRepo[repo]);
   const mine = op?.kind === kind ? op : undefined;
+  const last = useOperations((s) => s.lastSuccess[repo]);
+  const lastMine = last?.kind === kind ? last : undefined;
+  const justDone = !!lastMine?.fresh;
   // A background fetch doesn't block anything: starting an operation cancels it.
   const busy = !!op && !mine && !op.background;
   const [panelOpen, setPanelOpen] = useState(false);
@@ -113,12 +117,15 @@ function OperationButton({
             label={label}
             icon={icon}
             leading={
-              // Decorative here: `aria-busy` tells assistive tech the action is running.
-              mine && (
+              // Decorative here: `aria-busy` tells assistive tech the action is running, and
+              // the success toast announces the result.
+              mine ? (
                 <span aria-hidden className="flex">
                   <ProgressRing value={percent === undefined ? undefined : percent / 100} />
                 </span>
-              )
+              ) : justDone ? (
+                <Check size={16} strokeWidth={2} aria-hidden className="text-success" />
+              ) : undefined
             }
             trailing={trailing}
             labelClassName={LABEL}
@@ -127,7 +134,23 @@ function OperationButton({
             mainProps={{ "aria-busy": !!mine, "aria-haspopup": mine ? "dialog" : undefined }}
             menuLabel={menuLabel}
             menu={menu}
-            tooltip={busy ? t("ops.busy") : tooltip}
+            tooltip={
+              busy ? (
+                t("ops.busy")
+              ) : lastMine ? (
+                <span className="flex flex-col gap-0.5">
+                  <span>{tooltip}</span>
+                  <span className="text-fg-muted">
+                    {t("ops.lastSuccess", {
+                      message: lastMine.message,
+                      time: clockTime(lastMine.at),
+                    })}
+                  </span>
+                </span>
+              ) : (
+                tooltip
+              )
+            }
           />
         </div>
       </PopoverAnchor>

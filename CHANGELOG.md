@@ -23,6 +23,15 @@ can change behaviour.
   - **Prefixes:** typing `path:` (or `file:`, `author:`, `message:`, `hash:`) in the
     search box switches what it searches.
 
+### Fixed
+
+- **Feedback after push, pull and fetch:**
+  - A push, pull or fetch asked for while another one was running in the same
+    repository was dropped without a word. It now says what to wait for.
+  - A fetch you start now confirms success too.
+  - After success, the button shows a check mark, and its tooltip keeps the last result
+    with the time. Success messages stay up 6 seconds instead of 4.
+
 ## [0.1.0] - 2026-10-21
 
 The first release.

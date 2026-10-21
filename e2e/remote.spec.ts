@@ -177,3 +177,33 @@ for (const theme of ["light", "dark"]) {
     });
   }
 }
+
+test("fetch confirms success", async ({ page }) => {
+  await openDemo(page);
+  await button(page, "Fetch").click();
+  await expect(toastText(page, "Fetched from all remotes")).toBeVisible();
+});
+
+test("after a push the button shows a check, and its tooltip keeps the result", async ({
+  page,
+}) => {
+  await openDemo(page);
+  const push = button(page, "Push");
+  await push.click();
+  await expect(toastText(page, "Pushed main to origin/main")).toBeVisible();
+  await expect(push.locator("svg.text-success")).toBeVisible();
+  await shot(page, "push-success-light");
+  // Radix reopens a tooltip only after the pointer has left the button it clicked.
+  await page.mouse.move(0, 400);
+  await push.hover();
+  await expect(page.getByRole("tooltip")).toContainText(/Pushed main to origin\/main · \d/);
+  // The check mark goes after a few seconds; the tooltip keeps the result.
+  await expect(push.locator("svg.text-success")).toHaveCount(0, { timeout: 8000 });
+});
+
+test("a push asked for while a fetch runs says to wait", async ({ page }) => {
+  await openDemo(page, { script: { stepMs: 400 } });
+  await button(page, "Fetch").click();
+  await page.keyboard.press("Control+Shift+P");
+  await expect(toastText(page, "Wait for “Fetching from all remotes” to finish")).toBeVisible();
+});

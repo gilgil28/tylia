@@ -59,7 +59,7 @@ export const toast = Object.assign((input: ToastInput) => useToasts.getState().p
 });
 
 /** Success toasts close themselves; errors and running operations stay until dismissed. */
-const DURATION = { success: 4000, error: Infinity, progress: Infinity };
+const DURATION = { success: 6000, error: Infinity, progress: Infinity };
 
 function ToastCard({ item }: { item: ToastItem }) {
   const [showDetails, setShowDetails] = useState(false);

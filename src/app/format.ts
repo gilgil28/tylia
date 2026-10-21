@@ -2,6 +2,7 @@ import { t } from "@/i18n";
 
 const relative = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 const absolute = new Intl.DateTimeFormat("en", { dateStyle: "medium", timeStyle: "short" });
+const clock = new Intl.DateTimeFormat("en", { timeStyle: "short" });
 const shortDate = new Intl.DateTimeFormat("en", {
   day: "numeric",
   month: "short",
@@ -30,6 +31,11 @@ export function relativeTime(epochSeconds: number, now = Date.now()): string {
 
 export function absoluteTime(epochSeconds: number): string {
   return absolute.format(epochSeconds * 1000);
+}
+
+/** The time of day of a `Date.now()` value, e.g. "1:53 PM". */
+export function clockTime(ms: number): string {
+  return clock.format(ms);
 }
 
 /** A time as the date-format setting wants it, with the other form for a tooltip. */
