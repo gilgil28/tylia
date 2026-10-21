@@ -17,6 +17,7 @@ import { useRoute } from "./route";
 import { TitleBar } from "./TitleBar";
 import { useAppActions } from "./appActions";
 import { useShortcutDispatcher } from "./keyboard";
+import { useOpenRequests } from "./useOpenRequests";
 import { useRepoEvents } from "./useRepoEvents";
 import { useWorkspace } from "./workspace";
 
@@ -58,6 +59,7 @@ function Shell() {
   useShortcutDispatcher();
   useAppActions();
   useRepoEvents();
+  useOpenRequests();
   useStartupUpdateCheck();
   return (
     <div className="flex h-full flex-col bg-app text-fg">

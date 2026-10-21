@@ -15,6 +15,7 @@ import demo from "./fixtures/demo.json";
 import { askpass } from "./askpass";
 import { branchingMock } from "./branching";
 import { flowMock } from "./flow";
+import { openRequestsMock } from "./open-requests";
 import { rebaseMock } from "./rebase";
 import { fileViewMock } from "./file-view";
 import { remoteMock, transfer } from "./remote";
@@ -413,6 +414,7 @@ export const backend: Backend = {
     { get: () => status, set: (next) => (status = next) },
   ),
   ...askpass,
+  ...openRequestsMock,
   ...fileViewMock(fixture),
 
   pickFolder: async () => fixture.repo.path,

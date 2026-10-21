@@ -168,6 +168,8 @@ export const backend: Backend = {
   },
   revealInFileManager: (path) => revealItemInDir(path),
   homeDir: () => homeDir(),
+  takeOpenRequests: () => invoke("take_open_requests"),
+  onOpenRequested: (handler) => listen("open-requested", () => handler()),
   onFolderDrop: ({ over, drop }) =>
     getCurrentWebview().onDragDropEvent((e) => {
       const p = e.payload;

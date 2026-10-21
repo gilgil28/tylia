@@ -1,6 +1,7 @@
 pub mod askpass;
 mod commands;
 mod error;
+pub mod launch;
 mod operation;
 mod path_index;
 mod settings;
@@ -10,6 +11,8 @@ mod ui_state;
 mod watcher;
 mod window;
 
+use std::path::PathBuf;
+
 use tauri::Manager;
 
 use crate::settings::SettingsStore;
@@ -17,12 +20,19 @@ use crate::state::AppState;
 use crate::ui_state::UiStateStore;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
+/// Starts the app; `open` are the folders from the command line (see `launch`).
+pub fn run(open: Vec<PathBuf>) {
     tauri::Builder::default()
+        // First: a second launch hands its arguments to this process and exits before any
+        // other plugin or the setup runs.
+        .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
+            launch::on_second_instance(app, args, cwd);
+        }))
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .manage(commands::PendingUpdate::default())
+        .manage(launch::OpenRequests::new(open))
         .setup(|app| {
             let config_dir = app.path().app_config_dir()?;
             let store = SettingsStore::new(&config_dir);
@@ -45,6 +55,7 @@ pub fn run() {
             commands::load_ui_state,
             commands::save_ui_state,
             commands::open_repo,
+            launch::take_open_requests,
             commands::init_repo,
             commands::repo_branch,
             commands::get_refs,
@@ -123,6 +134,14 @@ pub fn run() {
             commands::flow_start,
             commands::flow_finish,
         ])
-        .run(tauri::generate_context!())
-        .expect("error while running Tylia");
+        .build(tauri::generate_context!())
+        .expect("error while building Tylia")
+        .run(|_app, _event| {
+            // Folders dropped on the Dock icon or opened with "Open With" in Finder.
+            #[cfg(target_os = "macos")]
+            if let tauri::RunEvent::Opened { urls } = _event {
+                let paths = urls.iter().filter_map(|u| u.to_file_path().ok()).collect();
+                launch::open(_app, paths);
+            }
+        });
 }

@@ -279,6 +279,13 @@ export interface Backend {
   pickFolder(title: string, defaultPath?: string): Promise<string | null>;
   revealInFileManager(path: string): Promise<void>;
   homeDir(): Promise<string>;
+  /**
+   * Folders to open that came from outside the window: `tylia <path>`, a second launch, or
+   * a file manager's "Open in Tylia". Returns them and clears the queue.
+   */
+  takeOpenRequests(): Promise<string[]>;
+  /** More folders are waiting for `takeOpenRequests`. */
+  onOpenRequested(handler: () => void): Promise<Unlisten>;
   /** Folders dropped on the window. */
   onFolderDrop(handlers: {
     over: (active: boolean) => void;

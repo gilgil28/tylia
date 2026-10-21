@@ -76,34 +76,35 @@ No GPL in the shipped app. Prefer fewer dependencies.
 
 Exact versions are pinned in `Cargo.toml` / `package.json` (no `^`/`~`). Re-verify before bumping.
 
-| Tool / package                                                      | Version                             | Note                                                                                             |
-| ------------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Rust                                                                | 1.99.1 stable                       | `rust-toolchain.toml` pins `stable` channel; MSRV = 1.99                                         |
-| Node.js                                                             | 24.x LTS (Krypton)                  | Vite 8 needs `^20.19 \|\| >=22.12`; `engines.node >=22.12`                                       |
-| pnpm                                                                | 12.14.0                             | `packageManager` field                                                                           |
-| tauri / tauri-build / @tauri-apps/cli / @tauri-apps/api             | 2.12.4 / 2.7.3 / 2.12.3 / 2.12.4    | Tauri 3 is alpha only — stay on 2                                                                |
-| tauri-plugin-dialog / -opener / -clipboard-manager / -os            | 2.8.3 / 2.7.2 / 2.5.0 / 2.4.0       | added only when a feature needs them                                                             |
-| tauri-plugin-updater                                                | 2.14.0                              | Phase 6 opt-in update check; adds reqwest + rustls (ring), minisign-verify, zip (all permissive) |
-| **ts-rs**                                                           | 12.0.1                              | **Decision:** `tauri-specta` for Tauri 2 is still `2.0.0-rc.25`, so per §3 we use ts-rs          |
-| serde / serde_json / tokio / thiserror                              | 1.0.229 / 1.0.154 / 1.53.3 / 2.0.21 |                                                                                                  |
-| notify / notify-debouncer-full                                      | 8.2.0 / 0.7.0                       | 9.x is RC                                                                                        |
-| tempfile                                                            | 3.27.0                              | dev-dependency                                                                                   |
-| getrandom                                                           | 0.4.3                               | askpass session token (§5.13); already in the tree via Tauri                                     |
-| gix                                                                 | 0.89.0                              | not added until profiling justifies it                                                           |
-| react / react-dom                                                   | 19.3.1                              |                                                                                                  |
-| **typescript**                                                      | 6.0.3                               | **Decision:** TS 7.0 (native) is `latest`, but typescript-eslint 8.71 supports `<6.1.0`          |
-| vite / @vitejs/plugin-react                                         | 8.3.4 / 6.1.2                       |                                                                                                  |
-| tailwindcss / @tailwindcss/vite                                     | 4.3.3                               |                                                                                                  |
-| radix-ui                                                            | 1.8.1                               | umbrella package                                                                                 |
-| lucide-react                                                        | 1.59.0                              |                                                                                                  |
-| @tanstack/react-virtual / @tanstack/react-query                     | 3.14.21 / 5.104.4                   |                                                                                                  |
-| zustand                                                             | 5.0.15                              |                                                                                                  |
-| shiki                                                               | 4.5.0                               | Phase 1                                                                                          |
-| @fontsource-variable/inter / jetbrains-mono                         | 5.3.0                               | OFL, bundled into the build (never fetched at runtime)                                           |
-| vitest                                                              | 5.0.5                               |                                                                                                  |
-| @playwright/test                                                    | 1.64.1                              |                                                                                                  |
-| eslint / @eslint/js / typescript-eslint / eslint-plugin-react-hooks | 10.13.0 / 10.0.1 / 8.71.2 / 7.1.1   | flat config                                                                                      |
-| prettier                                                            | 3.9.10                              |                                                                                                  |
+| Tool / package                                                      | Version                             | Note                                                                                                                           |
+| ------------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Rust                                                                | 1.99.1 stable                       | `rust-toolchain.toml` pins `stable` channel; MSRV = 1.99                                                                       |
+| Node.js                                                             | 24.x LTS (Krypton)                  | Vite 8 needs `^20.19 \|\| >=22.12`; `engines.node >=22.12`                                                                     |
+| pnpm                                                                | 12.14.0                             | `packageManager` field                                                                                                         |
+| tauri / tauri-build / @tauri-apps/cli / @tauri-apps/api             | 2.12.4 / 2.7.3 / 2.12.3 / 2.12.4    | Tauri 3 is alpha only — stay on 2                                                                                              |
+| tauri-plugin-dialog / -opener / -clipboard-manager / -os            | 2.8.3 / 2.7.2 / 2.5.0 / 2.4.0       | added only when a feature needs them                                                                                           |
+| tauri-plugin-updater                                                | 2.14.0                              | Phase 6 opt-in update check; adds reqwest + rustls (ring), minisign-verify, zip (all permissive)                               |
+| tauri-plugin-single-instance                                        | 2.5.4                               | Phase 7: one window; a second launch hands its arguments over (named mutex on Windows, D-Bus on Linux, a Unix socket on macOS) |
+| **ts-rs**                                                           | 12.0.1                              | **Decision:** `tauri-specta` for Tauri 2 is still `2.0.0-rc.25`, so per §3 we use ts-rs                                        |
+| serde / serde_json / tokio / thiserror                              | 1.0.229 / 1.0.154 / 1.53.3 / 2.0.21 |                                                                                                                                |
+| notify / notify-debouncer-full                                      | 8.2.0 / 0.7.0                       | 9.x is RC                                                                                                                      |
+| tempfile                                                            | 3.27.0                              | dev-dependency                                                                                                                 |
+| getrandom                                                           | 0.4.3                               | askpass session token (§5.13); already in the tree via Tauri                                                                   |
+| gix                                                                 | 0.89.0                              | not added until profiling justifies it                                                                                         |
+| react / react-dom                                                   | 19.3.1                              |                                                                                                                                |
+| **typescript**                                                      | 6.0.3                               | **Decision:** TS 7.0 (native) is `latest`, but typescript-eslint 8.71 supports `<6.1.0`                                        |
+| vite / @vitejs/plugin-react                                         | 8.3.4 / 6.1.2                       |                                                                                                                                |
+| tailwindcss / @tailwindcss/vite                                     | 4.3.3                               |                                                                                                                                |
+| radix-ui                                                            | 1.8.1                               | umbrella package                                                                                                               |
+| lucide-react                                                        | 1.59.0                              |                                                                                                                                |
+| @tanstack/react-virtual / @tanstack/react-query                     | 3.14.21 / 5.104.4                   |                                                                                                                                |
+| zustand                                                             | 5.0.15                              |                                                                                                                                |
+| shiki                                                               | 4.5.0                               | Phase 1                                                                                                                        |
+| @fontsource-variable/inter / jetbrains-mono                         | 5.3.0                               | OFL, bundled into the build (never fetched at runtime)                                                                         |
+| vitest                                                              | 5.0.5                               |                                                                                                                                |
+| @playwright/test                                                    | 1.64.1                              |                                                                                                                                |
+| eslint / @eslint/js / typescript-eslint / eslint-plugin-react-hooks | 10.13.0 / 10.0.1 / 8.71.2 / 7.1.1   | flat config                                                                                                                    |
+| prettier                                                            | 3.9.10                              |                                                                                                                                |
 
 ## 5.1 Repository layout
 
@@ -662,3 +663,21 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
     - forget a sign-in: `git credential reject` with `url=` on stdin.
   - **Protocol switch:** SSH ↔ HTTPS alternatives are computed in Rust
     (`https://host/owner/repo` ↔ `git@host:owner/repo.git`).
+
+## 5.19 Launching and OS integration (Phase 7)
+
+- **Command line** (`src-tauri/src/launch.rs`, parsed in `main.rs` before the app
+  starts): `tylia [PATH]...`, `-h` / `--help`, `-V` / `--version`; an unknown option exits
+  with code 2. Each path is resolved against the caller's working directory, and a file
+  stands for its folder. Git's askpass calls are recognized first (§5.13).
+- **One window** (tauri-plugin-single-instance, registered before every other plugin): a
+  second launch never starts the app; the plugin hands its arguments and working directory
+  to the running process and exits (335 ms on Windows, debug build). The running process
+  focuses its window and parses them the same way.
+- **Open requests:** paths from the first launch and from later ones go into one queue
+  (`OpenRequests`). Rust emits `open-requested`; the frontend (`useOpenRequests`) calls
+  `take_open_requests` on that event and once at start, then opens each path with
+  `openRepoAt`, in order. A folder inside a repository opens the repository; anything else
+  shows the "not a repository" toast.
+- **macOS** sends folders opened from Finder or dropped on the Dock icon as
+  `RunEvent::Opened`; they join the same queue.

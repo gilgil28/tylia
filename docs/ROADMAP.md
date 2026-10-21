@@ -500,9 +500,12 @@ validate`.
 
 #### D. OS integration
 
-- [ ] **One window, many tabs.** Opening Tylia again (or with a path) focuses the running
+- [x] **One window, many tabs.** Opening Tylia again (or with a path) focuses the running
       window and opens the path as a tab (`tauri-plugin-single-instance`; verify its
       version and license; on Linux it uses D-Bus, which works in the Flatpak).
+      _Done: tauri-plugin-single-instance 2.5.4 (MIT OR Apache-2.0). Real app, Windows: a
+      second launch hands off in 335 ms and the running window opens its folder as a tab
+      (ARCHITECTURE §5.19)._
 - [ ] **Command line:**
   - **`tylia <path>`** (the path or any folder inside a repository) opens it; `tylia`
     alone shows the window; `tylia --help` / `--version`. Paths are resolved against

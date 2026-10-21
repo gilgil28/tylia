@@ -33,6 +33,8 @@ tauri-plugin-opener = "=2.7.2"
 tauri-plugin-updater = "=2.14.0"
 # OS randomness for the askpass session token.
 getrandom = "=0.4.3"
+# One window: a second launch hands its arguments to the running app.
+tauri-plugin-single-instance = "=2.5.4"
 
 [dev-dependencies]
 tempfile.workspace = true
