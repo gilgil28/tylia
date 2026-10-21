@@ -172,6 +172,8 @@ export const en = {
   "ops.pushDialogItem": "Push…",
   "ops.busy": "Wait for the current operation to finish",
   "ops.busyWith": "Wait for “{operation}” to finish",
+  "ops.lastFetched": "Last fetched {when}",
+  "ops.neverFetched": "Not fetched yet",
   "ops.fetched": "Fetched from all remotes",
   "ops.lastSuccess": "{message} · {time}",
   "ops.cancel": "Cancel",

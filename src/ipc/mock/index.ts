@@ -36,7 +36,11 @@ let status: WorkingStatus = structuredClone(fixture.status);
 /** Whether the demo repository has a commit-graph (writing one sets it). */
 let commitGraph = false;
 /** Branches and remotes; push, pull and remote management change them. */
-let refs: RefsSnapshot = structuredClone(fixture.refs);
+let refs: RefsSnapshot = {
+  ...structuredClone(fixture.refs),
+  // Fetched 25 minutes before the page loaded.
+  lastFetch: Math.floor(Date.now() / 1000) - 25 * 60,
+};
 
 function stage(path: string) {
   status = {

@@ -43,6 +43,7 @@ const base: RefsSnapshot = {
   ],
   tags: [{ name: "v1", oid: "a", annotated: true }],
   stashes: [],
+  lastFetch: null,
 };
 
 describe("refsByCommit", () => {

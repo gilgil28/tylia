@@ -1,7 +1,7 @@
 import { ArrowDownToLine, ArrowUpFromLine, Check, RefreshCw, type LucideIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
-import { clockTime } from "@/app/format";
+import { clockTime, relativeTime } from "@/app/format";
 import { useSettings } from "@/app/settings";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { t } from "@/i18n";
@@ -81,7 +81,7 @@ function OperationButton({
   kind: OperationKind;
   label: string;
   icon: LucideIcon;
-  tooltip: string;
+  tooltip: ReactNode;
   onRun: () => void;
   trailing?: ReactNode;
   menuLabel: string;
@@ -174,7 +174,16 @@ export function RemoteButtons({ repo, refs }: { repo: string; refs: RefsSnapshot
         kind="fetch"
         label={t("ops.fetch")}
         icon={RefreshCw}
-        tooltip={t("ops.fetchHint")}
+        tooltip={
+          <span className="flex flex-col gap-0.5">
+            <span>{t("ops.fetchHint")}</span>
+            <span className="text-fg-muted">
+              {refs?.lastFetch
+                ? t("ops.lastFetched", { when: relativeTime(refs.lastFetch) })
+                : t("ops.neverFetched")}
+            </span>
+          </span>
+        }
         onRun={() => void fetchRepo(repo)}
         unavailable={!hasRemotes}
         menuLabel={t("ops.fetchOptions")}

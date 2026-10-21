@@ -8,6 +8,7 @@ use ts_rs::TS;
 
 use crate::error::GitError;
 use crate::runner::{Git, RunOptions, lossy, split_nul};
+use crate::status::find_git_dir;
 
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, TS)]
 #[serde(rename_all = "camelCase")]
@@ -113,6 +114,9 @@ pub struct RefsSnapshot {
     pub remotes: Vec<Remote>,
     pub tags: Vec<Tag>,
     pub stashes: Vec<Stash>,
+    /// When the repository last fetched (Unix seconds, from `FETCH_HEAD`); `None` if never.
+    #[ts(type = "number | null")]
+    pub last_fetch: Option<i64>,
 }
 
 const REF_FORMAT: &str = "--format=%(refname)%00%(objectname)%00%(*objectname)%00%(upstream:short)%00%(upstream:track,nobracket)%00%(HEAD)%00%(symref)%00%(upstream:remotename)%00%(upstream:remoteref)";
@@ -163,6 +167,7 @@ impl Git {
         };
         apply_remote_urls(&mut snapshot.remotes, &lossy(&remotes?.stdout));
         snapshot.stashes = parse_stashes(&stashes?.stdout);
+        snapshot.last_fetch = last_fetch(repo);
         Ok(snapshot)
     }
 
@@ -183,6 +188,29 @@ impl Git {
             .await?;
         Ok(parse_submodules(&lossy(&out.stdout)))
     }
+}
+
+/// The time of the last fetch: `FETCH_HEAD`'s modification time, in the worktree's git dir
+/// or, for a linked worktree, the shared one.
+fn last_fetch(repo: &Path) -> Option<i64> {
+    let git_dir = find_git_dir(repo)?;
+    let shared = std::fs::read_to_string(git_dir.join("commondir"))
+        .ok()
+        .map(|c| git_dir.join(c.trim()));
+    let modified = [Some(git_dir), shared]
+        .into_iter()
+        .flatten()
+        .find_map(|dir| {
+            std::fs::metadata(dir.join("FETCH_HEAD"))
+                .ok()?
+                .modified()
+                .ok()
+        })?;
+    let secs = modified
+        .duration_since(std::time::UNIX_EPOCH)
+        .ok()?
+        .as_secs();
+    i64::try_from(secs).ok()
 }
 
 fn parse_track(track: &str) -> (u32, u32, bool) {

@@ -5,4 +5,8 @@ import type { Remote } from "./Remote";
 import type { Stash } from "./Stash";
 import type { Tag } from "./Tag";
 
-export type RefsSnapshot = { head: Head, branches: Array<Branch>, remotes: Array<Remote>, tags: Array<Tag>, stashes: Array<Stash>, };
+export type RefsSnapshot = { head: Head, branches: Array<Branch>, remotes: Array<Remote>, tags: Array<Tag>, stashes: Array<Stash>, 
+/**
+ * When the repository last fetched (Unix seconds, from `FETCH_HEAD`); `None` if never.
+ */
+lastFetch: number | null, };

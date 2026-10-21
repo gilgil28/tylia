@@ -414,3 +414,20 @@ async fn cancelled_clone_removes_the_folder() {
     assert!(matches!(err, GitError::Cancelled { .. }), "{err:?}");
     assert!(!dest.exists());
 }
+
+#[tokio::test]
+async fn refs_report_the_last_fetch() {
+    let mut remote = TestRepo::new();
+    remote.commit("one");
+    let clone = TestRepo::clone_of(&remote);
+    clone.git(&["fetch", "-q"]);
+    let after = git().refs(clone.path()).await.unwrap().last_fetch;
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_secs() as i64;
+    assert!(after.is_some_and(|t| (now - t).abs() < 120), "{after:?}");
+
+    let never = TestRepo::new();
+    assert_eq!(git().refs(never.path()).await.unwrap().last_fetch, None);
+}

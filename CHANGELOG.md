@@ -24,6 +24,7 @@ can change behaviour.
     search box switches what it searches.
 - **Commit button in the toolbar,** with the number of changed files. It opens Changes
   with the cursor in the message box (also Ctrl/Cmd+Shift+C).
+- **Fetch's tooltip** says when you last fetched.
 
 ### Changed
 

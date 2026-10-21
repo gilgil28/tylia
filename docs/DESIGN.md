@@ -465,3 +465,5 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   branch switch moved from the toolbar to a 40 px row above the history, so the toolbar
   only holds repository actions. The search box gets up to 30rem there, and Mod+F reaches
   it from any view.
+- **2026-10-21 — Last fetch in Fetch's tooltip.** Incoming changes can't be known without
+  fetching, so Fetch's tooltip says when the repository last fetched (from `FETCH_HEAD`).
