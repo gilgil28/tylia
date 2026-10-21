@@ -23,10 +23,10 @@ All colours are tokens. Components never use raw hex.
 | Token                      | Value                                                           | Use                                                |
 | -------------------------- | --------------------------------------------------------------- | -------------------------------------------------- |
 | `--bg-app`                 | `#0F1115`                                                       | Main content background                            |
-| `--bg-panel`               | `#181B21`                                                       | Sidebar, toolbar, panel headers                    |
+| `--bg-panel`               | `#23272F`                                                       | Sidebar, toolbar, panel headers                    |
 | `--bg-titlebar`            | `#0B0D10`                                                       | Title bar / tab strip (a step below panels)        |
-| `--bg-tab-active`          | `#20242C`                                                       | The active tab, lifted off the strip               |
-| `--bg-elevated`            | `#20242C`                                                       | Menus, popovers, dialogs, toasts                   |
+| `--bg-tab-active`          | `#2C313B`                                                       | The active tab, lifted off the strip               |
+| `--bg-elevated`            | `#2C313B`                                                       | Menus, popovers, dialogs, toasts                   |
 | `--bg-input`               | `#0B0D10`                                                       | Text inputs, commit message box                    |
 | `--bg-hover`               | `rgba(255,255,255,0.06)`                                        | Row/control hover                                  |
 | `--bg-active`              | `rgba(255,255,255,0.10)`                                        | Pressed                                            |
@@ -36,8 +36,8 @@ All colours are tokens. Components never use raw hex.
 | `--border`                 | `rgba(255,255,255,0.14)`                                        | Inputs, cards                                      |
 | `--border-strong`          | `rgba(255,255,255,0.22)`                                        | Focused inputs (with ring)                         |
 | `--text`                   | `#E6E8EC`                                                       | Primary text                                       |
-| `--text-secondary`         | `#A2A9B5`                                                       | Secondary text, metadata                           |
-| `--text-muted`             | `#8C94A1`                                                       | Placeholders, disabled, hints                      |
+| `--text-secondary`         | `#ADB3BE`                                                       | Secondary text, metadata                           |
+| `--text-muted`             | `#98A0AC`                                                       | Placeholders, disabled, hints                      |
 | `--accent`                 | `#5E8BFF`                                                       | Primary buttons, focus ring, current-branch marker |
 | `--accent-text`            | `#FFFFFF`                                                       | Text on accent                                     |
 | `--focus-ring`             | `0 0 0 2px rgba(94,139,255,0.55)`                               | Keyboard focus                                     |
@@ -467,3 +467,12 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   it from any view.
 - **2026-10-21 — Last fetch in Fetch's tooltip.** Incoming changes can't be known without
   fetching, so Fetch's tooltip says when the repository last fetched (from `FETCH_HEAD`).
+- **2026-10-21 — more separation between dark surfaces** (user feedback: the two dark
+  backgrounds were too similar).
+  - **Panels:** `--bg-panel` (sidebar, toolbar, headers, composer) went from #181B21 to
+    #23272F against `--bg-app` #0F1115, which more than doubles the step.
+  - **Raised surfaces:** `--bg-elevated` / `--bg-tab-active` went from #20242C to
+    #2C313B, so menus, dialogs and the active tab stay above the panels.
+  - **Text:** dark `--text-secondary` went from #A2A9B5 to #ADB3BE and `--text-muted`
+    from #8C94A1 to #98A0AC, so muted text keeps ≥ 4.5:1 on the lighter raised surfaces.
+    `pnpm contrast` passes.

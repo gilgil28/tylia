@@ -103,10 +103,10 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg-app: #0f1115;
-  --bg-panel: #181b21;
+  --bg-panel: #23272f;
   --bg-titlebar: #0b0d10;
-  --bg-tab-active: #20242c;
-  --bg-elevated: #20242c;
+  --bg-tab-active: #2c313b;
+  --bg-elevated: #2c313b;
   --bg-input: #0b0d10;
   --bg-hover: rgba(255, 255, 255, 0.06);
   --bg-active: rgba(255, 255, 255, 0.1);
@@ -116,8 +116,8 @@
   --border: rgba(255, 255, 255, 0.14);
   --border-strong: rgba(255, 255, 255, 0.22);
   --text: #e6e8ec;
-  --text-secondary: #a2a9b5;
-  --text-muted: #8c94a1;
+  --text-secondary: #adb3be;
+  --text-muted: #98a0ac;
   --accent: #5e8bff;
   /* Solid fills under white text use deeper shades: #5e8bff / #f0616d give only ~3.2:1. */
   --accent-fill: #3d6bf5;

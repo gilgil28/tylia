@@ -30,6 +30,8 @@ can change behaviour.
 
 - The history search and the All / Current branch switch moved from the toolbar to their
   own row above the history.
+- **Dark theme:** panels (sidebar, toolbar, headers) and menus are lighter, so they stand
+  apart from the history and diffs. Grey text is slightly lighter to keep its contrast.
 
 ### Fixed
 
