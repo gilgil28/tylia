@@ -340,7 +340,7 @@ The items:
       _Done: 14 files, 141 tests, one binary. From clean: `target/` 3.02 → 2.79 GB,
       building the tests 143 → 127 s, running them 104 → 80 s (all tests now share one
       parallel run)._
-- [ ] Release `target/` is 2.4 GB, but almost none of it ships: `tylia.exe` is 15.8 MB
+- [x] Release `target/` is 2.4 GB, but almost none of it ships: `tylia.exe` is 15.8 MB
       and the installers are 4–6 MB. The rest is build cache: - 423 compiled libraries (`.rlib`, 1.0 GB, larger because `lto = true` keeps LLVM
       bitcode in them); - their metadata (`.rmeta`, 0.6 GB); - proc-macro DLLs with their `.lib` / `.pdb` (0.3 GB).
 
@@ -350,16 +350,25 @@ The items:
       matter more than the last few % of binary size. Record the binary size before and
       after.
 
+      _Measured 2026-10-21 on Windows, clean `tauri build --no-bundle`: `lto = true` takes
+      478 s, `target/release` 1.83 GB and `tylia.exe` 15.84 MB. `lto = "thin"` takes 438 s
+      (−8 %) for a 16.60 MB binary (+4.8 %) and the same 1.83 GB. Kept `lto = true`. The
+      double builds are the Tauri build scripts: `tauri-build` and `tauri-plugin` use
+      `tauri-utils` and `windows` with other features than the app, and build scripts are
+      compiled unoptimized, so Cargo can't share them. Nothing to change on our side._
+
 - [x] CI: cache with `Swatinem/rust-cache` keyed per job. Run the Linux bindings check
       without a second full build.
       _The cache was already in place (its key includes OS and job); now only `main`
       saves it. The bindings check reuses `cargo test`'s build. The real second build was
       the LTO release build in "Tauri build": it is now `tauri build --debug`, which
       recompiles only `tauri`, its plugins and `tylia` (36 s instead of about 8 min)._
-- [ ] Document `cargo clean` and these settings in CONTRIBUTING.md ("Disk space").
+- [x] Document `cargo clean` and these settings in CONTRIBUTING.md ("Disk space").
 - **Acceptance:** after `cargo clean` and one `cargo test --workspace` plus one `pnpm
 tauri dev` build, `target/` is under 8 GB on Windows; full `cargo test` wall time is
   no worse than before.
+  _Met 2026-10-21: 2.79 GB (was 7.84 GB from clean, 29.7 GB accumulated); tests build in
+  127 s (was 177 s) and run in 80 s (was 118 s)._
 
 #### B. Artwork and resources
 

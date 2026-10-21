@@ -76,8 +76,8 @@ bindings in `src/ipc/bindings` are out of date, so commit the result of `pnpm ge
 
 Rust's build cache grows over time, mostly from old incremental-compilation sessions in
 `target/debug/incremental`. A clean `cargo test --workspace` plus a `pnpm tauri dev` build
-needs about 3 GB. When `target/` gets large, run `cargo clean` (the next build starts from
-scratch).
+needs about 3 GB, and a release build another 2 GB. When `target/` gets large, run
+`cargo clean` (the next build starts from scratch).
 
 The workspace `Cargo.toml` keeps the cache small:
 
