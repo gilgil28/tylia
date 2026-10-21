@@ -482,3 +482,5 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
 - **2026-10-21 — Tooltips on keyboard focus only.** Tooltips open on focus only after
   keyboard input. Focus that a closing menu hands back to its button after a mouse click
   no longer brings one up (and leaves it on screen).
+- **2026-10-21 — Dialogs fade in** (opacity only). The old 4px rise used `transform`,
+  which added to the `translate` that centres them and slid them in from the left.

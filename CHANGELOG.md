@@ -45,6 +45,7 @@ can change behaviour.
     with the time. Success messages stay up 6 seconds instead of 4.
 - A button's tooltip no longer stays on screen after its menu closes with a click
   elsewhere.
+- Dialogs no longer slide in from the left; they fade in where they open.
 
 ## [0.1.0] - 2026-10-21
 
