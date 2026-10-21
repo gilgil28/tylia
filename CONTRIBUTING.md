@@ -72,6 +72,22 @@ CI runs all of these checks on Linux, Windows and macOS. It also fails if the ge
 bindings in `src/ipc/bindings` are out of date, so commit the result of `pnpm gen:types`
 (or `cargo test`) when you change IPC types.
 
+## Disk space
+
+Rust's build cache grows over time, mostly from old incremental-compilation sessions in
+`target/debug/incremental`. A clean `cargo test --workspace` plus a `pnpm tauri dev` build
+needs about 3 GB. When `target/` gets large, run `cargo clean` (the next build starts from
+scratch).
+
+The workspace `Cargo.toml` keeps the cache small:
+
+- `[profile.dev] debug = "line-tables-only"`: our crates keep file and line numbers for
+  panics and backtraces, without full debug info.
+- `[profile.dev.package."*"] debug = false`: dependencies carry no debug info.
+
+To step through code in a debugger, turn full debug info back on for one build:
+`cargo build --config 'profile.dev.debug=true' --config 'profile.dev.package."*".debug=true'`.
+
 ## Working rules
 
 The full rules live in [`CLAUDE.md`](CLAUDE.md); they apply to human contributors too. The

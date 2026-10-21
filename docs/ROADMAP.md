@@ -325,10 +325,14 @@ small `target/`, and adds three long-requested power features. It ends with **v0
 
 The items:
 
-- [ ] Debug info: `[profile.dev] debug = "line-tables-only"` and, for dependencies,
+- [x] Debug info: `[profile.dev] debug = "line-tables-only"` and, for dependencies,
       `[profile.dev.package."*"] debug = false`, so dependencies carry none and our
       crates keep line numbers for panics and backtraces. Measure `target/` before and after a full `cargo test`
       plus a `tauri dev` build, and record both numbers here.
+      _2026-10-21, Windows, from `cargo clean`: `target/` **7.84 GB → 3.02 GB**
+      (`debug/deps` 4.08 → 1.71 GB, `incremental` 1.35 → 0.55 GB, `build` 0.57 → 0.34 GB);
+      building the tests 177 s → 143 s, running them 118 s → 104 s. The 29.7 GB was
+      mostly accumulated incremental sessions, which `cargo clean` removes._
 - [ ] Merge `crates/tylia-git/tests/*.rs` into one integration-test binary
       (`tests/it/main.rs` with one module per current file, keeping `tests/common`). That
       is one link instead of about 16. Test names and filters must keep working, e.g.
