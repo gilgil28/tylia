@@ -1,0 +1,12 @@
+dist
+target
+src-tauri/target
+src-tauri/gen
+src/ipc/bindings
+pnpm-lock.yaml
+e2e/__screenshots__
+test-results
+playwright-report
+docs/KICKOFF.md
+LICENSE-APACHE
+CODE_OF_CONDUCT.md

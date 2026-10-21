@@ -1,0 +1,26 @@
+# Maintainer: The Tylia contributors <https://github.com/tylia-dev/tylia>
+# Repackages the .deb from the GitHub release. Bump with ../update.sh <version>.
+
+pkgname=tylia-bin
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="A calm, fast desktop Git client"
+arch=('x86_64')
+url="https://tylia.dev"
+license=('MIT OR Apache-2.0')
+depends=('webkit2gtk-4.1' 'gtk3' 'glib2' 'cairo' 'gdk-pixbuf2' 'libsoup3' 'dbus' 'git' 'hicolor-icon-theme')
+provides=('tylia')
+conflicts=('tylia')
+options=('!strip' '!debug')
+source=("LICENSE-MIT-${pkgver}::https://raw.githubusercontent.com/tylia-dev/tylia/v${pkgver}/LICENSE-MIT"
+        "LICENSE-APACHE-${pkgver}::https://raw.githubusercontent.com/tylia-dev/tylia/v${pkgver}/LICENSE-APACHE")
+source_x86_64=("https://github.com/tylia-dev/tylia/releases/download/v${pkgver}/Tylia_${pkgver}_amd64.deb")
+sha256sums=('SKIP'
+            'SKIP')
+sha256sums_x86_64=('SKIP')
+
+package() {
+  bsdtar -xf data.tar.* -C "${pkgdir}"
+  install -Dm644 "LICENSE-MIT-${pkgver}" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-MIT"
+  install -Dm644 "LICENSE-APACHE-${pkgver}" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-APACHE"
+}

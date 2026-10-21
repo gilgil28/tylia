@@ -1,0 +1,24 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Window controls for the custom title bar, app events, the folder picker, reveal-in-file-manager and opening the releases page. App commands are defined in src/commands.",
+  "windows": ["main"],
+  "permissions": [
+    "core:event:default",
+    "core:window:allow-show",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-internal-toggle-maximize",
+    "core:window:allow-close",
+    "core:window:allow-start-dragging",
+    "core:window:allow-is-maximized",
+    "core:webview:default",
+    "core:path:default",
+    "dialog:allow-open",
+    "opener:allow-reveal-item-in-dir",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [{ "url": "https://github.com/tylia-dev/tylia/releases/latest" }]
+    }
+  ]
+}

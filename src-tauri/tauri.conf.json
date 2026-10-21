@@ -1,0 +1,71 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Tylia",
+  "version": "../package.json",
+  "identifier": "dev.tylia.app",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [],
+    "withGlobalTauri": false,
+    "security": {
+      "csp": {
+        "default-src": "'self'",
+        "script-src": "'self'",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data: asset: http://asset.localhost",
+        "font-src": "'self' data:",
+        "connect-src": "ipc: http://ipc.localhost"
+      },
+      "devCsp": {
+        "default-src": "'self'",
+        "script-src": "'self' 'unsafe-inline'",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data: asset: http://asset.localhost",
+        "font-src": "'self' data:",
+        "connect-src": "ipc: http://ipc.localhost ws://localhost:1420"
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "DeveloperTool",
+    "shortDescription": "A calm, fast desktop Git client",
+    "publisher": "The Tylia contributors",
+    "homepage": "https://tylia.dev",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "copyright": "Copyright © The Tylia contributors. MIT OR Apache-2.0.",
+    "longDescription": "Tylia is an open-source desktop Git client with a clear commit graph, line-level staging, conflict resolution and interactive rebase. No telemetry.",
+    "linux": {
+      "deb": {
+        "depends": ["git"]
+      },
+      "rpm": {
+        "depends": ["git"]
+      }
+    },
+    "macOS": {
+      "minimumSystemVersion": "12.0"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDc5NzQ0Q0Y5OEM2MUNFREQKUldUZHptR00rVXgwZVJrWFd2VTMySTRlQ2kzZDYxS3V2NDdYSmdkNW95WjNpcjV5ejdXdHFkRlMK",
+      "endpoints": ["https://github.com/tylia-dev/tylia/releases/latest/download/latest.json"],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  }
+}

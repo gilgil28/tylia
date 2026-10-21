@@ -1,0 +1,179 @@
+import { Channel, invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
+import { homeDir } from "@tauri-apps/api/path";
+import { getCurrentWebview } from "@tauri-apps/api/webview";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { open } from "@tauri-apps/plugin-dialog";
+import { openUrl, revealItemInDir } from "@tauri-apps/plugin-opener";
+
+import type { Backend } from "./backend";
+import type { AskpassPrompt } from "./bindings/AskpassPrompt";
+import type { DownloadProgress } from "./bindings/DownloadProgress";
+import type { HistoryEvent } from "./bindings/HistoryEvent";
+import type { Progress } from "./bindings/Progress";
+import type { RepoChanged } from "./bindings/RepoChanged";
+
+const appWindow = getCurrentWindow();
+
+/** The only URL the app opens (capabilities/default.json allows just this one). */
+const RELEASES_URL = "https://github.com/tylia-dev/tylia/releases/latest";
+
+function channel<T>(handler: (message: T) => void): Channel<T> {
+  const ch = new Channel<T>();
+  ch.onmessage = handler;
+  return ch;
+}
+
+export const backend: Backend = {
+  gitVersion: () => invoke("git_version"),
+  setSettings: (settings) => invoke("set_settings", { settings }),
+  loadUiState: () => invoke("load_ui_state"),
+  saveUiState: (value) => invoke("save_ui_state", { value }),
+  checkUpdate: () => invoke("check_update"),
+  installUpdate: (onProgress) =>
+    invoke("install_update", { onProgress: channel<DownloadProgress>(onProgress) }),
+  openDownloadPage: () => openUrl(RELEASES_URL),
+
+  openRepo: (path) => invoke("open_repo", { path }),
+  initRepo: (path) => invoke("init_repo", { path }),
+  repoBranch: (path) => invoke("repo_branch", { path }),
+  getRefs: (repo) => invoke("get_refs", { repo }),
+  getStatus: (repo) => invoke("get_status", { repo }),
+  getSubmodules: (repo) => invoke("get_submodules", { repo }),
+  hasCommitGraph: (repo) => invoke("has_commit_graph", { repo }),
+  getWorktrees: (repo) => invoke("get_worktrees", { repo }),
+  lfsStatus: (repo) => invoke("lfs_status", { repo }),
+  submoduleUpdate: (repo, paths, operationId, onProgress) =>
+    invoke("submodule_update", {
+      repo,
+      paths,
+      operationId,
+      onProgress: channel<Progress>(onProgress),
+    }),
+  writeCommitGraph: (repo) => invoke("write_commit_graph", { repo }),
+  streamHistory: (repo, options, head, onEvent) =>
+    invoke("stream_history", { repo, options, head, onEvent: channel<HistoryEvent>(onEvent) }),
+  getCommit: (repo, oid) => invoke("get_commit", { repo, oid }),
+  getDiff: (repo, request) => invoke("get_diff", { repo, request }),
+  searchHistory: (repo, options, field, query) =>
+    invoke("search_history", { repo, options, field, query }),
+  getBlame: (repo, path, rev, force) => invoke("get_blame", { repo, path, rev, force }),
+  getFileHistory: (repo, path, rev, skip, limit) =>
+    invoke("get_file_history", { repo, path, rev, skip, limit }),
+  watchRepo: (repo) => invoke("watch_repo", { repo }),
+  unwatchRepo: (repo) => invoke("unwatch_repo", { repo }),
+  onRepoChanged: (handler) => listen<RepoChanged>("repo-changed", (e) => handler(e.payload)),
+
+  stageFiles: (repo, paths) => invoke("stage_files", { repo, paths }),
+  unstageFiles: (repo, paths) => invoke("unstage_files", { repo, paths }),
+  stageAll: (repo) => invoke("stage_all", { repo }),
+  unstageAll: (repo) => invoke("unstage_all", { repo }),
+  discardFiles: (repo, tracked, untracked) => invoke("discard_files", { repo, tracked, untracked }),
+  applyLines: (repo, request) => invoke("apply_lines", { repo, request }),
+  commit: (repo, message, amend) => invoke("commit", { repo, message, amend }),
+  headMessage: (repo) => invoke("head_message", { repo }),
+  ignorePattern: (repo, pattern) => invoke("ignore_pattern", { repo, pattern }),
+  openFile: (repo, path) => invoke("open_file", { repo, path }),
+
+  cloneRepo: (request, operationId, onProgress) =>
+    invoke("clone_repo", { request, operationId, onProgress: channel<Progress>(onProgress) }),
+  cancelOperation: (operationId) => invoke("cancel_operation", { operationId }),
+
+  fetch: (repo, request, quiet, operationId, onProgress) =>
+    invoke("fetch", {
+      repo,
+      request,
+      quiet,
+      operationId,
+      onProgress: channel<Progress>(onProgress),
+    }),
+  pull: (repo, mode, operationId, onProgress) =>
+    invoke("pull", { repo, mode, operationId, onProgress: channel<Progress>(onProgress) }),
+  push: (repo, request, operationId, onProgress) =>
+    invoke("push", { repo, request, operationId, onProgress: channel<Progress>(onProgress) }),
+  addRemote: (repo, name, url) => invoke("add_remote", { repo, name, url }),
+  setRemoteUrl: (repo, name, url, push) => invoke("set_remote_url", { repo, name, url, push }),
+  renameRemote: (repo, name, newName) => invoke("rename_remote", { repo, name, newName }),
+  removeRemote: (repo, name) => invoke("remove_remote", { repo, name }),
+
+  createBranch: (repo, name, start, checkout) =>
+    invoke("create_branch", { repo, name, start, checkout }),
+  checkout: (repo, request) => invoke("checkout", { repo, request }),
+  renameBranch: (repo, name, newName) => invoke("rename_branch", { repo, name, newName }),
+  deleteBranch: (repo, name, force) => invoke("delete_branch", { repo, name, force }),
+  deleteRemoteBranch: (repo, remote, branch, operationId, onProgress) =>
+    invoke("delete_remote_branch", {
+      repo,
+      remote,
+      branch,
+      operationId,
+      onProgress: channel<Progress>(onProgress),
+    }),
+  setUpstream: (repo, branch, upstream) => invoke("set_upstream", { repo, branch, upstream }),
+  createTag: (repo, name, target, message) => invoke("create_tag", { repo, name, target, message }),
+  deleteTag: (repo, name) => invoke("delete_tag", { repo, name }),
+  pushTag: (repo, remote, name, operationId, onProgress) =>
+    invoke("push_tag", {
+      repo,
+      remote,
+      name,
+      operationId,
+      onProgress: channel<Progress>(onProgress),
+    }),
+  stashSave: (repo, request) => invoke("stash_save", { repo, request }),
+  stashApply: (repo, index, pop) => invoke("stash_apply", { repo, index, pop }),
+  stashDrop: (repo, index) => invoke("stash_drop", { repo, index }),
+  merge: (repo, rev, ff) => invoke("merge", { repo, rev, ff }),
+  rebase: (repo, onto) => invoke("rebase", { repo, onto }),
+  cherryPick: (repo, oid) => invoke("cherry_pick", { repo, oid }),
+  revert: (repo, oid) => invoke("revert", { repo, oid }),
+  reset: (repo, oid, mode) => invoke("reset", { repo, oid, mode }),
+  continueOperation: (repo) => invoke("continue_operation", { repo }),
+  skipOperation: (repo) => invoke("skip_operation", { repo }),
+  abortOperation: (repo) => invoke("abort_operation", { repo }),
+  rebaseTodo: (repo, base) => invoke("rebase_todo", { repo, base }),
+  isRebaseBase: (repo, oid) => invoke("is_rebase_base", { repo, oid }),
+  rebaseInteractive: (repo, base, plan) => invoke("rebase_interactive", { repo, base, plan }),
+  resolveWith: (repo, paths, side) => invoke("resolve_with", { repo, paths, side }),
+  markResolved: (repo, paths) => invoke("mark_resolved", { repo, paths }),
+  mergeTool: (repo, path) => invoke("merge_tool", { repo, path }),
+  diffTool: (repo, request) => invoke("diff_tool", { repo, request }),
+  conflictFile: (repo, path) => invoke("conflict_file", { repo, path }),
+  resolveBlock: (repo, path, index, resolution, fingerprint) =>
+    invoke("resolve_block", { repo, path, index, resolution, fingerprint }),
+
+  flowState: (repo) => invoke("flow_state", { repo }),
+  flowInit: (repo, config) => invoke("flow_init", { repo, config }),
+  flowStart: (repo, kind, name) => invoke("flow_start", { repo, kind, name }),
+  flowFinish: (repo, request) => invoke("flow_finish", { repo, request }),
+
+  onAskpassPrompt: (handler) => listen<AskpassPrompt>("askpass-prompt", (e) => handler(e.payload)),
+  onAskpassClosed: (handler) => listen<number>("askpass-closed", (e) => handler(e.payload)),
+  askpassRespond: (id, answer) => invoke("askpass_respond", { id, answer }),
+
+  pickFolder: async (title, defaultPath) => {
+    const picked = await open({ directory: true, multiple: false, title, defaultPath });
+    return typeof picked === "string" ? picked : null;
+  },
+  revealInFileManager: (path) => revealItemInDir(path),
+  homeDir: () => homeDir(),
+  onFolderDrop: ({ over, drop }) =>
+    getCurrentWebview().onDragDropEvent((e) => {
+      const p = e.payload;
+      if (p.type === "enter" || p.type === "over") over(true);
+      else if (p.type === "leave") over(false);
+      else if (p.type === "drop") {
+        over(false);
+        drop(p.paths);
+      }
+    }),
+
+  window: {
+    show: () => appWindow.show(),
+    minimize: () => appWindow.minimize(),
+    toggleMaximize: () => appWindow.toggleMaximize(),
+    close: () => appWindow.close(),
+    isMaximized: () => appWindow.isMaximized(),
+    onResized: (handler) => appWindow.onResized(() => handler()),
+  },
+};

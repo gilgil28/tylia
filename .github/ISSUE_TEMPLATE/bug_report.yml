@@ -1,0 +1,61 @@
+name: Bug report
+description: Something in Tylia does not work as expected.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please search existing issues first. For security problems, follow the [security policy](https://github.com/tylia-dev/tylia/security/policy) instead.
+  - type: input
+    id: os
+    attributes:
+      label: Operating system and version
+      placeholder: e.g. CachyOS (KDE, Wayland), Windows 11 24H2, macOS 15.4
+    validations:
+      required: true
+  - type: input
+    id: tylia-version
+    attributes:
+      label: Tylia version or commit
+      description: From the About dialog, or `git rev-parse --short HEAD` if built from source.
+      placeholder: e.g. 0.1.0 or a1b2c3d
+    validations:
+      required: true
+  - type: input
+    id: git-version
+    attributes:
+      label: Git version
+      description: Output of `git --version`.
+      placeholder: e.g. git version 2.51.0
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open a repository with ...
+        2. Click ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Include the error message and the "Details" output if one was shown.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and screenshots
+      description: Paste logs as text. Drag images in to attach screenshots. Remove any credentials, tokens or private paths first.
+    validations:
+      required: false

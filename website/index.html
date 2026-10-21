@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>Tylia: a fast, clear Git client</title>
+    <meta
+      name="description"
+      content="Tylia is a free, open-source desktop Git client for Linux, Windows and macOS: a readable commit graph, staging down to a single line, and no telemetry."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="https://tylia.dev/" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/icon-256.png" />
+    <link
+      rel="preload"
+      href="assets/fonts/inter-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tylia" />
+    <meta property="og:url" content="https://tylia.dev/" />
+    <meta property="og:title" content="Tylia: a fast, clear Git client" />
+    <meta
+      property="og:description"
+      content="A free, open-source desktop Git client for Linux, Windows and macOS. A readable commit graph, staging down to a single line, and no telemetry."
+    />
+    <meta property="og:image" content="https://tylia.dev/assets/history-dark.png" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="800" />
+    <meta
+      property="og:image:alt"
+      content="Tylia's history view: the commit graph, a commit's details and its diff"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script src="assets/os.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Icons: Lucide (ISC), drawn once and referenced with <use>. -->
+    <svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
+      <symbol id="i-graph" viewBox="0 0 24 24">
+        <circle cx="5" cy="6" r="3" />
+        <path d="M5 9v6" />
+        <circle cx="5" cy="18" r="3" />
+        <path d="M12 3v18" />
+        <circle cx="19" cy="6" r="3" />
+        <path d="M16 15.7A9 9 0 0 0 19 9" />
+      </symbol>
+      <symbol id="i-lines" viewBox="0 0 24 24">
+        <path d="M13 5h8" />
+        <path d="M13 12h8" />
+        <path d="M13 19h8" />
+        <path d="m3 17 2 2 4-4" />
+        <path d="m3 7 2 2 4-4" />
+      </symbol>
+      <symbol id="i-merge" viewBox="0 0 24 24">
+        <circle cx="18" cy="18" r="3" />
+        <circle cx="6" cy="6" r="3" />
+        <path d="M6 21V9a9 9 0 0 0 9 9" />
+      </symbol>
+      <symbol id="i-reorder" viewBox="0 0 24 24">
+        <path d="m21 16-4 4-4-4" />
+        <path d="M17 20V4" />
+        <path d="m3 8 4-4 4 4" />
+        <path d="M7 4v16" />
+      </symbol>
+      <symbol id="i-command" viewBox="0 0 24 24">
+        <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
+      </symbol>
+      <symbol id="i-cloud" viewBox="0 0 24 24">
+        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+      </symbol>
+      <symbol id="i-file-clock" viewBox="0 0 24 24">
+        <path
+          d="M16 22h2a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v2.85"
+        />
+        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+        <path d="M8 14v2.2l1.6 1" />
+        <circle cx="8" cy="16" r="6" />
+      </symbol>
+      <symbol id="i-sun-moon" viewBox="0 0 24 24">
+        <path d="M12 2v2" />
+        <path
+          d="M14.837 16.385a6 6 0 1 1-7.223-7.222c.624-.147.97.66.715 1.248a4 4 0 0 0 5.26 5.259c.589-.255 1.396.09 1.248.715"
+        />
+        <path d="M16 12a4 4 0 0 0-4-4" />
+        <path d="m19 5-1.256 1.256" />
+        <path d="M20 12h2" />
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path
+          d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+        />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="i-branch" viewBox="0 0 24 24">
+        <path d="M15 6a9 9 0 0 0-9 9V3" />
+        <circle cx="18" cy="6" r="3" />
+        <circle cx="6" cy="18" r="3" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24">
+        <path d="M12 15V3" />
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <path d="m7 10 5 5 5-5" />
+      </symbol>
+      <symbol id="i-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 16v-4" />
+        <path d="M12 8h.01" />
+      </symbol>
+      <symbol id="i-logo" viewBox="256 208 512 640">
+        <path class="lane-2" d="M364 272 V372 C364 470 540 468 540 566" />
+        <path
+          class="lane-1"
+          d="M664 272 V420 C664 520 540 500 540 600 V640 C540 730 420 720 420 790"
+        />
+        <circle class="lane-2" cx="364" cy="272" r="62" />
+        <circle class="lane-1" cx="664" cy="272" r="62" />
+        <circle class="lane-1" cx="420" cy="790" r="62" />
+      </symbol>
+    </svg>
+
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="./" aria-label="Tylia home">
+          <svg class="logo" aria-hidden="true" focusable="false"><use href="#i-logo" /></svg>
+          <span>Tylia</span>
+        </a>
+        <nav class="site-nav" aria-label="Main">
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="https://github.com/tylia-dev/tylia">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="wrap">
+          <svg class="logo hero-mark" aria-hidden="true" focusable="false">
+            <use href="#i-logo" />
+          </svg>
+          <h1 id="hero-title">Git, faster and clearer than the command line</h1>
+          <p class="lead">
+            Tylia is a desktop Git client for Linux, Windows and macOS. A commit graph you can read
+            at a glance, staging down to a single line, and nothing in your way.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" id="hero-download" href="#download">
+              <svg class="icon" aria-hidden="true" focusable="false">
+                <use href="#i-download" />
+              </svg>
+              <span>Download</span>
+            </a>
+            <a class="btn btn-secondary" href="#download">All downloads</a>
+          </div>
+          <p class="hero-meta">
+            <!-- if:release --><span>Version __VERSION__</span><!-- /if:release -->
+            <!-- if:no-release --><span>Pre-release</span><!-- /if:no-release -->
+            <span>Free and open source</span>
+          </p>
+          <p class="say">
+            Tylia is pronounced <strong>TEE-lee-a</strong>, a respelling of <em>Tilia</em>, the
+            linden tree.
+          </p>
+
+          <figure class="hero-shot">
+            <div class="window">
+              <picture>
+                <source
+                  media="(prefers-color-scheme: dark)"
+                  type="image/webp"
+                  srcset="assets/history-dark.webp"
+                />
+                <source media="(prefers-color-scheme: dark)" srcset="assets/history-dark.png" />
+                <source type="image/webp" srcset="assets/history-light.webp" />
+                <img
+                  src="assets/history-light.png"
+                  width="1280"
+                  height="800"
+                  alt="Tylia's history view: branches in the sidebar, the commit graph with branch labels, and the selected commit's details and diff."
+                  fetchpriority="high"
+                />
+              </picture>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="band" id="features" aria-labelledby="features-title">
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="features-title">Made for everyday Git</h2>
+            <p>
+              Tylia runs the Git you already have, so hooks, credential helpers, commit signing and
+              your config behave exactly as they do in a terminal.
+            </p>
+          </div>
+          <ul class="features">
+            <li class="feature">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-graph" /></svg>
+              <h3>A graph you can read</h3>
+              <p>
+                Stable lane colours, clear merges and branch labels. History streams in, so large
+                repositories open quickly.
+              </p>
+            </li>
+            <li class="feature">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-lines" /></svg>
+              <h3>Stage single lines</h3>
+              <p>
+                Stage, unstage or discard a whole file, one hunk, or just the lines you select in
+                the diff.
+              </p>
+            </li>
+            <li class="feature">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-merge" /></svg>
+              <h3>Conflicts, block by block</h3>
+              <p>
+                Pick ours, theirs or both for each conflicting block, then continue, skip or abort
+                the merge or rebase.
+              </p>
+            </li>
+            <li class="feature">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-reorder" /></svg>
+              <h3>Interactive rebase</h3>
+              <p>
+                Drag commits to reorder; pick, reword, edit, squash, fixup or drop, with a preview
+                of the result.
+              </p>
+            </li>
+            <li class="feature">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-command" /></svg>
+              <h3>Keyboard first</h3>
+              <p>
+                Every action is in the command palette
+                (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>K</kbd>), and every shortcut can be rebound.
+              </p>
+            </li>
+            <li class="feature">
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-cloud" /></svg>
+              <h3>Fetch, pull and push</h3>
+              <p>
+                With progress and cancel. When Git needs a password, token or SSH passphrase, Tylia
+                asks in a dialog.
+              </p>
+            </li>
+            <li class="feature">
+              <svg class="icon" aria-hidden="true" focusable="false">
+                <use href="#i-file-clock" />
+              </svg>
+              <h3>Blame, history and more</h3>
+              <p>
+                Blame and file history that follow renames. git-flow helpers. Submodules, worktrees
+                and an LFS indicator.
+              </p>
+            </li>
+            <li class="feature">
+              <svg class="icon" aria-hidden="true" focusable="false">
+                <use href="#i-sun-moon" />
+              </svg>
+              <h3>Light, dark, accessible</h3>
+              <p>
+                Both themes designed together. Screen-reader labels, a sensible focus order, reduced
+                motion and 200% zoom.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="showcase" aria-labelledby="showcase-title">
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="showcase-title">Commit exactly what you mean</h2>
+            <p>
+              Unstaged and staged files side by side, the diff in the middle, and a commit message
+              that follows the 50/72 convention. Amend the last commit, or push right after
+              committing.
+            </p>
+          </div>
+          <figure class="window">
+            <picture>
+              <source
+                media="(prefers-color-scheme: dark)"
+                type="image/webp"
+                srcset="assets/changes-dark.webp"
+              />
+              <source media="(prefers-color-scheme: dark)" srcset="assets/changes-dark.png" />
+              <source type="image/webp" srcset="assets/changes-light.webp" />
+              <img
+                src="assets/changes-light.png"
+                width="1280"
+                height="800"
+                alt="Tylia's changes view: unstaged and staged file lists, the selected file's diff and the commit message box."
+                loading="lazy"
+              />
+            </picture>
+          </figure>
+        </div>
+      </section>
+
+      <section class="band" aria-label="Principles">
+        <div class="wrap principles">
+          <div class="principle">
+            <h2>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-shield" /></svg>
+              Private by default
+            </h2>
+            <ul class="checks">
+              <li>
+                <svg class="icon icon-small" aria-hidden="true" focusable="false">
+                  <use href="#i-check" />
+                </svg>
+                <span>No telemetry, no analytics, no account.</span>
+              </li>
+              <li>
+                <svg class="icon icon-small" aria-hidden="true" focusable="false">
+                  <use href="#i-check" />
+                </svg>
+                <span
+                  >Network access only for Git operations you start, such as fetch, pull, push and
+                  clone.</span
+                >
+              </li>
+              <li>
+                <svg class="icon icon-small" aria-hidden="true" focusable="false">
+                  <use href="#i-check" />
+                </svg>
+                <span>The update check is opt-in and off by default. So are avatars.</span>
+              </li>
+              <li>
+                <svg class="icon icon-small" aria-hidden="true" focusable="false">
+                  <use href="#i-check" />
+                </svg>
+                <span>This website makes no third-party requests and sets no cookies.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="principle">
+            <h2>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-branch" /></svg>
+              Open source
+            </h2>
+            <ul class="checks">
+              <li>
+                <svg class="icon icon-small" aria-hidden="true" focusable="false">
+                  <use href="#i-check" />
+                </svg>
+                <span>Licensed under MIT or Apache-2.0, at your option.</span>
+              </li>
+              <li>
+                <svg class="icon icon-small" aria-hidden="true" focusable="false">
+                  <use href="#i-check" />
+                </svg>
+                <span>Built with Rust and Tauri, on each platform's own web view.</span>
+              </li>
+              <li>
+                <svg class="icon icon-small" aria-hidden="true" focusable="false">
+                  <use href="#i-check" />
+                </svg>
+                <span>Destructive actions always ask first and say what will be lost.</span>
+              </li>
+              <li>
+                <svg class="icon icon-small" aria-hidden="true" focusable="false">
+                  <use href="#i-check" />
+                </svg>
+                <span
+                  >Issues, ideas and contributions are welcome
+                  <a href="https://github.com/tylia-dev/tylia">on GitHub</a>.</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="download" aria-labelledby="download-title">
+        <div class="wrap">
+          <div class="section-head">
+            <h2 id="download-title">Download</h2>
+            <p>
+              <!-- if:release -->Version __VERSION__ for 64-bit systems.<!-- /if:release -->
+              <!-- if:no-release -->Packages for 64-bit systems.<!-- /if:no-release -->
+              Requires Git 2.40 or newer.
+            </p>
+          </div>
+
+          <!-- if:no-release -->
+          <p class="notice" role="note">
+            <svg class="icon icon-small" aria-hidden="true" focusable="false">
+              <use href="#i-info" />
+            </svg>
+            <span>
+              Tylia is in pre-alpha and has no release yet. The links below go to the releases page
+              on GitHub, where packages appear once the first version is out.
+            </span>
+          </p>
+          <!-- /if:no-release -->
+
+          <ul class="platforms">
+            <li class="platform" data-os="windows" data-label="Download for Windows">
+              <div class="platform-head">
+                <h3>Windows</h3>
+                <span class="badge" hidden>Your system</span>
+              </div>
+              <p class="platform-sub">Windows 10 and 11, x64</p>
+              <a
+                class="btn btn-primary btn-block"
+                data-primary
+                href="https://github.com/tylia-dev/tylia/releases/latest/download/Tylia___VERSION___x64-setup.exe"
+              >
+                <svg class="icon" aria-hidden="true" focusable="false">
+                  <use href="#i-download" />
+                </svg>
+                <span>Installer (.exe)</span>
+              </a>
+              <ul class="formats">
+                <li>
+                  <a
+                    href="https://github.com/tylia-dev/tylia/releases/latest/download/Tylia___VERSION___x64_en-US.msi"
+                    >MSI package (.msi)</a
+                  >
+                  <span>for managed installs</span>
+                </li>
+              </ul>
+            </li>
+
+            <li class="platform" data-os="macos" data-label="Download for macOS">
+              <div class="platform-head">
+                <h3>macOS</h3>
+                <span class="badge" hidden>Your system</span>
+              </div>
+              <p class="platform-sub">macOS 12 or later, Apple silicon and Intel</p>
+              <a
+                class="btn btn-primary btn-block"
+                data-primary
+                href="https://github.com/tylia-dev/tylia/releases/latest/download/Tylia___VERSION___universal.dmg"
+              >
+                <svg class="icon" aria-hidden="true" focusable="false">
+                  <use href="#i-download" />
+                </svg>
+                <span>Disk image (.dmg)</span>
+              </a>
+              <ul class="formats">
+                <li>
+                  <span>One universal app for both processor types.</span>
+                </li>
+              </ul>
+            </li>
+
+            <li class="platform" data-os="linux" data-label="Download for Linux">
+              <div class="platform-head">
+                <h3>Linux</h3>
+                <span class="badge" hidden>Your system</span>
+              </div>
+              <p class="platform-sub">x86-64</p>
+              <a
+                class="btn btn-primary btn-block"
+                data-primary
+                href="https://github.com/tylia-dev/tylia/releases/latest/download/Tylia___VERSION___amd64.AppImage"
+              >
+                <svg class="icon" aria-hidden="true" focusable="false">
+                  <use href="#i-download" />
+                </svg>
+                <span>AppImage</span>
+              </a>
+              <ul class="formats">
+                <li>
+                  <a
+                    href="https://github.com/tylia-dev/tylia/releases/latest/download/Tylia___VERSION___amd64.deb"
+                    >Debian package (.deb)</a
+                  >
+                  <span>Debian, Ubuntu</span>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/tylia-dev/tylia/releases/latest/download/Tylia-__VERSION__-1.x86_64.rpm"
+                    >RPM package (.rpm)</a
+                  >
+                  <span>Fedora, openSUSE</span>
+                </li>
+                <li>
+                  <span class="format-name">Arch Linux (AUR): tylia-bin</span>
+                  <code>yay -S tylia-bin</code>
+                </li>
+              </ul>
+              <p class="platform-tip">
+                Make the AppImage executable first: <code>chmod +x Tylia_*.AppImage</code>
+              </p>
+            </li>
+          </ul>
+
+          <div class="download-notes">
+            <div>
+              <h3>Builds are not code-signed yet</h3>
+              <p>
+                Until signing certificates are in place, your system will warn you the first time
+                you open Tylia.
+              </p>
+              <dl>
+                <div>
+                  <dt>Windows</dt>
+                  <dd>
+                    SmartScreen may say “Windows protected your PC”. Choose More info, then Run
+                    anyway.
+                  </dd>
+                </div>
+                <div>
+                  <dt>macOS</dt>
+                  <dd>
+                    The first time, right-click (or Control-click) Tylia in Applications and choose
+                    Open. Or try to open it once, then go to System Settings › Privacy &amp;
+                    Security and choose Open Anyway.
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <div>
+              <h3>Requirements</h3>
+              <p>Git 2.40 or newer, installed and on your PATH.</p>
+              <p>
+                Release notes and older versions are on the
+                <a href="https://github.com/tylia-dev/tylia/releases">releases page</a>. You can
+                also
+                <a href="https://github.com/tylia-dev/tylia#build-from-source">build from source</a
+                >.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <a class="brand" href="./" aria-label="Tylia home">
+          <svg class="logo" aria-hidden="true" focusable="false"><use href="#i-logo" /></svg>
+          <span>Tylia</span>
+        </a>
+        <ul class="footer-links" aria-label="Project">
+          <li><a href="https://github.com/tylia-dev/tylia">GitHub</a></li>
+          <li><a href="https://github.com/tylia-dev/tylia#license">MIT or Apache-2.0</a></li>
+          <li><a href="https://github.com/tylia-dev/tylia#privacy">No telemetry</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

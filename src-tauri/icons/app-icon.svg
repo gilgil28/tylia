@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Tylia mark: a lowercase "y" drawn as two graph lanes joining. Source for `pnpm tauri icon`. -->
+  <rect x="64" y="64" width="896" height="896" rx="200" fill="#14171C"/>
+  <rect x="64.5" y="64.5" width="895" height="895" rx="199.5" fill="none" stroke="#FFFFFF" stroke-opacity="0.08"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="64">
+    <path d="M364 272 V372 C364 470 540 468 540 566" stroke="#3FB97F"/>
+    <path d="M664 272 V420 C664 520 540 500 540 600 V640 C540 730 420 720 420 790" stroke="#5E8BFF"/>
+  </g>
+  <g stroke="#14171C" stroke-width="20">
+    <circle cx="364" cy="272" r="62" fill="#3FB97F"/>
+    <circle cx="664" cy="272" r="62" fill="#5E8BFF"/>
+    <circle cx="420" cy="790" r="62" fill="#5E8BFF"/>
+  </g>
+</svg>

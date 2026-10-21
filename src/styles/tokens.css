@@ -1,0 +1,150 @@
+/*
+ * Design tokens — the only place colours and type sizes are defined (docs/DESIGN.md §4).
+ * Themes are token swaps on <html data-theme="light|dark">, set by public/boot.js before
+ * the first paint. Run `pnpm contrast` after changing any colour here.
+ */
+
+:root {
+  /* Type (§4.4). --ui-font-size is the user-scalable base (Settings: 12/13/14/15). */
+  --ui-font-size: 13px;
+  --ui-scale: calc(var(--ui-font-size) / 13px);
+  --font-ui: "Inter Variable", "Inter", system-ui, sans-serif;
+  --font-code: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  --text-caption: calc(11px * var(--ui-scale));
+  --text-small: calc(12px * var(--ui-scale));
+  --text-base: var(--ui-font-size);
+  --text-title: calc(14px * var(--ui-scale));
+  --text-dialog-title: calc(16px * var(--ui-scale));
+  --text-heading: calc(20px * var(--ui-scale));
+  --text-diff: calc(12.5px * var(--ui-scale));
+
+  /* Shape (§4.5) */
+  --radius-badge: 4px;
+  --radius-control: 6px;
+  --radius-menu: 8px;
+  --radius-dialog: 12px;
+
+  /* Sizes (§4.5, §4.7) */
+  --titlebar-h: 38px;
+  --toolbar-h: 44px;
+  --row-h: 30px;
+  --badge-h: 18px;
+  --scrollbar-size: 8px;
+  --tree-indent: 12px;
+
+  /* Motion (§4.6) */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 110ms;
+  --dur-panel: 160ms;
+}
+
+:root[data-density="compact"] {
+  --row-h: 24px;
+}
+
+/* Light */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg-app: #ffffff;
+  --bg-panel: #eff1f4;
+  /* Tab strip and its active tab: the strip sits a step below the panels; the active tab is
+     lifted off it (white here, a raised surface in dark). */
+  --bg-titlebar: #dde1e7;
+  --bg-tab-active: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-input: #ffffff;
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --bg-active: rgba(0, 0, 0, 0.09);
+  --bg-selected: rgba(61, 107, 245, 0.13);
+  --bg-selected-strong: rgba(61, 107, 245, 0.2);
+  --border-subtle: rgba(0, 0, 0, 0.09);
+  --border: rgba(0, 0, 0, 0.14);
+  --border-strong: rgba(0, 0, 0, 0.24);
+  --text: #1c2024;
+  --text-secondary: #5b6370;
+  --text-muted: #5f6776;
+  --accent: #3d6bf5;
+  --accent-fill: var(--accent);
+  --accent-hover: #3060ea;
+  --accent-text: #ffffff;
+  --focus-ring: 0 0 0 2px rgba(61, 107, 245, 0.5);
+  --success: #157a4b;
+  --danger: #c0283b;
+  --danger-fill: var(--danger);
+  --danger-hover: #c92f42;
+  --warning: #8c5c10;
+  --info: #126d94;
+  --added: var(--success);
+  --removed: var(--danger);
+  --modified: var(--warning);
+  --renamed: var(--info);
+  --diff-add-bg: rgba(31, 157, 99, 0.09);
+  --diff-add-word: rgba(31, 157, 99, 0.24);
+  --diff-del-bg: rgba(217, 54, 74, 0.08);
+  --diff-del-word: rgba(217, 54, 74, 0.22);
+  --diff-hunk-bg: rgba(61, 107, 245, 0.07);
+  --shadow-popover: 0 8px 24px rgba(16, 24, 40, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  --overlay: rgba(16, 24, 40, 0.32);
+  --titlebar-close-hover: #c42b1c;
+
+  /* Graph lanes (§4.3) */
+  --lane-1: #3d6bf5;
+  --lane-2: #1f9d63;
+  --lane-3: #b7791f;
+  --lane-4: #c93d60;
+  --lane-5: #7653d9;
+  --lane-6: #138a96;
+  --lane-7: #c9542a;
+  --lane-8: #5e7088;
+}
+
+/* Dark */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-app: #0f1115;
+  --bg-panel: #181b21;
+  --bg-titlebar: #0b0d10;
+  --bg-tab-active: #20242c;
+  --bg-elevated: #20242c;
+  --bg-input: #0b0d10;
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-active: rgba(255, 255, 255, 0.1);
+  --bg-selected: rgba(94, 139, 255, 0.2);
+  --bg-selected-strong: rgba(94, 139, 255, 0.3);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --text: #e6e8ec;
+  --text-secondary: #a2a9b5;
+  --text-muted: #8c94a1;
+  --accent: #5e8bff;
+  /* Solid fills under white text use deeper shades: #5e8bff / #f0616d give only ~3.2:1. */
+  --accent-fill: #3d6bf5;
+  --accent-hover: #3462ee;
+  --accent-text: #ffffff;
+  --focus-ring: 0 0 0 2px rgba(94, 139, 255, 0.55);
+  --success: #3fb97f;
+  --danger: #f0616d;
+  --danger-fill: #d9364a;
+  --danger-hover: #cc2f43;
+  --warning: #e8b04b;
+  --info: #4fb3d9;
+  --diff-add-bg: rgba(63, 185, 127, 0.1);
+  --diff-add-word: rgba(63, 185, 127, 0.28);
+  --diff-del-bg: rgba(240, 97, 109, 0.1);
+  --diff-del-word: rgba(240, 97, 109, 0.28);
+  --diff-hunk-bg: rgba(94, 139, 255, 0.08);
+  --shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --overlay: rgba(0, 0, 0, 0.5);
+  --titlebar-close-hover: #c42b1c;
+
+  --lane-1: #5e8bff;
+  --lane-2: #3fb97f;
+  --lane-3: #e8a33d;
+  --lane-4: #e0607e;
+  --lane-5: #9b7bf0;
+  --lane-6: #2bb3c0;
+  --lane-7: #f07a4a;
+  --lane-8: #8fa2b8;
+}

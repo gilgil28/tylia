@@ -1,0 +1,5531 @@
+{
+  "commits": {
+    "00c54c92a0b11bdc855c78a77a1665c0cb3cbd18": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780605000
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780605000
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "00c54c92a0b11bdc855c78a77a1665c0cb3cbd18",
+      "parents": ["71bd22723c3aaf6b9e1f1f27467aa09826245371"],
+      "subject": "Tidy up error messages (33)"
+    },
+    "097a8517b0f16f9535d57b92d2a12670b82856ee": {
+      "author": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780473600
+      },
+      "body": "",
+      "committer": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780473600
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "097a8517b0f16f9535d57b92d2a12670b82856ee",
+      "parents": ["6fe3a15454a385b8808b53f676baf4867c30f16b"],
+      "subject": "Tidy up error messages (9)"
+    },
+    "164777a96e274f75b79342510dec114d31cefb16": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780576200
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780576200
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "164777a96e274f75b79342510dec114d31cefb16",
+      "parents": ["9f5d2879acc590d341f3e29023f1598e5a8c2140"],
+      "subject": "Tidy up error messages (25)"
+    },
+    "199ef748bd9962d1edc78843bc265012c4b776ff": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780687800
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780687800
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "199ef748bd9962d1edc78843bc265012c4b776ff",
+      "parents": ["66c71f77d128096827769f0e29aa68e433c1bea0"],
+      "subject": "Parse commit trailers"
+    },
+    "19f5f51d49b731da9354f8713c90a18f15fd1d10": {
+      "author": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780509600
+      },
+      "body": "",
+      "committer": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780509600
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "19f5f51d49b731da9354f8713c90a18f15fd1d10",
+      "parents": ["86a7129c51b8d7a3c58d49b4a57dc0b205da4713"],
+      "subject": "Keep lane colours stable (15)"
+    },
+    "1b62995431c5dc0b14dd0244dfce2f0036501d28": {
+      "author": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780632000
+      },
+      "body": "",
+      "committer": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780632000
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "1b62995431c5dc0b14dd0244dfce2f0036501d28",
+      "parents": ["5075d61d759d890da4eb1a24187f9b573b7e3bc3"],
+      "subject": "Cache parsed refs (36)"
+    },
+    "1e95f5658d177cf1d38efe49cb76c6a9b86859d9": {
+      "author": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780515000
+      },
+      "body": "",
+      "committer": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780515000
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "1e95f5658d177cf1d38efe49cb76c6a9b86859d9",
+      "parents": ["19f5f51d49b731da9354f8713c90a18f15fd1d10"],
+      "subject": "Refactor record parsing (16)"
+    },
+    "2c915aa8f88107012c483d4853ace7fb85304eca": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780560000
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780560000
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "2c915aa8f88107012c483d4853ace7fb85304eca",
+      "parents": ["7646ee8b7d0cbbba0f08a5c3ac6102ae58a1f053"],
+      "subject": "Show hook output when commit fails (22)"
+    },
+    "3bda968beb581b7879c08859f14d4dd397f3708c": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780594200
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780594200
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "3bda968beb581b7879c08859f14d4dd397f3708c",
+      "parents": ["e163d2911ad579cd836803e6c79d8afe2dc78ffa"],
+      "subject": "Handle unborn branches (29)"
+    },
+    "4a10923ae7555e93e56098b222224a0bf12b50af": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780660800
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780660800
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "4a10923ae7555e93e56098b222224a0bf12b50af",
+      "parents": ["bac1b91c0ee84e1ba35e100632be5b622f0b9d15"],
+      "subject": "Experiment with async status"
+    },
+    "4f55441d902c7f01b07f56ee474c7a3c5e7c596b": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780561800
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780561800
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "4f55441d902c7f01b07f56ee474c7a3c5e7c596b",
+      "parents": ["2c915aa8f88107012c483d4853ace7fb85304eca"],
+      "subject": "Keep lane colours stable (23)"
+    },
+    "5075d61d759d890da4eb1a24187f9b573b7e3bc3": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780623000
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780623000
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "5075d61d759d890da4eb1a24187f9b573b7e3bc3",
+      "parents": ["897988284513843ae3f30e878d397e72357d52e1"],
+      "subject": "Rename internal helper (35)"
+    },
+    "55cac314d537408e967c770f8e773aa32c65a591": {
+      "author": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780669800
+      },
+      "body": "",
+      "committer": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780669800
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/patch.rs",
+          "status": "added"
+        }
+      ],
+      "oid": "55cac314d537408e967c770f8e773aa32c65a591",
+      "parents": ["bac1b91c0ee84e1ba35e100632be5b622f0b9d15"],
+      "subject": "Build partial patches"
+    },
+    "5c377435dab2c986525a4e9c927c39a86dfafcc1": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780480800
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780480800
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "5c377435dab2c986525a4e9c927c39a86dfafcc1",
+      "parents": ["bc8f59a59d74895c6009efa08081dea973bf5115"],
+      "subject": "Rename internal helper (11)"
+    },
+    "5d8fb0913289f69841d8e57f966375676c60e9df": {
+      "author": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780601400
+      },
+      "body": "",
+      "committer": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780601400
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "5d8fb0913289f69841d8e57f966375676c60e9df",
+      "parents": ["bb449dcd8f73ac828d1cb6b50f99c563b7a19659"],
+      "subject": "Keep lane colours stable (31)"
+    },
+    "64d70d5905a924cf056003ce128027b9a0bf5978": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780633800
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780633800
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "64d70d5905a924cf056003ce128027b9a0bf5978",
+      "parents": ["1b62995431c5dc0b14dd0244dfce2f0036501d28"],
+      "subject": "Handle unborn branches (37)"
+    },
+    "663c62d6024a30dce04d30bf3e4094fb21566322": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780529400
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780529400
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "663c62d6024a30dce04d30bf3e4094fb21566322",
+      "parents": ["a39e128adee33dc5a2c9a95b697dd63f1c5ae581"],
+      "subject": "Add a test for detached HEAD (18)"
+    },
+    "66c71f77d128096827769f0e29aa68e433c1bea0": {
+      "author": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780678800
+      },
+      "body": "",
+      "committer": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780678800
+      },
+      "files": [
+        {
+          "additions": 7,
+          "deletions": 1,
+          "oldPath": null,
+          "path": "src/graph/render.ts",
+          "status": "modified"
+        }
+      ],
+      "oid": "66c71f77d128096827769f0e29aa68e433c1bea0",
+      "parents": ["bac1b91c0ee84e1ba35e100632be5b622f0b9d15"],
+      "subject": "Make edge width configurable"
+    },
+    "6cc60f445ea7323401582eb67ae2e51492e831f5": {
+      "author": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780641000
+      },
+      "body": "",
+      "committer": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780641000
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "6cc60f445ea7323401582eb67ae2e51492e831f5",
+      "parents": ["c57ac3f866f25c6a2f1e8827af8d983167f4042a"],
+      "subject": "Keep lane colours stable (39)"
+    },
+    "6fe3a15454a385b8808b53f676baf4867c30f16b": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780464600
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780464600
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "6fe3a15454a385b8808b53f676baf4867c30f16b",
+      "parents": ["262eee520898921a20add6b4ff278eb5641943d0"],
+      "subject": "Refactor record parsing (8)"
+    },
+    "71bd22723c3aaf6b9e1f1f27467aa09826245371": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780603200
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780603200
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "71bd22723c3aaf6b9e1f1f27467aa09826245371",
+      "parents": ["5d8fb0913289f69841d8e57f966375676c60e9df"],
+      "subject": "Refactor record parsing (32)"
+    },
+    "73f4a9d30781bd3d9649fe498ef8dbdc419b187d": {
+      "author": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780650000
+      },
+      "body": "",
+      "committer": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780650000
+      },
+      "files": [
+        {
+          "additions": 1,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "assets/logo.svg",
+          "status": "added"
+        }
+      ],
+      "oid": "73f4a9d30781bd3d9649fe498ef8dbdc419b187d",
+      "parents": ["6cc60f445ea7323401582eb67ae2e51492e831f5"],
+      "subject": "Add logo"
+    },
+    "7646ee8b7d0cbbba0f08a5c3ac6102ae58a1f053": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780551000
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780551000
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "7646ee8b7d0cbbba0f08a5c3ac6102ae58a1f053",
+      "parents": ["9a3f7d23c16423fc7dc873b730d4889dede3e656"],
+      "subject": "Handle unborn branches (21)"
+    },
+    "7a31b0438a3d6b3f51f4ea020effdf3920f56fe2": {
+      "author": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780581600
+      },
+      "body": "",
+      "committer": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780581600
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "7a31b0438a3d6b3f51f4ea020effdf3920f56fe2",
+      "parents": ["164777a96e274f75b79342510dec114d31cefb16"],
+      "subject": "Add a test for detached HEAD (26)"
+    },
+    "81201b4194a8e5e29a61258d2f453d4d8e381d3f": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780489800
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780489800
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "81201b4194a8e5e29a61258d2f453d4d8e381d3f",
+      "parents": ["5c377435dab2c986525a4e9c927c39a86dfafcc1"],
+      "subject": "Cache parsed refs (12)"
+    },
+    "86a7129c51b8d7a3c58d49b4a57dc0b205da4713": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780504200
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780504200
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "86a7129c51b8d7a3c58d49b4a57dc0b205da4713",
+      "parents": ["876c1965b57b311329a6c27798d980f1a6136051"],
+      "subject": "Show hook output when commit fails (14)"
+    },
+    "876c1965b57b311329a6c27798d980f1a6136051": {
+      "author": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780498800
+      },
+      "body": "",
+      "committer": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780498800
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "876c1965b57b311329a6c27798d980f1a6136051",
+      "parents": ["81201b4194a8e5e29a61258d2f453d4d8e381d3f"],
+      "subject": "Handle unborn branches (13)"
+    },
+    "897988284513843ae3f30e878d397e72357d52e1": {
+      "author": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780614000
+      },
+      "body": "",
+      "committer": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780614000
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "897988284513843ae3f30e878d397e72357d52e1",
+      "parents": ["00c54c92a0b11bdc855c78a77a1665c0cb3cbd18"],
+      "subject": "Add a test for detached HEAD (34)"
+    },
+    "956f2188320f47d8740b1f6d225b352d13209a6b": {
+      "author": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780590600
+      },
+      "body": "",
+      "committer": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780590600
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "956f2188320f47d8740b1f6d225b352d13209a6b",
+      "parents": ["7a31b0438a3d6b3f51f4ea020effdf3920f56fe2"],
+      "subject": "Rename internal helper (27)"
+    },
+    "9a3f7d23c16423fc7dc873b730d4889dede3e656": {
+      "author": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780540200
+      },
+      "body": "",
+      "committer": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780540200
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "9a3f7d23c16423fc7dc873b730d4889dede3e656",
+      "parents": ["af232f29f898f21c13c94af24b4ae30449df0d41"],
+      "subject": "Cache parsed refs (20)"
+    },
+    "9f5d2879acc590d341f3e29023f1598e5a8c2140": {
+      "author": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780570800
+      },
+      "body": "",
+      "committer": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780570800
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "9f5d2879acc590d341f3e29023f1598e5a8c2140",
+      "parents": ["4f55441d902c7f01b07f56ee474c7a3c5e7c596b"],
+      "subject": "Refactor record parsing (24)"
+    },
+    "a39e128adee33dc5a2c9a95b697dd63f1c5ae581": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780520400
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780520400
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "a39e128adee33dc5a2c9a95b697dd63f1c5ae581",
+      "parents": ["1e95f5658d177cf1d38efe49cb76c6a9b86859d9"],
+      "subject": "Tidy up error messages (17)"
+    },
+    "af232f29f898f21c13c94af24b4ae30449df0d41": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780538400
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780538400
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "af232f29f898f21c13c94af24b4ae30449df0d41",
+      "parents": ["663c62d6024a30dce04d30bf3e4094fb21566322"],
+      "subject": "Rename internal helper (19)"
+    },
+    "b87a9ea918102bbd6d69c1178cff7bc1ba64a7c7": {
+      "author": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780671600
+      },
+      "body": "",
+      "committer": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780671600
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/patch.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "b87a9ea918102bbd6d69c1178cff7bc1ba64a7c7",
+      "parents": ["55cac314d537408e967c770f8e773aa32c65a591"],
+      "subject": "Stage selected lines"
+    },
+    "bac1b91c0ee84e1ba35e100632be5b622f0b9d15": {
+      "author": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780655400
+      },
+      "body": "",
+      "committer": {
+        "email": "priya@example.org",
+        "name": "Priya Nair",
+        "time": 1780655400
+      },
+      "files": [
+        {
+          "additions": 1,
+          "deletions": 1,
+          "oldPath": null,
+          "path": "assets/logo.svg",
+          "status": "modified"
+        }
+      ],
+      "oid": "bac1b91c0ee84e1ba35e100632be5b622f0b9d15",
+      "parents": ["73f4a9d30781bd3d9649fe498ef8dbdc419b187d"],
+      "subject": "Use the new square logo"
+    },
+    "bb449dcd8f73ac828d1cb6b50f99c563b7a19659": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780596000
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780596000
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/parser.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "bb449dcd8f73ac828d1cb6b50f99c563b7a19659",
+      "parents": ["3bda968beb581b7879c08859f14d4dd397f3708c"],
+      "subject": "Show hook output when commit fails (30)"
+    },
+    "bc8f59a59d74895c6009efa08081dea973bf5115": {
+      "author": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780475400
+      },
+      "body": "",
+      "committer": {
+        "email": "ada@example.com",
+        "name": "Ada Moreno",
+        "time": 1780475400
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "bc8f59a59d74895c6009efa08081dea973bf5115",
+      "parents": ["097a8517b0f16f9535d57b92d2a12670b82856ee"],
+      "subject": "Add a test for detached HEAD (10)"
+    },
+    "c57ac3f866f25c6a2f1e8827af8d983167f4042a": {
+      "author": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780639200
+      },
+      "body": "",
+      "committer": {
+        "email": "lena@example.org",
+        "name": "Lena Fischer",
+        "time": 1780639200
+      },
+      "files": [
+        {
+          "additions": 2,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "docs/guide.md",
+          "status": "modified"
+        }
+      ],
+      "oid": "c57ac3f866f25c6a2f1e8827af8d983167f4042a",
+      "parents": ["64d70d5905a924cf056003ce128027b9a0bf5978"],
+      "subject": "Show hook output when commit fails (38)"
+    },
+    "e163d2911ad579cd836803e6c79d8afe2dc78ffa": {
+      "author": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780592400
+      },
+      "body": "",
+      "committer": {
+        "email": "kenji@example.com",
+        "name": "Kenji Sato",
+        "time": 1780592400
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/main.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "e163d2911ad579cd836803e6c79d8afe2dc78ffa",
+      "parents": ["956f2188320f47d8740b1f6d225b352d13209a6b"],
+      "subject": "Cache parsed refs (28)"
+    },
+    "e710cf9d8cbdff6bf20ee57a1ce59ad10471572e": {
+      "author": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780673400
+      },
+      "body": "",
+      "committer": {
+        "email": "sam@example.net",
+        "name": "Sam Okafor",
+        "time": 1780673400
+      },
+      "files": [
+        {
+          "additions": 4,
+          "deletions": 0,
+          "oldPath": null,
+          "path": "src/patch.rs",
+          "status": "modified"
+        }
+      ],
+      "oid": "e710cf9d8cbdff6bf20ee57a1ce59ad10471572e",
+      "parents": ["b87a9ea918102bbd6d69c1178cff7bc1ba64a7c7"],
+      "subject": "Handle no-newline markers"
+    }
+  },
+  "diffs": {
+    "00c54c92a0b11bdc855c78a77a1665c0cb3cbd18:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_27(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 79,
+                "noNewline": false,
+                "oldLine": 79,
+                "text": "pub fn helper_30(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 80,
+                "noNewline": false,
+                "oldLine": 80,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 81,
+                "noNewline": false,
+                "oldLine": 81,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 82,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 83,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_33(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 84,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 85,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 79,
+            "oldLines": 3,
+            "oldStart": 79
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "c33a6c02d59dfe76",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "097a8517b0f16f9535d57b92d2a12670b82856ee:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_3(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 47,
+                "noNewline": false,
+                "oldLine": 47,
+                "text": "pub fn helper_6(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 48,
+                "noNewline": false,
+                "oldLine": 48,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 49,
+                "noNewline": false,
+                "oldLine": 49,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 50,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 51,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_9(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 52,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 53,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 47,
+            "oldLines": 3,
+            "oldStart": 47
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "a5db4f07a02cc256",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "164777a96e274f75b79342510dec114d31cefb16:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_19(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 41,
+                "noNewline": false,
+                "oldLine": 41,
+                "text": "pub fn helper_22(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 42,
+                "noNewline": false,
+                "oldLine": 42,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 43,
+                "noNewline": false,
+                "oldLine": 43,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 44,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 45,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_25(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 46,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 47,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 41,
+            "oldLines": 3,
+            "oldStart": 41
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "9ec0c1f3c90e0dd8",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "199ef748bd9962d1edc78843bc265012c4b776ff:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_36(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 91,
+                "noNewline": false,
+                "oldLine": 91,
+                "text": "pub fn helper_39(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 92,
+                "noNewline": false,
+                "oldLine": 92,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 93,
+                "noNewline": false,
+                "oldLine": 93,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 94,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 95,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn parse_trailers(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 96,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 97,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 91,
+            "oldLines": 3,
+            "oldStart": 91
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "b7465512950961a1",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "19f5f51d49b731da9354f8713c90a18f15fd1d10:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_9(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 55,
+                "noNewline": false,
+                "oldLine": 55,
+                "text": "pub fn helper_12(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 56,
+                "noNewline": false,
+                "oldLine": 56,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 57,
+                "noNewline": false,
+                "oldLine": 57,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 58,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 59,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_15(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 60,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 61,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 55,
+            "oldLines": 3,
+            "oldStart": 55
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "aafed06306232e47",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "1b62995431c5dc0b14dd0244dfce2f0036501d28:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_30(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 83,
+                "noNewline": false,
+                "oldLine": 83,
+                "text": "pub fn helper_33(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 84,
+                "noNewline": false,
+                "oldLine": 84,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 85,
+                "noNewline": false,
+                "oldLine": 85,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 86,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 87,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_36(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 88,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 89,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 83,
+            "oldLines": 3,
+            "oldStart": 83
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "832805e36c35f573",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "1e95f5658d177cf1d38efe49cb76c6a9b86859d9:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_10(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 29,
+                "noNewline": false,
+                "oldLine": 29,
+                "text": "pub fn helper_13(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 30,
+                "noNewline": false,
+                "oldLine": 30,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 31,
+                "noNewline": false,
+                "oldLine": 31,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 32,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 33,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_16(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 34,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 35,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 29,
+            "oldLines": 3,
+            "oldStart": 29
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "2721cf1604c255fe",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "2c915aa8f88107012c483d4853ace7fb85304eca:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_16(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 37,
+                "noNewline": false,
+                "oldLine": 37,
+                "text": "pub fn helper_19(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 38,
+                "noNewline": false,
+                "oldLine": 38,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 39,
+                "noNewline": false,
+                "oldLine": 39,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 40,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 41,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_22(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 42,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 43,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 37,
+            "oldLines": 3,
+            "oldStart": 37
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "919190b29b032618",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "3bda968beb581b7879c08859f14d4dd397f3708c:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 19,
+                "noNewline": false,
+                "oldLine": 19,
+                "text": "- Note 23: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 20,
+                "noNewline": false,
+                "oldLine": 20,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 21,
+                "noNewline": false,
+                "oldLine": 21,
+                "text": "- Note 26: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 22,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 23,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 29: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 19,
+            "oldLines": 3,
+            "oldStart": 19
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "0da5eddbde608219",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "4a10923ae7555e93e56098b222224a0bf12b50af:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_34(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 61,
+                "noNewline": false,
+                "oldLine": 61,
+                "text": "pub fn helper_37(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 62,
+                "noNewline": false,
+                "oldLine": 62,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 63,
+                "noNewline": false,
+                "oldLine": 63,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 64,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 65,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn remote_only(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 66,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 67,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 61,
+            "oldLines": 3,
+            "oldStart": 61
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "61018f22c5a0805a",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "4f55441d902c7f01b07f56ee474c7a3c5e7c596b:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 15,
+                "noNewline": false,
+                "oldLine": 15,
+                "text": "- Note 17: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 16,
+                "noNewline": false,
+                "oldLine": 16,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 17,
+                "noNewline": false,
+                "oldLine": 17,
+                "text": "- Note 20: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 18,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 19,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 23: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 15,
+            "oldLines": 3,
+            "oldStart": 15
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "218ef42299afe2b4",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "5075d61d759d890da4eb1a24187f9b573b7e3bc3:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 23,
+                "noNewline": false,
+                "oldLine": 23,
+                "text": "- Note 29: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 24,
+                "noNewline": false,
+                "oldLine": 24,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 25,
+                "noNewline": false,
+                "oldLine": 25,
+                "text": "- Note 32: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 26,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 27,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 35: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 23,
+            "oldLines": 3,
+            "oldStart": 23
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "e02eb008063f374d",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "55cac314d537408e967c770f8e773aa32c65a591:src/patch.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 1,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 2,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn patch_0(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 3,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 4,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 4,
+            "newStart": 1,
+            "oldLines": 0,
+            "oldStart": 0
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "baa0460e528944fd",
+      "image": null,
+      "newMode": "100644",
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/patch.rs"
+    },
+    "5c377435dab2c986525a4e9c927c39a86dfafcc1:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 7,
+                "noNewline": false,
+                "oldLine": 7,
+                "text": "- Note 5: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 8,
+                "noNewline": false,
+                "oldLine": 8,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 9,
+                "noNewline": false,
+                "oldLine": 9,
+                "text": "- Note 8: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 10,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 11,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 11: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 7,
+            "oldLines": 3,
+            "oldStart": 7
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "d719bea5a6e859eb",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "5d8fb0913289f69841d8e57f966375676c60e9df:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_25(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 49,
+                "noNewline": false,
+                "oldLine": 49,
+                "text": "pub fn helper_28(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 50,
+                "noNewline": false,
+                "oldLine": 50,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 51,
+                "noNewline": false,
+                "oldLine": 51,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 52,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 53,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_31(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 54,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 55,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 49,
+            "oldLines": 3,
+            "oldStart": 49
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "a024216b15eb95e7",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "64d70d5905a924cf056003ce128027b9a0bf5978:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_31(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 57,
+                "noNewline": false,
+                "oldLine": 57,
+                "text": "pub fn helper_34(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 58,
+                "noNewline": false,
+                "oldLine": 58,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 59,
+                "noNewline": false,
+                "oldLine": 59,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 60,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 61,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_37(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 62,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 63,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 57,
+            "oldLines": 3,
+            "oldStart": 57
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "5bd60a0d8c9eac85",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "663c62d6024a30dce04d30bf3e4094fb21566322:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_12(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 59,
+                "noNewline": false,
+                "oldLine": 59,
+                "text": "pub fn helper_15(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 60,
+                "noNewline": false,
+                "oldLine": 60,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 61,
+                "noNewline": false,
+                "oldLine": 61,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 62,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 63,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_18(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 64,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 65,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 59,
+            "oldLines": 3,
+            "oldStart": 59
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "9c9873f75b9edb48",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "66c71f77d128096827769f0e29aa68e433c1bea0:src/graph/render.ts": {
+      "content": {
+        "additions": 7,
+        "deletions": 1,
+        "hunks": [
+          {
+            "heading": "export interface Point {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 3,
+                "noNewline": false,
+                "oldLine": 3,
+                "text": "  y: number;"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 4,
+                "noNewline": false,
+                "oldLine": 4,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 5,
+                "noNewline": false,
+                "oldLine": 5,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "del",
+                "newLine": null,
+                "noNewline": false,
+                "oldLine": 6,
+                "text": "export function drawEdge(ctx: CanvasRenderingContext2D, from: Point, to: Point) {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 6,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "export function drawEdge("
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 7,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "  ctx: CanvasRenderingContext2D,"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 8,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "  from: Point,"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 9,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "  to: Point,"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 10,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "  width = 2,"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 11,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ") {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 12,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "  ctx.lineWidth = width;"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 13,
+                "noNewline": false,
+                "oldLine": 7,
+                "text": "  ctx.beginPath();"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 14,
+                "noNewline": false,
+                "oldLine": 8,
+                "text": "  ctx.moveTo(from.x, from.y);"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 15,
+                "noNewline": false,
+                "oldLine": 9,
+                "text": "  const midY = (from.y + to.y) / 2;"
+              }
+            ],
+            "newLines": 13,
+            "newStart": 3,
+            "oldLines": 7,
+            "oldStart": 3
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "db5f22c3bd08bd73",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/graph/render.ts"
+    },
+    "6cc60f445ea7323401582eb67ae2e51492e831f5:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_33(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 87,
+                "noNewline": false,
+                "oldLine": 87,
+                "text": "pub fn helper_36(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 88,
+                "noNewline": false,
+                "oldLine": 88,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 89,
+                "noNewline": false,
+                "oldLine": 89,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 90,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 91,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_39(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 92,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 93,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 87,
+            "oldLines": 3,
+            "oldStart": 87
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "ed0ca16a763af085",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "6fe3a15454a385b8808b53f676baf4867c30f16b:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 5,
+                "noNewline": false,
+                "oldLine": 5,
+                "text": "- Note 2: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 6,
+                "noNewline": false,
+                "oldLine": 6,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 7,
+                "noNewline": false,
+                "oldLine": 7,
+                "text": "- Note 5: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 8,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 9,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 8: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 5,
+            "oldLines": 3,
+            "oldStart": 5
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "7817e6e6bcf845e9",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "71bd22723c3aaf6b9e1f1f27467aa09826245371:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 21,
+                "noNewline": false,
+                "oldLine": 21,
+                "text": "- Note 26: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 22,
+                "noNewline": false,
+                "oldLine": 22,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 23,
+                "noNewline": false,
+                "oldLine": 23,
+                "text": "- Note 29: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 24,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 25,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 32: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 21,
+            "oldLines": 3,
+            "oldStart": 21
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "e42c2502475152f3",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "73f4a9d30781bd3d9649fe498ef8dbdc419b187d:assets/logo.svg": {
+      "content": {
+        "additions": 1,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 1,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><circle cx=\"16\" cy=\"16\" r=\"12\" fill=\"#5e8bff\"/></svg>"
+              }
+            ],
+            "newLines": 1,
+            "newStart": 1,
+            "oldLines": 0,
+            "oldStart": 0
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "b537224703e8d0fa",
+      "image": {
+        "new": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTIiIGZpbGw9IiM1ZThiZmYiLz48L3N2Zz4K",
+        "old": null
+      },
+      "newMode": "100644",
+      "oldMode": null,
+      "oldPath": null,
+      "path": "assets/logo.svg"
+    },
+    "7646ee8b7d0cbbba0f08a5c3ac6102ae58a1f053:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_15(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 63,
+                "noNewline": false,
+                "oldLine": 63,
+                "text": "pub fn helper_18(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 64,
+                "noNewline": false,
+                "oldLine": 64,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 65,
+                "noNewline": false,
+                "oldLine": 65,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 66,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 67,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_21(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 68,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 69,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 63,
+            "oldLines": 3,
+            "oldStart": 63
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "09ea8fdee7243e1f",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "7a31b0438a3d6b3f51f4ea020effdf3920f56fe2:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 17,
+                "noNewline": false,
+                "oldLine": 17,
+                "text": "- Note 20: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 18,
+                "noNewline": false,
+                "oldLine": 18,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 19,
+                "noNewline": false,
+                "oldLine": 19,
+                "text": "- Note 23: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 20,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 21,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 26: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 17,
+            "oldLines": 3,
+            "oldStart": 17
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "c61a5f3980a42c3b",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "81201b4194a8e5e29a61258d2f453d4d8e381d3f:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_6(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 51,
+                "noNewline": false,
+                "oldLine": 51,
+                "text": "pub fn helper_9(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 52,
+                "noNewline": false,
+                "oldLine": 52,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 53,
+                "noNewline": false,
+                "oldLine": 53,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 54,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 55,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_12(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 56,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 57,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 51,
+            "oldLines": 3,
+            "oldStart": 51
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "81d4c2cdb76bcb28",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "86a7129c51b8d7a3c58d49b4a57dc0b205da4713:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 9,
+                "noNewline": false,
+                "oldLine": 9,
+                "text": "- Note 8: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 10,
+                "noNewline": false,
+                "oldLine": 10,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 11,
+                "noNewline": false,
+                "oldLine": 11,
+                "text": "- Note 11: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 12,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 13,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 14: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 9,
+            "oldLines": 3,
+            "oldStart": 9
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "744b537ed0e37269",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "876c1965b57b311329a6c27798d980f1a6136051:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_7(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 25,
+                "noNewline": false,
+                "oldLine": 25,
+                "text": "pub fn helper_10(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 26,
+                "noNewline": false,
+                "oldLine": 26,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 27,
+                "noNewline": false,
+                "oldLine": 27,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 28,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 29,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_13(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 30,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 31,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 25,
+            "oldLines": 3,
+            "oldStart": 25
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "9d238c75518b1cfb",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "897988284513843ae3f30e878d397e72357d52e1:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_28(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 53,
+                "noNewline": false,
+                "oldLine": 53,
+                "text": "pub fn helper_31(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 54,
+                "noNewline": false,
+                "oldLine": 54,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 55,
+                "noNewline": false,
+                "oldLine": 55,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 56,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 57,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_34(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 58,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 59,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 53,
+            "oldLines": 3,
+            "oldStart": 53
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "ed2c5852446e632d",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "956f2188320f47d8740b1f6d225b352d13209a6b:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_21(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 71,
+                "noNewline": false,
+                "oldLine": 71,
+                "text": "pub fn helper_24(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 72,
+                "noNewline": false,
+                "oldLine": 72,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 73,
+                "noNewline": false,
+                "oldLine": 73,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 74,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 75,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_27(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 76,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 77,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 71,
+            "oldLines": 3,
+            "oldStart": 71
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "f24cdd04caf7cc94",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "9a3f7d23c16423fc7dc873b730d4889dede3e656:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 13,
+                "noNewline": false,
+                "oldLine": 13,
+                "text": "- Note 14: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 14,
+                "noNewline": false,
+                "oldLine": 14,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 15,
+                "noNewline": false,
+                "oldLine": 15,
+                "text": "- Note 17: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 16,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 17,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 20: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 13,
+            "oldLines": 3,
+            "oldStart": 13
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "1a9ef001aa61c78c",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "9f5d2879acc590d341f3e29023f1598e5a8c2140:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_18(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 67,
+                "noNewline": false,
+                "oldLine": 67,
+                "text": "pub fn helper_21(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 68,
+                "noNewline": false,
+                "oldLine": 68,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 69,
+                "noNewline": false,
+                "oldLine": 69,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 70,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 71,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_24(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 72,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 73,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 67,
+            "oldLines": 3,
+            "oldStart": 67
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "570bfa9e704731e1",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "a39e128adee33dc5a2c9a95b697dd63f1c5ae581:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 11,
+                "noNewline": false,
+                "oldLine": 11,
+                "text": "- Note 11: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 12,
+                "noNewline": false,
+                "oldLine": 12,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 13,
+                "noNewline": false,
+                "oldLine": 13,
+                "text": "- Note 14: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 14,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 15,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 17: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 11,
+            "oldLines": 3,
+            "oldStart": 11
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "15f629f0b16c71a3",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "af232f29f898f21c13c94af24b4ae30449df0d41:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_13(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 33,
+                "noNewline": false,
+                "oldLine": 33,
+                "text": "pub fn helper_16(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 34,
+                "noNewline": false,
+                "oldLine": 34,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 35,
+                "noNewline": false,
+                "oldLine": 35,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 36,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 37,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_19(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 38,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 39,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 33,
+            "oldLines": 3,
+            "oldStart": 33
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "acaf81e09d5fbe8e",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "b87a9ea918102bbd6d69c1178cff7bc1ba64a7c7:src/patch.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 2,
+                "noNewline": false,
+                "oldLine": 2,
+                "text": "pub fn patch_0(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 3,
+                "noNewline": false,
+                "oldLine": 3,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 4,
+                "noNewline": false,
+                "oldLine": 4,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 5,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 6,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn patch_84(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 7,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 8,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 2,
+            "oldLines": 3,
+            "oldStart": 2
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "87c3c18c02d05529",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/patch.rs"
+    },
+    "bac1b91c0ee84e1ba35e100632be5b622f0b9d15:assets/logo.svg": {
+      "content": {
+        "additions": 1,
+        "deletions": 1,
+        "hunks": [
+          {
+            "heading": "",
+            "lines": [
+              {
+                "emphasis": [
+                  [61, 70],
+                  [72, 74],
+                  [76, 78],
+                  [80, 82],
+                  [84, 85],
+                  [87, 89],
+                  [98, 104]
+                ],
+                "kind": "del",
+                "newLine": null,
+                "noNewline": false,
+                "oldLine": 1,
+                "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><circle cx=\"16\" cy=\"16\" r=\"12\" fill=\"#5e8bff\"/></svg>"
+              },
+              {
+                "emphasis": [
+                  [61, 67],
+                  [69, 70],
+                  [72, 73],
+                  [75, 76],
+                  [78, 83],
+                  [85, 87],
+                  [89, 107],
+                  [115, 121]
+                ],
+                "kind": "add",
+                "newLine": 1,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\"><rect x=\"4\" y=\"4\" width=\"24\" height=\"24\" rx=\"6\" fill=\"#3fb97f\"/></svg>"
+              }
+            ],
+            "newLines": 1,
+            "newStart": 1,
+            "oldLines": 1,
+            "oldStart": 1
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "e1090d0031ee95bc",
+      "image": {
+        "new": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNiIgZmlsbD0iIzNmYjk3ZiIvPjwvc3ZnPgo=",
+        "old": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTIiIGZpbGw9IiM1ZThiZmYiLz48L3N2Zz4K"
+      },
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "assets/logo.svg"
+    },
+    "bb449dcd8f73ac828d1cb6b50f99c563b7a19659:src/parser.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_24(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 75,
+                "noNewline": false,
+                "oldLine": 75,
+                "text": "pub fn helper_27(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 76,
+                "noNewline": false,
+                "oldLine": 76,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 77,
+                "noNewline": false,
+                "oldLine": 77,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 78,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 79,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_30(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 80,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 81,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 75,
+            "oldLines": 3,
+            "oldStart": 75
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "2a4b3706cebbbabc",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "bc8f59a59d74895c6009efa08081dea973bf5115:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_4(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 21,
+                "noNewline": false,
+                "oldLine": 21,
+                "text": "pub fn helper_7(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 22,
+                "noNewline": false,
+                "oldLine": 22,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 23,
+                "noNewline": false,
+                "oldLine": 23,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 24,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 25,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_10(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 26,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 27,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 21,
+            "oldLines": 3,
+            "oldStart": 21
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "53860601209614a2",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "c57ac3f866f25c6a2f1e8827af8d983167f4042a:docs/guide.md": {
+      "content": {
+        "additions": 2,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "Run `tylia-demo` in a repository.",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 25,
+                "noNewline": false,
+                "oldLine": 25,
+                "text": "- Note 32: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 26,
+                "noNewline": false,
+                "oldLine": 26,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 27,
+                "noNewline": false,
+                "oldLine": 27,
+                "text": "- Note 35: keep commits small."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 28,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 29,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Note 38: keep commits small."
+              }
+            ],
+            "newLines": 5,
+            "newStart": 25,
+            "oldLines": 3,
+            "oldStart": 25
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "734e6a50d5819e16",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "docs/guide.md"
+    },
+    "e163d2911ad579cd836803e6c79d8afe2dc78ffa:src/main.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn helper_22(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 45,
+                "noNewline": false,
+                "oldLine": 45,
+                "text": "pub fn helper_25(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 46,
+                "noNewline": false,
+                "oldLine": 46,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 47,
+                "noNewline": false,
+                "oldLine": 47,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 48,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 49,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn helper_28(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 50,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 51,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 45,
+            "oldLines": 3,
+            "oldStart": 45
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "0bffc9d29cd5a81f",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/main.rs"
+    },
+    "e710cf9d8cbdff6bf20ee57a1ce59ad10471572e:src/patch.rs": {
+      "content": {
+        "additions": 4,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "pub fn patch_0(input: &str) -> usize {",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 6,
+                "noNewline": false,
+                "oldLine": 6,
+                "text": "pub fn patch_84(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 7,
+                "noNewline": false,
+                "oldLine": 7,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 8,
+                "noNewline": false,
+                "oldLine": 8,
+                "text": "}"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 9,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 10,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn patch_64(input: &str) -> usize {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 11,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    input.lines().filter(|l| !l.is_empty()).count()"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 12,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 7,
+            "newStart": 6,
+            "oldLines": 3,
+            "oldStart": 6
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "17124d5b7649ccc5",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/patch.rs"
+    },
+    "staged:src/graph/curves.rs": {
+      "content": {
+        "additions": 5,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 1,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "/// Control points for a lane change."
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 2,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "pub fn control_points(y0: f32, y1: f32) -> (f32, f32) {"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 3,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    let mid = (y0 + y1) / 2.0;"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 4,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "    (mid, mid)"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 5,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "}"
+              }
+            ],
+            "newLines": 5,
+            "newStart": 1,
+            "oldLines": 0,
+            "oldStart": 0
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "e23feb5ac2b0eed9",
+      "image": null,
+      "newMode": "100644",
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/graph/curves.rs"
+    },
+    "unstaged:src/parser.rs": {
+      "content": {
+        "additions": 1,
+        "deletions": 1,
+        "hunks": [
+          {
+            "heading": "",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "del",
+                "newLine": null,
+                "noNewline": false,
+                "oldLine": 1,
+                "text": "//! Parses log records."
+              },
+              {
+                "emphasis": [
+                  [11, 15],
+                  [20, 23]
+                ],
+                "kind": "add",
+                "newLine": 1,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "//! Parses `git log -z` records."
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 2,
+                "noNewline": false,
+                "oldLine": 2,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 3,
+                "noNewline": false,
+                "oldLine": 3,
+                "text": "pub fn parse(line: &str) -> Vec<&str> {"
+              },
+              {
+                "emphasis": [],
+                "kind": "context",
+                "newLine": 4,
+                "noNewline": false,
+                "oldLine": 4,
+                "text": "    line.trim_end_matches('\\r').split('\\0').collect()"
+              }
+            ],
+            "newLines": 4,
+            "newStart": 1,
+            "oldLines": 4,
+            "oldStart": 1
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "4fdd7681aac2bebd",
+      "image": null,
+      "newMode": null,
+      "oldMode": null,
+      "oldPath": null,
+      "path": "src/parser.rs"
+    },
+    "untracked:notes.md": {
+      "content": {
+        "additions": 3,
+        "deletions": 0,
+        "hunks": [
+          {
+            "heading": "",
+            "lines": [
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 1,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "# Notes"
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 2,
+                "noNewline": false,
+                "oldLine": null,
+                "text": ""
+              },
+              {
+                "emphasis": [],
+                "kind": "add",
+                "newLine": 3,
+                "noNewline": false,
+                "oldLine": null,
+                "text": "- Try the split diff view."
+              }
+            ],
+            "newLines": 3,
+            "newStart": 1,
+            "oldLines": 0,
+            "oldStart": 0
+          }
+        ],
+        "kind": "text"
+      },
+      "fingerprint": "891090ef207e9764",
+      "image": null,
+      "newMode": "100644",
+      "oldMode": null,
+      "oldPath": null,
+      "path": "notes.md"
+    }
+  },
+  "history": [
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "199ef748bd9962d1edc78843bc265012c4b776ff",
+      "parents": ["66c71f77d128096827769f0e29aa68e433c1bea0"],
+      "subject": "Parse commit trailers",
+      "time": 1780687800
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "66c71f77d128096827769f0e29aa68e433c1bea0",
+      "parents": ["bac1b91c0ee84e1ba35e100632be5b622f0b9d15"],
+      "subject": "Make edge width configurable",
+      "time": 1780678800
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 1,
+        "curves": [],
+        "isMerge": false,
+        "lane": 1,
+        "width": 2
+      },
+      "oid": "e710cf9d8cbdff6bf20ee57a1ce59ad10471572e",
+      "parents": ["b87a9ea918102bbd6d69c1178cff7bc1ba64a7c7"],
+      "subject": "Handle no-newline markers",
+      "time": 1780673400
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 1,
+        "curves": [],
+        "isMerge": false,
+        "lane": 1,
+        "width": 2
+      },
+      "oid": "b87a9ea918102bbd6d69c1178cff7bc1ba64a7c7",
+      "parents": ["55cac314d537408e967c770f8e773aa32c65a591"],
+      "subject": "Stage selected lines",
+      "time": 1780671600
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 1,
+        "curves": [
+          {
+            "color": 1,
+            "from": 1,
+            "kind": "bottom",
+            "to": 0
+          }
+        ],
+        "isMerge": false,
+        "lane": 1,
+        "width": 2
+      },
+      "oid": "55cac314d537408e967c770f8e773aa32c65a591",
+      "parents": ["bac1b91c0ee84e1ba35e100632be5b622f0b9d15"],
+      "subject": "Build partial patches",
+      "time": 1780669800
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 2,
+        "curves": [
+          {
+            "color": 2,
+            "from": 1,
+            "kind": "bottom",
+            "to": 0
+          }
+        ],
+        "isMerge": false,
+        "lane": 1,
+        "width": 2
+      },
+      "oid": "4a10923ae7555e93e56098b222224a0bf12b50af",
+      "parents": ["bac1b91c0ee84e1ba35e100632be5b622f0b9d15"],
+      "subject": "Experiment with async status",
+      "time": 1780660800
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "bac1b91c0ee84e1ba35e100632be5b622f0b9d15",
+      "parents": ["73f4a9d30781bd3d9649fe498ef8dbdc419b187d"],
+      "subject": "Use the new square logo",
+      "time": 1780655400
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "73f4a9d30781bd3d9649fe498ef8dbdc419b187d",
+      "parents": ["6cc60f445ea7323401582eb67ae2e51492e831f5"],
+      "subject": "Add logo",
+      "time": 1780650000
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "6cc60f445ea7323401582eb67ae2e51492e831f5",
+      "parents": ["c57ac3f866f25c6a2f1e8827af8d983167f4042a"],
+      "subject": "Keep lane colours stable (39)",
+      "time": 1780641000
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "c57ac3f866f25c6a2f1e8827af8d983167f4042a",
+      "parents": ["64d70d5905a924cf056003ce128027b9a0bf5978"],
+      "subject": "Show hook output when commit fails (38)",
+      "time": 1780639200
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "64d70d5905a924cf056003ce128027b9a0bf5978",
+      "parents": ["1b62995431c5dc0b14dd0244dfce2f0036501d28"],
+      "subject": "Handle unborn branches (37)",
+      "time": 1780633800
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "1b62995431c5dc0b14dd0244dfce2f0036501d28",
+      "parents": ["5075d61d759d890da4eb1a24187f9b573b7e3bc3"],
+      "subject": "Cache parsed refs (36)",
+      "time": 1780632000
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "5075d61d759d890da4eb1a24187f9b573b7e3bc3",
+      "parents": ["897988284513843ae3f30e878d397e72357d52e1"],
+      "subject": "Rename internal helper (35)",
+      "time": 1780623000
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "897988284513843ae3f30e878d397e72357d52e1",
+      "parents": ["00c54c92a0b11bdc855c78a77a1665c0cb3cbd18"],
+      "subject": "Add a test for detached HEAD (34)",
+      "time": 1780614000
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "00c54c92a0b11bdc855c78a77a1665c0cb3cbd18",
+      "parents": ["71bd22723c3aaf6b9e1f1f27467aa09826245371"],
+      "subject": "Tidy up error messages (33)",
+      "time": 1780605000
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "71bd22723c3aaf6b9e1f1f27467aa09826245371",
+      "parents": ["5d8fb0913289f69841d8e57f966375676c60e9df"],
+      "subject": "Refactor record parsing (32)",
+      "time": 1780603200
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "5d8fb0913289f69841d8e57f966375676c60e9df",
+      "parents": ["bb449dcd8f73ac828d1cb6b50f99c563b7a19659"],
+      "subject": "Keep lane colours stable (31)",
+      "time": 1780601400
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "bb449dcd8f73ac828d1cb6b50f99c563b7a19659",
+      "parents": ["3bda968beb581b7879c08859f14d4dd397f3708c"],
+      "subject": "Show hook output when commit fails (30)",
+      "time": 1780596000
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "3bda968beb581b7879c08859f14d4dd397f3708c",
+      "parents": ["e163d2911ad579cd836803e6c79d8afe2dc78ffa"],
+      "subject": "Handle unborn branches (29)",
+      "time": 1780594200
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "e163d2911ad579cd836803e6c79d8afe2dc78ffa",
+      "parents": ["956f2188320f47d8740b1f6d225b352d13209a6b"],
+      "subject": "Cache parsed refs (28)",
+      "time": 1780592400
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "956f2188320f47d8740b1f6d225b352d13209a6b",
+      "parents": ["7a31b0438a3d6b3f51f4ea020effdf3920f56fe2"],
+      "subject": "Rename internal helper (27)",
+      "time": 1780590600
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "7a31b0438a3d6b3f51f4ea020effdf3920f56fe2",
+      "parents": ["164777a96e274f75b79342510dec114d31cefb16"],
+      "subject": "Add a test for detached HEAD (26)",
+      "time": 1780581600
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "164777a96e274f75b79342510dec114d31cefb16",
+      "parents": ["9f5d2879acc590d341f3e29023f1598e5a8c2140"],
+      "subject": "Tidy up error messages (25)",
+      "time": 1780576200
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "9f5d2879acc590d341f3e29023f1598e5a8c2140",
+      "parents": ["4f55441d902c7f01b07f56ee474c7a3c5e7c596b"],
+      "subject": "Refactor record parsing (24)",
+      "time": 1780570800
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "4f55441d902c7f01b07f56ee474c7a3c5e7c596b",
+      "parents": ["2c915aa8f88107012c483d4853ace7fb85304eca"],
+      "subject": "Keep lane colours stable (23)",
+      "time": 1780561800
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "2c915aa8f88107012c483d4853ace7fb85304eca",
+      "parents": ["7646ee8b7d0cbbba0f08a5c3ac6102ae58a1f053"],
+      "subject": "Show hook output when commit fails (22)",
+      "time": 1780560000
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "7646ee8b7d0cbbba0f08a5c3ac6102ae58a1f053",
+      "parents": ["9a3f7d23c16423fc7dc873b730d4889dede3e656"],
+      "subject": "Handle unborn branches (21)",
+      "time": 1780551000
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "9a3f7d23c16423fc7dc873b730d4889dede3e656",
+      "parents": ["af232f29f898f21c13c94af24b4ae30449df0d41"],
+      "subject": "Cache parsed refs (20)",
+      "time": 1780540200
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "af232f29f898f21c13c94af24b4ae30449df0d41",
+      "parents": ["663c62d6024a30dce04d30bf3e4094fb21566322"],
+      "subject": "Rename internal helper (19)",
+      "time": 1780538400
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "663c62d6024a30dce04d30bf3e4094fb21566322",
+      "parents": ["a39e128adee33dc5a2c9a95b697dd63f1c5ae581"],
+      "subject": "Add a test for detached HEAD (18)",
+      "time": 1780529400
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "a39e128adee33dc5a2c9a95b697dd63f1c5ae581",
+      "parents": ["1e95f5658d177cf1d38efe49cb76c6a9b86859d9"],
+      "subject": "Tidy up error messages (17)",
+      "time": 1780520400
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "1e95f5658d177cf1d38efe49cb76c6a9b86859d9",
+      "parents": ["19f5f51d49b731da9354f8713c90a18f15fd1d10"],
+      "subject": "Refactor record parsing (16)",
+      "time": 1780515000
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "19f5f51d49b731da9354f8713c90a18f15fd1d10",
+      "parents": ["86a7129c51b8d7a3c58d49b4a57dc0b205da4713"],
+      "subject": "Keep lane colours stable (15)",
+      "time": 1780509600
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "86a7129c51b8d7a3c58d49b4a57dc0b205da4713",
+      "parents": ["876c1965b57b311329a6c27798d980f1a6136051"],
+      "subject": "Show hook output when commit fails (14)",
+      "time": 1780504200
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "876c1965b57b311329a6c27798d980f1a6136051",
+      "parents": ["81201b4194a8e5e29a61258d2f453d4d8e381d3f"],
+      "subject": "Handle unborn branches (13)",
+      "time": 1780498800
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "81201b4194a8e5e29a61258d2f453d4d8e381d3f",
+      "parents": ["5c377435dab2c986525a4e9c927c39a86dfafcc1"],
+      "subject": "Cache parsed refs (12)",
+      "time": 1780489800
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "5c377435dab2c986525a4e9c927c39a86dfafcc1",
+      "parents": ["bc8f59a59d74895c6009efa08081dea973bf5115"],
+      "subject": "Rename internal helper (11)",
+      "time": 1780480800
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "bc8f59a59d74895c6009efa08081dea973bf5115",
+      "parents": ["097a8517b0f16f9535d57b92d2a12670b82856ee"],
+      "subject": "Add a test for detached HEAD (10)",
+      "time": 1780475400
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "097a8517b0f16f9535d57b92d2a12670b82856ee",
+      "parents": ["6fe3a15454a385b8808b53f676baf4867c30f16b"],
+      "subject": "Tidy up error messages (9)",
+      "time": 1780473600
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "6fe3a15454a385b8808b53f676baf4867c30f16b",
+      "parents": ["262eee520898921a20add6b4ff278eb5641943d0"],
+      "subject": "Refactor record parsing (8)",
+      "time": 1780464600
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "262eee520898921a20add6b4ff278eb5641943d0",
+      "parents": ["ec17c0f6cc1ea8dfb102cbafacd4b85cb0115ce2"],
+      "subject": "Keep lane colours stable",
+      "time": 1780462800
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "ec17c0f6cc1ea8dfb102cbafacd4b85cb0115ce2",
+      "parents": ["280431028efc689c5d3e330f5c7bbfdbf81d48ec"],
+      "subject": "Show hook output when commit fails",
+      "time": 1780461000
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "280431028efc689c5d3e330f5c7bbfdbf81d48ec",
+      "parents": ["3e62553947bc7dccd6ce7c9e57cba9ef70ce282e"],
+      "subject": "Handle unborn branches",
+      "time": 1780452000
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "3e62553947bc7dccd6ce7c9e57cba9ef70ce282e",
+      "parents": ["6fb670c210b04e9e38dd4789aaf62abea1733fef"],
+      "subject": "Cache parsed refs",
+      "time": 1780450200
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "6fb670c210b04e9e38dd4789aaf62abea1733fef",
+      "parents": ["9ef8d990ba83a3c2c0cf7541a972f99837c97187"],
+      "subject": "Rename internal helper",
+      "time": 1780444800
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "9ef8d990ba83a3c2c0cf7541a972f99837c97187",
+      "parents": ["cfbaaf18db0f409dfb9f90cff751aee6dd8d1d77"],
+      "subject": "Add a test for detached HEAD",
+      "time": 1780443000
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "cfbaaf18db0f409dfb9f90cff751aee6dd8d1d77",
+      "parents": ["18a42dda2a08221c948380abe99631ff04ad9121"],
+      "subject": "Tidy up error messages",
+      "time": 1780441200
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "18a42dda2a08221c948380abe99631ff04ad9121",
+      "parents": ["096d0018f9cbbb95885f79e0f0c195247cc6302f"],
+      "subject": "Refactor record parsing",
+      "time": 1780439400
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [
+          {
+            "color": 3,
+            "from": 0,
+            "kind": "bottom",
+            "to": 1
+          }
+        ],
+        "isMerge": true,
+        "lane": 0,
+        "width": 2
+      },
+      "oid": "096d0018f9cbbb95885f79e0f0c195247cc6302f",
+      "parents": [
+        "dfdc597d36561022927c96e2d02cdc0f910e7a29",
+        "f1af40cb5f82083327e62f9f2d1015a655092ca2"
+      ],
+      "subject": "Merge branch 'feature/graph'",
+      "time": 1780434000
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [
+          {
+            "color": 4,
+            "from": 0,
+            "kind": "bottom",
+            "to": 2
+          }
+        ],
+        "isMerge": true,
+        "lane": 0,
+        "width": 3
+      },
+      "oid": "dfdc597d36561022927c96e2d02cdc0f910e7a29",
+      "parents": [
+        "54e07255a3cbd5426c9c570d9504522f48e56f7f",
+        "c8d53eb6661d823ec7c741d237d09443f5a91055"
+      ],
+      "subject": "Merge branch 'release/0.1'",
+      "time": 1780430400
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 3,
+        "curves": [],
+        "isMerge": false,
+        "lane": 1,
+        "width": 3
+      },
+      "oid": "f1af40cb5f82083327e62f9f2d1015a655092ca2",
+      "parents": ["e531c0a700ab8ff38e69619aef87cf9d0924874a"],
+      "subject": "Draw merge curves as cubic beziers",
+      "time": 1780430400
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 3,
+        "curves": [
+          {
+            "color": 0,
+            "from": 1,
+            "kind": "bottom",
+            "to": 0
+          }
+        ],
+        "isMerge": true,
+        "lane": 1,
+        "width": 3
+      },
+      "oid": "e531c0a700ab8ff38e69619aef87cf9d0924874a",
+      "parents": [
+        "803a4d909d853c357d9a3147612a1a80070eaade",
+        "54e07255a3cbd5426c9c570d9504522f48e56f7f"
+      ],
+      "subject": "Merge branch 'main' into feature/graph",
+      "time": 1780421400
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 3
+      },
+      "oid": "54e07255a3cbd5426c9c570d9504522f48e56f7f",
+      "parents": ["41a4782214d1b84bf8c6831b6029ad58773c8e9e"],
+      "subject": "Speed up startup",
+      "time": 1780419600
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 3
+      },
+      "oid": "41a4782214d1b84bf8c6831b6029ad58773c8e9e",
+      "parents": ["ad4bd7bc51f72f263265c558228131b160840c57"],
+      "subject": "Bump dependencies",
+      "time": 1780414200
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 3,
+        "curves": [],
+        "isMerge": false,
+        "lane": 1,
+        "width": 3
+      },
+      "oid": "803a4d909d853c357d9a3147612a1a80070eaade",
+      "parents": ["b2ce008ba6dffaa346dbda35ad4b8a9e7de7c105"],
+      "subject": "Draw commit dots",
+      "time": 1780405200
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 3,
+        "curves": [],
+        "isMerge": false,
+        "lane": 1,
+        "width": 3
+      },
+      "oid": "b2ce008ba6dffaa346dbda35ad4b8a9e7de7c105",
+      "parents": ["ee9ef37de132921ad6a4169d15a92127d92ed72f"],
+      "subject": "Keep lanes stable while scrolling",
+      "time": 1780399800
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 3,
+        "curves": [
+          {
+            "color": 3,
+            "from": 1,
+            "kind": "bottom",
+            "to": 0
+          }
+        ],
+        "isMerge": false,
+        "lane": 1,
+        "width": 3
+      },
+      "oid": "ee9ef37de132921ad6a4169d15a92127d92ed72f",
+      "parents": ["ad4bd7bc51f72f263265c558228131b160840c57"],
+      "subject": "Assign lane colours",
+      "time": 1780398000
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 3
+      },
+      "oid": "ad4bd7bc51f72f263265c558228131b160840c57",
+      "parents": ["ae23fa7fc522f1d3674e344ce1b59e2415095917"],
+      "subject": "Add graph renderer skeleton",
+      "time": 1780396200
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 4,
+        "curves": [],
+        "isMerge": false,
+        "lane": 2,
+        "width": 3
+      },
+      "oid": "c8d53eb6661d823ec7c741d237d09443f5a91055",
+      "parents": ["c96a0256ea80a5557bfabf0d253e4d92c5161eea"],
+      "subject": "Fix greeting in release build",
+      "time": 1780387200
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 4,
+        "curves": [
+          {
+            "color": 4,
+            "from": 2,
+            "kind": "bottom",
+            "to": 0
+          }
+        ],
+        "isMerge": false,
+        "lane": 2,
+        "width": 3
+      },
+      "oid": "c96a0256ea80a5557bfabf0d253e4d92c5161eea",
+      "parents": ["ae23fa7fc522f1d3674e344ce1b59e2415095917"],
+      "subject": "Prepare 0.1.0",
+      "time": 1780378200
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 0,
+        "curves": [
+          {
+            "color": 5,
+            "from": 0,
+            "kind": "bottom",
+            "to": 1
+          }
+        ],
+        "isMerge": true,
+        "lane": 0,
+        "width": 2
+      },
+      "oid": "ae23fa7fc522f1d3674e344ce1b59e2415095917",
+      "parents": [
+        "53b9ae3746ced2f50790b43b76108597ecc9861d",
+        "02bd80c894feefe6424f07ccde5d7f82df861ad9"
+      ],
+      "subject": "Merge branch 'fix/crlf-parser'",
+      "time": 1780372800
+    },
+    {
+      "authorEmail": "sam@example.net",
+      "authorName": "Sam Okafor",
+      "graph": {
+        "color": 5,
+        "curves": [
+          {
+            "color": 5,
+            "from": 1,
+            "kind": "bottom",
+            "to": 0
+          }
+        ],
+        "isMerge": false,
+        "lane": 1,
+        "width": 2
+      },
+      "oid": "02bd80c894feefe6424f07ccde5d7f82df861ad9",
+      "parents": ["53b9ae3746ced2f50790b43b76108597ecc9861d"],
+      "subject": "Strip CR before splitting records",
+      "time": 1780369200
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [
+          {
+            "color": 6,
+            "from": 0,
+            "kind": "bottom",
+            "to": 1
+          }
+        ],
+        "isMerge": true,
+        "lane": 0,
+        "width": 2
+      },
+      "oid": "53b9ae3746ced2f50790b43b76108597ecc9861d",
+      "parents": [
+        "bddeb4ab38815e5072d4a9b20db525bfaae717e0",
+        "9d10257abc8176b58d5994c036468c445223c929"
+      ],
+      "subject": "Merge branch 'feature/parser'",
+      "time": 1780360200
+    },
+    {
+      "authorEmail": "lena@example.org",
+      "authorName": "Lena Fischer",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 2
+      },
+      "oid": "bddeb4ab38815e5072d4a9b20db525bfaae717e0",
+      "parents": ["63067466da16b1fe9bd8d6d490784e55fd3800d9"],
+      "subject": "Explain how to build",
+      "time": 1780356600
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 2
+      },
+      "oid": "63067466da16b1fe9bd8d6d490784e55fd3800d9",
+      "parents": ["39755c5cb04599775652c3eb8ef8c2cc2fc86f7c"],
+      "subject": "Write a short guide",
+      "time": 1780354800
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 6,
+        "curves": [],
+        "isMerge": false,
+        "lane": 1,
+        "width": 2
+      },
+      "oid": "9d10257abc8176b58d5994c036468c445223c929",
+      "parents": ["e1862f5a7c1f85fbfad66c1b9f855fa80097798f"],
+      "subject": "Add tests for multi-parent commits",
+      "time": 1780345800
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 6,
+        "curves": [],
+        "isMerge": false,
+        "lane": 1,
+        "width": 2
+      },
+      "oid": "e1862f5a7c1f85fbfad66c1b9f855fa80097798f",
+      "parents": ["e7abaffc68accba310e259f3c81599538994e385"],
+      "subject": "Parse parent hashes",
+      "time": 1780344000
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 6,
+        "curves": [
+          {
+            "color": 6,
+            "from": 1,
+            "kind": "bottom",
+            "to": 0
+          }
+        ],
+        "isMerge": false,
+        "lane": 1,
+        "width": 2
+      },
+      "oid": "e7abaffc68accba310e259f3c81599538994e385",
+      "parents": ["39755c5cb04599775652c3eb8ef8c2cc2fc86f7c"],
+      "subject": "Split records on NUL",
+      "time": 1780335000
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "39755c5cb04599775652c3eb8ef8c2cc2fc86f7c",
+      "parents": ["d4b7e0a8ff5cd5b996bc44a5f53c6552cda9973c"],
+      "subject": "Add CLI flags for verbose output",
+      "time": 1780333200
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "d4b7e0a8ff5cd5b996bc44a5f53c6552cda9973c",
+      "parents": ["fcd6c76f7f01548e0b9cf1b75935861320faccad"],
+      "subject": "Handle empty input in parse",
+      "time": 1780327800
+    },
+    {
+      "authorEmail": "kenji@example.com",
+      "authorName": "Kenji Sato",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "fcd6c76f7f01548e0b9cf1b75935861320faccad",
+      "parents": ["8f7f8c71bc20f06d348ce216c115b9d499386734"],
+      "subject": "Document the record format",
+      "time": 1780326000
+    },
+    {
+      "authorEmail": "priya@example.org",
+      "authorName": "Priya Nair",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "8f7f8c71bc20f06d348ce216c115b9d499386734",
+      "parents": ["5b6479274c3262eabe121bac3b8510c1aea1d378"],
+      "subject": "Read config from the environment",
+      "time": 1780320600
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "5b6479274c3262eabe121bac3b8510c1aea1d378",
+      "parents": ["e8625bba82997d5fd199d807993fee4c77ba9563"],
+      "subject": "Add parser module",
+      "time": 1780315200
+    },
+    {
+      "authorEmail": "ada@example.com",
+      "authorName": "Ada Moreno",
+      "graph": {
+        "color": 0,
+        "curves": [],
+        "isMerge": false,
+        "lane": 0,
+        "width": 1
+      },
+      "oid": "e8625bba82997d5fd199d807993fee4c77ba9563",
+      "parents": [],
+      "subject": "Initial commit",
+      "time": 1780306200
+    }
+  ],
+  "refs": {
+    "branches": [
+      {
+        "ahead": 0,
+        "behind": 0,
+        "isHead": false,
+        "name": "feature/graph",
+        "oid": "f1af40cb5f82083327e62f9f2d1015a655092ca2",
+        "upstream": "origin/feature/graph",
+        "upstreamBranch": "feature/graph",
+        "upstreamGone": false,
+        "upstreamRemote": "origin"
+      },
+      {
+        "ahead": 0,
+        "behind": 0,
+        "isHead": false,
+        "name": "feature/line-staging",
+        "oid": "e710cf9d8cbdff6bf20ee57a1ce59ad10471572e",
+        "upstream": null,
+        "upstreamBranch": null,
+        "upstreamGone": false,
+        "upstreamRemote": null
+      },
+      {
+        "ahead": 0,
+        "behind": 0,
+        "isHead": false,
+        "name": "feature/parser",
+        "oid": "9d10257abc8176b58d5994c036468c445223c929",
+        "upstream": null,
+        "upstreamBranch": null,
+        "upstreamGone": false,
+        "upstreamRemote": null
+      },
+      {
+        "ahead": 2,
+        "behind": 0,
+        "isHead": true,
+        "name": "main",
+        "oid": "199ef748bd9962d1edc78843bc265012c4b776ff",
+        "upstream": "origin/main",
+        "upstreamBranch": "main",
+        "upstreamGone": false,
+        "upstreamRemote": "origin"
+      },
+      {
+        "ahead": 0,
+        "behind": 0,
+        "isHead": false,
+        "name": "release/0.1",
+        "oid": "c8d53eb6661d823ec7c741d237d09443f5a91055",
+        "upstream": null,
+        "upstreamBranch": null,
+        "upstreamGone": false,
+        "upstreamRemote": null
+      }
+    ],
+    "head": {
+      "branch": "main",
+      "oid": "199ef748bd9962d1edc78843bc265012c4b776ff"
+    },
+    "remotes": [
+      {
+        "branches": [
+          {
+            "fullName": "origin/feature/graph",
+            "name": "feature/graph",
+            "oid": "f1af40cb5f82083327e62f9f2d1015a655092ca2"
+          },
+          {
+            "fullName": "origin/feature/remote-only",
+            "name": "feature/remote-only",
+            "oid": "4a10923ae7555e93e56098b222224a0bf12b50af"
+          },
+          {
+            "fullName": "origin/main",
+            "name": "main",
+            "oid": "bac1b91c0ee84e1ba35e100632be5b622f0b9d15"
+          }
+        ],
+        "name": "origin",
+        "pushUrl": null,
+        "url": "https://github.com/tylia-dev/tylia-demo.git"
+      }
+    ],
+    "stashes": [
+      {
+        "message": "On main: WIP: tweak greeting",
+        "name": "stash@{0}",
+        "oid": "704b48cc6ba1a841a9be9398f3fdba624ba66ca3",
+        "time": 1780688400
+      }
+    ],
+    "tags": [
+      {
+        "annotated": true,
+        "name": "v0.1.0",
+        "oid": "c96a0256ea80a5557bfabf0d253e4d92c5161eea"
+      },
+      {
+        "annotated": false,
+        "name": "v0.1.1",
+        "oid": "c8d53eb6661d823ec7c741d237d09443f5a91055"
+      }
+    ]
+  },
+  "repo": {
+    "gitDir": "/home/ada/code/tylia-demo/.git",
+    "name": "tylia-demo",
+    "path": "/home/ada/code/tylia-demo"
+  },
+  "segments": [
+    [1, 1, 5, 9],
+    [1, 3, 98, 113],
+    [2, 4, 100, 119],
+    [1, 5, 122, 123],
+    [1, 6, 126, 135],
+    [0, 0, 1, 147]
+  ],
+  "status": {
+    "ahead": 2,
+    "behind": 0,
+    "branch": "main",
+    "entries": [
+      {
+        "conflicted": false,
+        "oldPath": null,
+        "path": "src/graph/curves.rs",
+        "staged": "added",
+        "unstaged": null
+      },
+      {
+        "conflicted": false,
+        "oldPath": null,
+        "path": "src/parser.rs",
+        "staged": null,
+        "unstaged": "modified"
+      },
+      {
+        "conflicted": false,
+        "oldPath": null,
+        "path": "notes.md",
+        "staged": null,
+        "unstaged": "untracked"
+      }
+    ],
+    "headOid": "199ef748bd9962d1edc78843bc265012c4b776ff",
+    "operation": null,
+    "upstream": "origin/main"
+  }
+}
