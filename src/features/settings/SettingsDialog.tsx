@@ -15,7 +15,7 @@ import { Dialog as D } from "radix-ui";
 import { useMemo, useState, type KeyboardEvent, type ReactNode } from "react";
 
 import { useActionRegistry, type KnownAction } from "@/app/actions";
-import { themeOptions } from "@/app/AppearanceMenu";
+import { themeOptions } from "@/app/themeOptions";
 import { appVersion, platform } from "@/app/boot";
 import { effectiveShortcut, eventShortcut, normalizeShortcut } from "@/app/keyboard";
 import { useOverlays, type SettingsSection } from "@/app/overlays";

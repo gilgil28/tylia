@@ -476,3 +476,6 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   - **Text:** dark `--text-secondary` went from #A2A9B5 to #ADB3BE and `--text-muted`
     from #8C94A1 to #98A0AC, so muted text keeps ≥ 4.5:1 on the lighter raised surfaces.
     `pnpm contrast` passes.
+- **2026-10-21 — Settings in the title bar.** The app's Settings (gear) has its own
+  title-bar button. It replaces the Appearance menu: theme and title-bar style are in
+  Settings → General (and the palette).

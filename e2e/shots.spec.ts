@@ -108,14 +108,6 @@ for (const theme of THEMES) {
       await shot(page, `repo-columns-menu-${theme}`);
     });
 
-    test("appearance menu", async ({ page }) => {
-      await page.setViewportSize(SIZES[0]);
-      await open(page, theme);
-      await page.getByRole("button", { name: "Appearance" }).click();
-      await expect(page.getByRole("menuitemradio", { name: "Dark" })).toBeVisible();
-      await shot(page, `menu-appearance-${theme}`);
-    });
-
     test("gallery", async ({ page }) => {
       await page.setViewportSize({ width: 1280, height: 800 });
       await open(page, theme, "", "#/gallery");

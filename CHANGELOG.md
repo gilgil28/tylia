@@ -32,6 +32,8 @@ can change behaviour.
   own row above the history.
 - **Dark theme:** panels (sidebar, toolbar, headers) and menus are lighter, so they stand
   apart from the history and diffs. Grey text is slightly lighter to keep its contrast.
+- **Settings** has its own button in the title bar. It replaces the theme menu: the theme
+  is in Settings → General and in the palette.
 
 ### Fixed
 

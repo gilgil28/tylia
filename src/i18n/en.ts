@@ -11,7 +11,7 @@ export const en = {
   "titlebar.tabs": "Open repositories",
   "titlebar.closeTab": "Close {name}",
   "titlebar.newTab": "New tab",
-  "titlebar.appearance": "Appearance",
+  "titlebar.settings": "Settings",
 
   "theme.label": "Theme",
   "theme.system": "System",

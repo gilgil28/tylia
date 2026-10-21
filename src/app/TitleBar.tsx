@@ -1,7 +1,11 @@
-import { TabStrip } from "@/features/repo-tabs/TabStrip";
+import { Settings } from "lucide-react";
 
-import { AppearanceMenu } from "./AppearanceMenu";
+import { TabStrip } from "@/features/repo-tabs/TabStrip";
+import { t } from "@/i18n";
+import { IconButton } from "@/ui/IconButton";
+
 import { platform } from "./boot";
+import { useOverlays } from "./overlays";
 import { useSettings } from "./settings";
 import { WindowControls } from "./WindowControls";
 
@@ -22,7 +26,12 @@ export function TitleBar() {
       <TabStrip />
       <div data-tauri-drag-region className="h-full flex-1" />
       <div className="flex items-center gap-1 px-2">
-        <AppearanceMenu />
+        <IconButton
+          icon={Settings}
+          label={t("titlebar.settings")}
+          shortcut="Mod+,"
+          onClick={() => useOverlays.getState().openSettings()}
+        />
       </div>
       {custom && platform !== "macos" && <WindowControls platform={platform} />}
     </header>

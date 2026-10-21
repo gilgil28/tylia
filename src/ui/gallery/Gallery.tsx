@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
-import { themeOptions } from "@/app/AppearanceMenu";
+import { themeOptions } from "@/app/themeOptions";
 import { useSettings } from "@/app/settings";
 import { DiffSection } from "@/features/diff/DiffGallerySection";
 
