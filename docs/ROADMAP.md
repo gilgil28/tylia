@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 6 — Release** (built and verified locally; awaiting review). Phases 0–4 approved; Phase 5 delivered 2026-10-20. Phase 3's SSH acceptance passed locally on 2026-10-21; the GitHub run is still open.
+Current phase: **Phase 7 — Distribution, OS integration and polish** (planned 2026-10-21; not started). Phases 0–6 delivered; v0.1.0 is tagged locally (not pushed). The GitHub acceptance run from Phase 3 is still open.
 
 ## Product vision
 
@@ -264,6 +264,284 @@ both themes, acceptance list ticked, a short summary to the user, and a **stop**
     - **Native file picker / drop:** not driven by automation.
     - **Screen reader by ear:** no hands-on listening test with a real screen reader.
 
+- Follow-ups after the Phase 6 review (2026-10-21), each in its own commit:
+  - Open in terminal.
+  - Path search with suggestions from history.
+  - Commit and branch conventions with a commit-msg hook.
+  - Push / pull / fetch feedback.
+  - Commit button.
+  - History search row.
+  - Last fetch in Fetch's tooltip.
+  - Lighter dark panels.
+  - Settings button replacing the theme menu.
+  - Tooltip and dialog-animation fixes.
+  - Repository settings (remotes with HTTPS ↔ SSH, SSH key, saved sign-ins, identity).
+
+### Phase 7 — Distribution, OS integration and polish
+
+**Goal:** Tylia installs the way each platform expects, from the stores and package
+managers people use:
+
+- **Windows:** branded NSIS `.exe` (plus MSI), winget, Scoop.
+- **macOS:** branded dmg, Homebrew cask.
+- **Linux:** AppImage / deb / rpm, AUR (`tylia-bin` and `tylia`), Flathub.
+
+It also opens from the file manager and the command line, builds and tests faster with a
+small `target/`, and adds three long-requested power features. It ends with **v0.2.0**.
+
+**How to run this phase (clean session):**
+
+- **Before starting:**
+  - Read `CLAUDE.md`, this section, `docs/RELEASING.md`, `CONTRIBUTING.md` → "Commits and
+    branches" and `docs/DESIGN.md`.
+  - The decisions marked **Decide** below have a recommendation; confirm them with the
+    user before building that part.
+- **While working:**
+  - Work through the workstreams in order (A first: it makes everything after it faster).
+  - One commit per feature, bug or fix, each on its own `<kind>/<topic>` branch,
+    fast-forwarded into `main` once it is approved. Never bundle (user rule, 2026-10-21).
+  - Verify every pinned version against crates.io / npm before adding it, and justify
+    each new dependency in its commit body (what, why, license).
+  - The user tests in their own repositories (read-only: `C:\Dev\android\BeamerV3`) and
+    runs release builds from `target\release\tylia.exe`. Use scratch repositories in
+    `C:\Dev\tylia-test-repos` for anything that writes.
+- **The user provides** (ask at the start; nothing is published without them):
+  - the GitHub repository `tylia-dev/tylia` pushed, with the `TAURI_SIGNING_*` secrets;
+  - an AUR account with an SSH key;
+  - a Flathub submission (GitHub account);
+  - a fork for winget-pkgs PRs (or a token for an automation);
+  - a Homebrew tap repository (`tylia-dev/homebrew-tap`);
+  - a Scoop bucket repository (`tylia-dev/scoop-bucket`).
+
+#### A. Build hygiene (first)
+
+`target/` reached 29.7 GB on 2026-10-21:
+
+- **`debug/incremental`, 13.2 GB:** 23 stale `tylia_lib` sessions alone took 7.6 GB.
+- **`debug/deps`, 11.6 GB:** full debug info for every dependency, 3.3 GB of `.pdb`
+  files, and about 16 integration-test executables that each link all of `tylia-git`.
+- **`debug/build`, 2.2 GB.**
+- **`release`, 2.4 GB.**
+
+The items:
+
+- [ ] Debug info: `[profile.dev] debug = "line-tables-only"` and, for dependencies,
+      `[profile.dev.package."*"] debug = false`, so dependencies carry none and our
+      crates keep line numbers for panics and backtraces. Measure `target/` before and after a full `cargo test`
+      plus a `tauri dev` build, and record both numbers here.
+- [ ] Merge `crates/tylia-git/tests/*.rs` into one integration-test binary
+      (`tests/it/main.rs` with one module per current file, keeping `tests/common`). That
+      is one link instead of about 16. Test names and filters must keep working, e.g.
+      `cargo test -p tylia-git --test it flow`.
+- [ ] Release `target/` is 2.4 GB, but almost none of it ships: `tylia.exe` is 15.8 MB
+      and the installers are 4–6 MB. The rest is build cache: - 423 compiled libraries (`.rlib`, 1.0 GB, larger because `lto = true` keeps LLVM
+      bitcode in them); - their metadata (`.rmeta`, 0.6 GB); - proc-macro DLLs with their `.lib` / `.pdb` (0.3 GB).
+
+      `windows` (~100 MB each) and `tauri-utils` are each built twice, once with
+      build-script features and once for the app. Check `cargo tree -d -e normal,build`
+      and feature unification; consider `lto = "thin"` if release builds or the cache
+      matter more than the last few % of binary size. Record the binary size before and
+      after.
+
+- [ ] CI: cache with `Swatinem/rust-cache` keyed per job. Run the Linux bindings check
+      without a second full build.
+- [ ] Document `cargo clean` and these settings in CONTRIBUTING.md ("Disk space").
+- **Acceptance:** after `cargo clean` and one `cargo test --workspace` plus one `pnpm
+tauri dev` build, `target/` is under 8 GB on Windows; full `cargo test` wall time is
+  no worse than before.
+
+#### B. Artwork and resources
+
+The app icon (`src-tauri/icons/app-icon.svg`, the "y" drawn as two graph lanes) is the
+one source. Everything else is generated from it, and the generators are committed.
+
+- [ ] `scripts/artwork.ts` (`pnpm artwork`) renders the SVG and the installer images with
+      Playwright (already a dev dependency) and writes BMPs with a small BMP encoder
+      (24-bit; no new dependency). Then it runs `pnpm tauri icon` for the app icons. It
+      produces:
+  - **App icons:** `.ico` (16, 24, 32, 48, 64, 256), `.icns`, Linux PNGs 32–512, the
+    Windows Store tiles, and `website/favicon.svg` / `assets/icon-256.png` from the same
+    source.
+  - **NSIS:** `bundle.windows.nsis.installerIcon` (the app `.ico`), `headerImage` 150×57
+    BMP and `sidebarImage` 164×314 BMP (wordmark on `--bg-app` dark, calm, no
+    gradients).
+  - **MSI (WiX):** `bundle.windows.wix.bannerPath` 493×58 and `dialogImagePath` 493×312.
+  - **macOS dmg:** `bundle.macOS.dmg.background` (660×400 @1x and @2x), `windowSize`,
+    `appPosition` and `applicationFolderPosition`, so the window shows the app, an arrow
+    and Applications.
+  - **Open Graph image** for the website, 1200×630.
+- [ ] Screenshots: refresh `docs/screenshots/*` (README) and `website/assets/*` from
+      `pnpm shots`. Since they were taken, the Commit button, search row, lighter dark
+      panels and Settings button have landed. Add a "screenshots" spec that renders the
+      exact README / website set at 2× in both themes, so a refresh is one command.
+- [ ] README and website copy updated for v0.2.0 features and the new install channels.
+- **Acceptance:** `pnpm artwork` reproduces every committed image byte-for-byte. The
+  installers show Tylia's icon, header and sidebar instead of Tauri / NSIS defaults
+  (screenshots of each installer page reviewed in both themes where they apply).
+
+#### C. Installers and distribution channels
+
+Windows:
+
+- [ ] **NSIS `.exe`, the primary Windows download:**
+  - **Install mode:** `installMode: "currentUser"` (no admin needed). **Decide**: also
+    allow a per-machine install with `"both"` (recommendation: `"currentUser"`; the MSI
+    covers managed per-machine installs).
+  - **Shortcuts and uninstall:** Start Menu folder `Tylia`, a desktop shortcut as a
+    checkbox (unchecked), and the uninstaller keeps the user's settings unless they
+    tick a box. Ask NSIS: does it offer that? If not, use `installerHooks`.
+  - **Language:** English only.
+  - **Hooks:** `installerHooks` (`src-tauri/windows/hooks.nsh`) for OS integration (D).
+- [ ] **MSI:** the same branding and the same registry entries, via a WiX
+      `fragmentPaths` fragment.
+- [ ] **winget:** manifest `tylia-dev.Tylia` (installer type `nullsoft`, user scope).
+      Submitted to microsoft/winget-pkgs. The release workflow opens the update PR on
+      each release (e.g. `vedantmgoyal9/winget-releaser`; verify the current action and
+      its license first).
+- [ ] **Scoop:** a bucket `tylia-dev/scoop-bucket` with `tylia.json`, `checkver` and
+      `autoupdate` against GitHub releases. The NSIS installer can't be "portable", so
+      the manifest uses the release's plain zipped binary. **Decide**: add
+      `uploadPlainBinary` and a zip to the release (recommendation: yes, a
+      `Tylia_<v>_x64_portable.zip` with `tylia.exe`; settings still go to `%APPDATA%`).
+
+macOS:
+
+- [ ] **dmg** branding (B).
+- [ ] **Homebrew cask** `tylia` in `tylia-dev/homebrew-tap`, with url, sha256,
+      `auto_updates true`, and a `zap` stanza for
+      `~/Library/Application Support/dev.tylia.app`. Move it to homebrew-cask once the
+      project meets its notability rules.
+- [ ] **Unsigned apps:** the cask and README explain the Gatekeeper step until there is a
+      Developer ID (docs/RELEASING.md).
+
+Linux:
+
+- [ ] **Desktop entry and AppStream:**
+  - `Categories=Development;RevisionControl;`, `Keywords=git;version control;`,
+    `StartupWMClass`, and `MimeType=inode/directory;`, so file managers offer "Open
+    With Tylia" (D).
+  - AppStream `dev.tylia.app.metainfo.xml` (summary, description, screenshots from B,
+    releases from CHANGELOG, OARS, `content_rating`), validated with `appstreamcli
+validate`.
+  - Shipped in deb / rpm / AppImage (`bundle.linux.*.files` / desktop template).
+- [ ] **AUR:**
+  - **`tylia-bin`:** add the `.desktop` / metainfo checks.
+  - **`tylia` (build from source):** `makedepends=(rust cargo nodejs pnpm git)`,
+    `pnpm install --frozen-lockfile`, `pnpm tauri build --no-bundle`, then install the
+    binary, the desktop file, metainfo, icons and licenses. Verify with makepkg in the
+    Arch container used in Phase 6.
+  - **Automation:** a release job pushes both packages to the AUR (an SSH deploy key as
+    a secret), or `packaging/aur/update.sh` stays manual. **Decide** (recommendation:
+    automate after the first manual release).
+- [ ] **Flathub `dev.tylia.app`:**
+  - **Decide how Git is found (recommendation in bold):**
+    1. **Bundle Git in the Flatpak** (a manifest module built from the Git release
+       tarball) and talk to the user's ssh-agent with `--socket=ssh-auth`. A sandbox
+       that works on its own, and Flathub reviewers accept it.
+    2. Run the host's Git with `flatpak-spawn --host git`
+       (`--talk-name=org.freedesktop.Flatpak`): exact parity with the CLI, but it
+       weakens the sandbox and Flathub may refuse it.
+
+    Offer option 2 as Settings → Git → "Use the system's Git", only when running in a
+    Flatpak.
+
+  - **Permissions:** `--filesystem=home` (repositories live anywhere under home; explain
+    in the submission), `--share=network`, `--socket=wayland`, `--socket=fallback-x11`,
+    `--device=dri`, plus GPG agent access for signed commits.
+  - **Credential helpers:** the system's Git Credential Manager / libsecret aren't
+    reachable from the sandbox, so Tylia's askpass dialogs handle sign-in.
+    `credential.helper=cache` (or libsecret via the portal, if available) is the
+    default inside the Flatpak; document it.
+  - **Updates:** in-app updates off (Flatpak updates through Software / Flathub).
+    Detect `FLATPAK_ID` and say so in Settings → General.
+  - **Manifest and verification:** the manifest lives in `packaging/flatpak/`, builds
+    from the release tarball, and its generated cargo / npm sources are checked in.
+    Verify with `flatpak-builder` (Docker or a Linux VM) and `flatpak run`.
+- **Acceptance:**
+  - Every channel installs v0.2.0 on a clean machine or container (Windows Sandbox for
+    NSIS / MSI / winget / Scoop; the Arch container for both AUR packages;
+    `flatpak-builder` for Flathub; a GitHub macOS runner for the cask / dmg).
+  - Uninstall leaves no files except the user's settings (unless they chose to remove
+    them).
+  - In-app update is offered only where it can install, and every other channel says
+    how to update.
+
+#### D. OS integration
+
+- [ ] **One window, many tabs.** Opening Tylia again (or with a path) focuses the running
+      window and opens the path as a tab (`tauri-plugin-single-instance`; verify its
+      version and license; on Linux it uses D-Bus, which works in the Flatpak).
+- [ ] **Command line:**
+  - **`tylia <path>`** (the path or any folder inside a repository) opens it; `tylia`
+    alone shows the window; `tylia --help` / `--version`. Paths are resolved against
+    the caller's working directory before they are handed to the running instance.
+  - **Linux:** the binary is already on `PATH` (deb / rpm / AUR / Flatpak via `flatpak
+run`).
+  - **Windows:** an NSIS option "Add Tylia to PATH" (user `PATH`, removed on uninstall).
+  - **macOS:** "Install the `tylia` command" in the palette, which links
+    `/usr/local/bin/tylia` (asks for permission; same pattern as VS Code).
+- [ ] **File managers:**
+  - **Windows:** "Open in Tylia" on folders and folder backgrounds in Explorer
+    (`HKCU\Software\Classes\Directory\shell\Tylia` and
+    `Directory\Background\shell\Tylia`, with icon). Written by the NSIS hook and the
+    WiX fragment, removed on uninstall. Windows 11 shows it under "Show more options";
+    note that, since a top-level entry needs a packaged app (MSIX), which is out of scope.
+  - **Linux:** `MimeType=inode/directory` (C) gives "Open With Tylia" in Nautilus,
+    Dolphin and Thunar.
+  - **macOS:** register folders as openable (`CFBundleDocumentTypes` with
+    `public.folder`, role Viewer), so a folder dropped on the Dock icon, or opened via
+    "Open With", opens as a tab.
+- **Acceptance:** each entry point opens the right repository (or the welcome screen with
+  "not a repository" for other folders) in the already-running window. Tested on
+  Windows; Linux in the container under Xvfb with `gio open`; the macOS part on a CI
+  runner (or marked unverified).
+
+#### E. Power features (backlog)
+
+- [ ] **Create and apply patches:**
+  - **Create:** from one or more selected commits (`git format-patch`, to a folder the
+    user picks) or from the working copy / staged changes (`git diff [--cached]
+--binary` to a `.patch` file).
+  - **Apply:** apply a `.patch` / `.diff` (or mailbox) file: first `git apply --check` /
+    `git am --3way` dry-run style. Show what it touches, then apply, or with `am`
+    create commits. Conflicts use the existing conflict banner.
+  - **Tests:** tylia-git integration tests (binary files, renames, a patch that doesn't
+    apply, CRLF).
+- [ ] **Export an archive** of any commit, branch or tag, with
+      `git archive --format=zip|tar.gz --prefix=<repo>-<ref>/`, to a file the user
+      picks, from history / sidebar context menus and the palette. Integration tests check the archive's file list.
+- [ ] **Custom actions** (Sourcetree's "custom actions"):
+  - **Where:** user-defined commands in Settings → Actions.
+  - **Each action has:** a name, a program, arguments with variables (`{repo}`,
+    `{sha}`, `{shortSha}`, `{branch}`, `{file}`, `{files}`), where it appears (commit,
+    file or branch menus; the palette), "ask before running" and "show output".
+  - **How they run:** without a shell. The program is started with an argument list
+    after substitution, so a variable can never inject commands (a file named
+    `; rm -rf ~` stays one argument).
+  - **Output:** in a panel, with exit code and stderr; failures toast with Details.
+  - **Storage:** in `settings.json`.
+  - **Tests:** unit tests for substitution and quoting; e2e with the mock; a real-app
+    check with a harmless script.
+- **Acceptance:** each feature is reachable from its context menus and the palette, has
+  integration / unit tests and e2e coverage, and passes axe in both themes.
+
+#### F. Carried over (needs the user's accounts or hardware)
+
+- [ ] GitHub acceptance run (HTTPS token and SSH) once the repository is pushed (Phase 3).
+- [ ] First real release: push `main` and a tag, check the draft and every asset,
+      publish, and confirm tylia.dev's links (docs/RELEASING.md).
+- [ ] macOS: run the dmg on a Mac (or a hosted runner with screenshots).
+- [ ] Linux performance on the user's CachyOS machine: `git/git` first rows and
+      scrolling, against the Phase 1 numbers.
+- [ ] Code signing when certificates exist (Azure Trusted Signing / Apple Developer ID;
+      docs/RELEASING.md).
+
+#### Release
+
+- [ ] CHANGELOG `[0.2.0]`, version bump in `package.json` and `Cargo.toml`, tag
+      `v0.2.0`, release through every channel in C. Then update the ROADMAP status and
+      stop for review.
+
 ## Feature inventory (Sourcetree parity reference)
 
 Long-standing Sourcetree capabilities, used to judge completeness. ✅ = planned in the
@@ -288,8 +566,8 @@ phases above, ⏳ = later / backlog, ✗ = intentionally out of scope for v1.
 | Conflicts    | Banner, external merge tool, mark resolved, continue/abort                          | ✅ P4                                                      |
 | Advanced     | Interactive rebase, blame ("Annotate"), log selected file                           | ✅ P5                                                      |
 | Advanced     | Submodules, Git LFS, git-flow, hg-flow                                              | ✅ P5 (submodules) / ⏳ LFS / ✅ P6 git-flow / ✗ Mercurial |
-| Advanced     | Custom actions (user scripts in context menu)                                       | ⏳                                                         |
-| Advanced     | Patch create/apply, archive export                                                  | ⏳                                                         |
+| Advanced     | Custom actions (user scripts in context menu)                                       | ⏳ P7                                                      |
+| Advanced     | Patch create/apply, archive export                                                  | ⏳ P7                                                      |
 | Advanced     | Pull request creation on hosting providers                                          | ✗ v1                                                       |
 | UX           | Terminal button, Explorer/Finder button, settings, themes                           | ✅                                                         |
 
