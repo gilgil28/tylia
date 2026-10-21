@@ -7,6 +7,7 @@ import { useRepoUi } from "@/features/repo/repo-store";
 import { t } from "@/i18n";
 import type { PullMode, RefsSnapshot } from "@/ipc";
 import { Button } from "@/ui/Button";
+import { CountBadge } from "@/ui/CountBadge";
 import { Menu } from "@/ui/Menu";
 import { Popover, PopoverAnchor, PopoverContent } from "@/ui/Popover";
 import { ProgressRing } from "@/ui/ProgressRing";
@@ -29,18 +30,6 @@ const PULL_MODES: PullMode[] = ["merge", "rebase", "ffOnly"];
 const AUTO_FETCH_MINUTES = [0, 5, 10, 30];
 /** Labels give way to icons when the toolbar (a container) is narrow. */
 const LABEL = "@max-[72rem]:sr-only";
-
-function CountBadge({ count, label }: { count: number; label: string }) {
-  if (count <= 0) return null;
-  return (
-    <span
-      aria-label={label}
-      className="min-w-4 rounded-full bg-accent-fill px-1 text-center text-caption leading-4 font-semibold text-on-accent tabular-nums"
-    >
-      {count > 999 ? "999+" : count}
-    </span>
-  );
-}
 
 /** What a running operation is doing, with Cancel. */
 function OperationPanel({ repo, op }: { repo: string; op: RunningOperation }) {

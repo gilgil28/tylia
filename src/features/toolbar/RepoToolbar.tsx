@@ -6,6 +6,7 @@ import {
   GitBranchPlus,
   PanelLeft,
   Search,
+  GitCommitHorizontal,
   SquareTerminal,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -22,10 +23,11 @@ import { RemoteDialogs } from "@/features/remote/RemoteDialogs";
 import { useAutoFetch } from "@/features/remote/useAutoFetch";
 import { openTerminal } from "@/features/repo/openTerminal";
 import { useRepoUi } from "@/features/repo/repo-store";
-import { t } from "@/i18n";
+import { plural, t } from "@/i18n";
 import { ipc, type RefsSnapshot, type WorkingStatus } from "@/ipc";
 import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
+import { CountBadge } from "@/ui/CountBadge";
 import { IconButton } from "@/ui/IconButton";
 import { SegmentedControl } from "@/ui/SegmentedControl";
 import { Tooltip } from "@/ui/Tooltip";
@@ -90,10 +92,12 @@ export function RepoToolbar({
   active: boolean;
 }) {
   const openBranchDialog = useBranchDialog((s) => s.open);
-  const hasChanges = (status?.entries.length ?? 0) > 0;
+  const changed = status?.entries.length ?? 0;
+  const hasChanges = changed > 0;
   const updateLayout = useWorkspace((s) => s.updateLayout);
   const setView = useRepoUi((s) => s.setView);
   const inputRef = useRef<HTMLInputElement>(null);
+  const requestFocus = useRepoUi((s) => s.requestFocus);
   useAutoFetch(repo, (refs?.remotes.length ?? 0) > 0);
   const lfs = useQuery({
     queryKey: ["lfs", repo],
@@ -127,6 +131,15 @@ export function RepoToolbar({
         run: () => updateLayout(repo, { scope: "head" }),
       },
       {
+        id: "changes.commit",
+        title: t("actions.commit"),
+        group: "changes",
+        icon: GitCommitHorizontal,
+        shortcut: "Mod+Shift+C",
+        keywords: ["message", "changes"],
+        run: () => requestFocus("composer"),
+      },
+      {
         id: "history.search",
         title: t("search.label"),
         group: "history",
@@ -157,6 +170,25 @@ export function RepoToolbar({
       />
       <BranchIndicator repo={repo} refs={refs} status={status} />
       <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-line" />
+      <Tooltip
+        content={
+          changed > 0
+            ? t("toolbar.commitHint", { files: plural("count.files", changed) })
+            : t("toolbar.commitNothing")
+        }
+      >
+        <Button
+          icon={GitCommitHorizontal}
+          variant={changed > 0 ? "secondary" : "ghost"}
+          onClick={() => requestFocus("composer")}
+        >
+          <span className="@max-[72rem]:sr-only">{t("toolbar.commit")}</span>
+          <CountBadge
+            count={changed}
+            label={t("toolbar.commitCount", { files: plural("count.files", changed) })}
+          />
+        </Button>
+      </Tooltip>
       <RemoteButtons repo={repo} refs={refs} />
       <RemoteDialogs repo={repo} refs={refs} />
       <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-line @max-[48rem]:hidden" />

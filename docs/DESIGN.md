@@ -152,7 +152,7 @@ The checked-out branch's lane is always colour 1 (accent family) when it is visi
 ┌───────────────────────────────────────────────────────────────────────────────┐
 │ ● ● ●  [ tylia ▾ ×] [ my-app × ] [ + ]                        ⌘K   ─  □  ×   │ title bar + repo tabs (38)
 ├───────────────────────────────────────────────────────────────────────────────┤
-│ ⎇ main ▾  ↑2 ↓0 │  ⟳ Fetch   ↓ Pull   ↑ Push ²  │  ⑂ Branch  ⊕ Stash  │  ⋯   │ toolbar (44)
+│ ⎇ main ▾ ↑2 │ ⊸ Commit ³ │ ⟳ Fetch  ↓ Pull ¹  ↑ Push ² │ ⑂ ⊕ ⋯       ⌨ 📁 │ toolbar (44)
 ├──────────────┬────────────────────────────────────────────────────────────────┤
 │ WORKSPACE    │  Graph │ Description                     │ Author  │ Date │ Hash│
 │  ◉ Changes 3 │  ●─┐   │ [main] [origin/main] Fix parser │ GC      │ 2h   │ a1b2│
@@ -455,3 +455,7 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   darkened (light) / lightened (dark), and `pnpm contrast` checks them on content, panels,
   menus and selected rows. At 200% zoom (640 px) the toolbar keeps Fetch / Pull / Push and
   search; the branch-scope switch and Branch / Stash buttons move to the palette.
+- **2026-10-21 — Commit button in the toolbar.** First after the branch, with the number
+  of changed files in the same accent count as Push / Pull. It is bordered (secondary)
+  when there is something to commit and quiet (ghost) when there isn't, and opens Changes
+  with the cursor in the commit message (also Mod+Shift+C and the palette).

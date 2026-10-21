@@ -22,6 +22,8 @@ can change behaviour.
     offered first.
   - **Prefixes:** typing `path:` (or `file:`, `author:`, `message:`, `hash:`) in the
     search box switches what it searches.
+- **Commit button in the toolbar,** with the number of changed files. It opens Changes
+  with the cursor in the message box (also Ctrl/Cmd+Shift+C).
 
 ### Fixed
 

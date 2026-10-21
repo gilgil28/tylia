@@ -161,7 +161,7 @@ test("push after commit", async ({ page }) => {
   await page.getByRole("button", { name: "Stage all", exact: true }).click();
   await page.getByLabel("Commit message").fill("Tidy up");
   await page.getByText("Push after commit").click();
-  await page.getByRole("button", { name: /^Commit/ }).click();
+  await page.getByRole("button", { name: /^Commit(?! \d)/ }).click();
   await expect(toastText(page, "Pushed main to origin/main")).toBeVisible();
 });
 

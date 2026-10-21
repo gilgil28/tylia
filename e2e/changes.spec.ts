@@ -35,7 +35,8 @@ test("stages by drag and unstages by checkbox", async ({ page }) => {
 
 test("commit is enabled only with a message and staged changes", async ({ page }) => {
   await openChanges(page);
-  const commit = page.getByRole("button", { name: /^Commit/ });
+  // The composer's button (the toolbar's reads "Commit 3 files changed").
+  const commit = page.getByRole("button", { name: /^Commit(?! \d)/ });
   await expect(commit).toBeDisabled();
   await page.getByRole("textbox", { name: "Commit message" }).fill("Add curves");
   await expect(commit).toBeEnabled();

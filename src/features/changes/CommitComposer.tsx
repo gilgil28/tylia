@@ -1,5 +1,5 @@
 import { History } from "lucide-react";
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 
 import { shortHash } from "@/app/format";
 import { useSettings } from "@/app/settings";
@@ -30,6 +30,15 @@ const TITLE_HARD = 72;
 export function CommitComposer({ repo, stagedCount }: { repo: string; stagedCount: number }) {
   const draft = useRepoUi((s) => s.draft);
   const setDraft = useRepoUi((s) => s.setDraft);
+  const focusRequest = useRepoUi((s) => s.focusRequest);
+  const focusHandled = useRepoUi((s) => s.focusHandled);
+  const rootRef = useRef<HTMLDivElement>(null);
+  // The toolbar's Commit button lands here.
+  useEffect(() => {
+    if (focusRequest !== "composer") return;
+    rootRef.current?.querySelector("textarea")?.focus();
+    focusHandled();
+  }, [focusRequest, focusHandled]);
   const recent = useWorkspace((s) => s.recentMessages[repo]) ?? [];
   const addRecentMessage = useWorkspace((s) => s.addRecentMessage);
   const run = useRepoAction(repo);
@@ -79,6 +88,7 @@ export function CommitComposer({ repo, stagedCount }: { repo: string; stagedCoun
 
   return (
     <div
+      ref={rootRef}
       onKeyDown={onKeyDown}
       className="flex shrink-0 flex-col gap-2 border-t border-line bg-panel px-3 py-3"
     >
