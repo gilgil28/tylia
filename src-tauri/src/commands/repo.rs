@@ -7,8 +7,9 @@ use tauri::ipc::Channel;
 use tauri::{AppHandle, State};
 use ts_rs::TS;
 use tylia_git::{
-    CommitDetails, DiffRequest, FileDiff, HistoryBatch, LfsStatus, LogOptions, Progress,
-    RefsSnapshot, RepoInfo, SearchField, Submodule, WorkingStatus, Worktree,
+    CommitDetails, DiffRequest, FileDiff, HistoryBatch, LfsStatus, LogOptions, PathIndex,
+    PathSuggestion, Progress, RefsSnapshot, RepoInfo, SearchField, Submodule, WorkingStatus,
+    Worktree,
 };
 
 use crate::error::IpcError;
@@ -138,16 +139,67 @@ pub async fn get_diff(repo: String, request: DiffRequest) -> Result<FileDiff, Ip
     Ok(git()?.diff(Path::new(&repo), &request).await?)
 }
 
+/// Commit ids matching the search. A path query is resolved against every path the
+/// history has had (see tylia-git `paths.rs`): a file name anywhere, a path, a folder or
+/// wildcards; a single file follows renames.
 #[tauri::command]
 pub async fn search_history(
     repo: String,
     options: LogOptions,
     field: SearchField,
     query: String,
+    state: State<'_, AppState>,
 ) -> Result<Vec<String>, IpcError> {
-    Ok(git()?
+    let git = git()?;
+    if field == SearchField::Path {
+        let resolved = state
+            .path_indexes
+            .with_current(&git, &repo, |index| index.resolve(&query))
+            .await?;
+        return Ok(git
+            .search_paths(Path::new(&repo), &options, &resolved)
+            .await?);
+    }
+    Ok(git
         .search_log(Path::new(&repo), options, field, &query)
         .await?)
+}
+
+#[derive(Debug, Clone, Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export)]
+pub struct PathSuggestions {
+    pub items: Vec<PathSuggestion>,
+    /// The history is still being indexed: `items` are only current files so far.
+    pub indexing: bool,
+}
+
+/// Files and folders, from the whole history, whose name or path matches what's typed.
+#[tauri::command]
+pub async fn path_suggestions(
+    repo: String,
+    query: String,
+    limit: u32,
+    state: State<'_, AppState>,
+) -> Result<PathSuggestions, IpcError> {
+    let git = git()?;
+    let tracked = git.tracked_paths(Path::new(&repo)).await?;
+    let limit = limit.min(50) as usize;
+    let ready = state
+        .path_indexes
+        .with_ready(&git, &repo, |index| index.suggest(&query, &tracked, limit))
+        .await?;
+    Ok(match ready {
+        Some(items) => PathSuggestions {
+            items,
+            indexing: false,
+        },
+        None => PathSuggestions {
+            items: PathIndex::from_paths(tracked.iter().map(String::as_str))
+                .suggest(&query, &tracked, limit),
+            indexing: true,
+        },
+    })
 }
 
 /// Starts emitting `repo-changed` events for `repo` (idempotent).

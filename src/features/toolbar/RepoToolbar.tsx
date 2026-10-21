@@ -2,13 +2,11 @@ import {
   Archive,
   ArrowDown,
   ArrowUp,
-  ChevronDown,
   FolderOpen,
   GitBranchPlus,
   PanelLeft,
   Search,
   SquareTerminal,
-  X,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useRef } from "react";
@@ -25,22 +23,14 @@ import { useAutoFetch } from "@/features/remote/useAutoFetch";
 import { openTerminal } from "@/features/repo/openTerminal";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { t } from "@/i18n";
-import { ipc, type RefsSnapshot, type SearchField, type WorkingStatus } from "@/ipc";
+import { ipc, type RefsSnapshot, type WorkingStatus } from "@/ipc";
 import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
-import { cn } from "@/ui/cn";
 import { IconButton } from "@/ui/IconButton";
-import { Kbd } from "@/ui/Kbd";
-import { Menu } from "@/ui/Menu";
 import { SegmentedControl } from "@/ui/SegmentedControl";
 import { Tooltip } from "@/ui/Tooltip";
 
-const FIELDS: { value: SearchField; label: string; placeholder: string }[] = [
-  { value: "message", label: t("search.message"), placeholder: t("search.placeholder.message") },
-  { value: "author", label: t("search.author"), placeholder: t("search.placeholder.author") },
-  { value: "hash", label: t("search.hash"), placeholder: t("search.placeholder.hash") },
-  { value: "path", label: t("search.path"), placeholder: t("search.placeholder.path") },
-];
+import { HistorySearch } from "./HistorySearch";
 
 function BranchIndicator({
   repo,
@@ -102,11 +92,8 @@ export function RepoToolbar({
   const openBranchDialog = useBranchDialog((s) => s.open);
   const hasChanges = (status?.entries.length ?? 0) > 0;
   const updateLayout = useWorkspace((s) => s.updateLayout);
-  const search = useRepoUi((s) => s.search);
-  const setSearch = useRepoUi((s) => s.setSearch);
   const setView = useRepoUi((s) => s.setView);
   const inputRef = useRef<HTMLInputElement>(null);
-  const field = FIELDS.find((f) => f.value === search.field) ?? FIELDS[0]!;
   useAutoFetch(repo, (refs?.remotes.length ?? 0) > 0);
   const lfs = useQuery({
     queryKey: ["lfs", repo],
@@ -217,60 +204,7 @@ export function RepoToolbar({
           { value: "head", label: t("toolbar.currentBranch") },
         ]}
       />
-      <div
-        className={cn(
-          "flex h-7 w-72 min-w-0 items-center rounded-control @max-[64rem]:w-52 @max-[48rem]:w-40 border border-line bg-input transition-[border-color,box-shadow] duration-(--dur-fast)",
-          "focus-within:border-line-strong focus-within:shadow-(--focus-ring) hover:border-line-strong",
-        )}
-      >
-        <Menu.Root>
-          <Menu.Trigger
-            aria-label={`${t("search.by")}: ${field.label}`}
-            className="flex h-full shrink-0 items-center gap-1 rounded-l-control border-r border-line-subtle pr-1.5 pl-2 text-small text-fg-secondary outline-none hover:text-fg focus-visible:text-fg"
-          >
-            <Search size={14} strokeWidth={1.75} aria-hidden />
-            <span className="@max-[64rem]:sr-only">{field.label}</span>
-            <ChevronDown size={12} strokeWidth={2} aria-hidden />
-          </Menu.Trigger>
-          <Menu.Content align="start">
-            <Menu.Label>{t("search.by")}</Menu.Label>
-            <Menu.RadioGroup
-              value={search.field}
-              onValueChange={(v) => {
-                setSearch({ field: v as SearchField });
-                inputRef.current?.focus();
-              }}
-            >
-              {FIELDS.map((f) => (
-                <Menu.RadioItem key={f.value} value={f.value}>
-                  {f.label}
-                </Menu.RadioItem>
-              ))}
-            </Menu.RadioGroup>
-          </Menu.Content>
-        </Menu.Root>
-        <input
-          ref={inputRef}
-          value={search.query}
-          onChange={(e) => setSearch({ query: e.target.value })}
-          onKeyDown={(e) => e.key === "Escape" && setSearch({ query: "" })}
-          placeholder={field.placeholder}
-          aria-label={t("search.label")}
-          spellCheck={false}
-          className="h-full min-w-0 flex-1 bg-transparent px-2 text-fg outline-none placeholder:text-fg-muted"
-        />
-        {search.query ? (
-          <IconButton
-            icon={X}
-            label={t("search.clear")}
-            compact
-            className="mr-0.5"
-            onClick={() => setSearch({ query: "" })}
-          />
-        ) : (
-          <Kbd shortcut="Mod+F" className="mr-1.5 @max-[64rem]:hidden" />
-        )}
-      </div>
+      <HistorySearch repo={repo} inputRef={inputRef} recentPaths={layout.recentPaths} />
       {lfs.data?.used && (
         <Tooltip content={lfs.data.installed ? t("toolbar.lfs") : t("toolbar.lfsMissing")}>
           <span tabIndex={0} className="rounded-badge focus-ring">

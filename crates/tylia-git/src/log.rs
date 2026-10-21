@@ -42,7 +42,7 @@ pub struct LogOptions {
 }
 
 impl LogOptions {
-    fn revision_args(&self) -> Vec<&'static str> {
+    pub(crate) fn revision_args(&self) -> Vec<&'static str> {
         let order = match self.order {
             LogOrder::Date => "--date-order",
             LogOrder::Topo => "--topo-order",

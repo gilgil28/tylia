@@ -289,9 +289,52 @@ export const backend: Backend = {
             ? `${r.authorName} ${r.authorEmail}`.toLowerCase().includes(q)
             : field === "hash"
               ? r.oid.startsWith(q)
-              : fixture.commits[r.oid]?.files.some((f) => f.path.toLowerCase().includes(q)),
+              : fixture.commits[r.oid]?.files.some((f) => {
+                  const path = f.path.toLowerCase();
+                  // Like the backend: a name matches anywhere, a path or folder by prefix.
+                  return q.includes("/")
+                    ? path === q.replace(/\/$/, "") || path.startsWith(q.replace(/\/?$/, "/"))
+                    : path.split("/").includes(q) || path.split("/").pop()!.includes(q);
+                }),
       )
       .map((r) => r.oid);
+  },
+  pathSuggestions: async (_repo, query, limit) => {
+    const q = query.trim().toLowerCase();
+    const files = new Set<string>(["src/legacy_parser.rs"]);
+    for (const c of Object.values(fixture.commits)) for (const f of c.files) files.add(f.path);
+    const dirs = new Set<string>();
+    for (const f of files) {
+      const parts = f.split("/");
+      for (let i = 1; i < parts.length; i++) dirs.add(parts.slice(0, i).join("/"));
+    }
+    const name = (p: string) => p.split("/").pop()!.toLowerCase();
+    const rank = (p: string) =>
+      name(p) === q
+        ? 0
+        : name(p).startsWith(q)
+          ? 1
+          : name(p).includes(q)
+            ? 2
+            : p.toLowerCase().includes(q)
+              ? 3
+              : 9;
+    const items = [
+      ...[...files].map((path) => ({
+        path,
+        kind: "file" as const,
+        deleted: path === "src/legacy_parser.rs",
+      })),
+      ...[...dirs].map((d) => ({ path: `${d}/`, kind: "dir" as const, deleted: false })),
+    ]
+      .filter((s) => rank(s.path.replace(/\/$/, "")) < 9)
+      .sort(
+        (a, b) =>
+          rank(a.path.replace(/\/$/, "")) - rank(b.path.replace(/\/$/, "")) ||
+          a.path.length - b.path.length,
+      )
+      .slice(0, limit);
+    return { items, indexing: false };
   },
   watchRepo: async () => {},
   unwatchRepo: async () => {},

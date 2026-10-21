@@ -7,6 +7,7 @@ use tylia_git::Git;
 
 use crate::askpass::Askpass;
 use crate::error::IpcError;
+use crate::path_index::PathIndexes;
 use crate::settings::SettingsStore;
 use crate::ui_state::UiStateStore;
 use crate::watcher::RepoWatcher;
@@ -25,6 +26,8 @@ pub struct AppState {
     pub write_locks: Mutex<HashMap<String, Arc<tokio::sync::Mutex<()>>>>,
     /// Relays Git's credential and ssh prompts to the UI.
     pub askpass: Askpass,
+    /// Every path in each repository's history, for path search and its suggestions.
+    pub path_indexes: PathIndexes,
 }
 
 impl AppState {
@@ -37,6 +40,7 @@ impl AppState {
             operations: Mutex::default(),
             write_locks: Mutex::default(),
             askpass,
+            path_indexes: PathIndexes::default(),
         }
     }
 

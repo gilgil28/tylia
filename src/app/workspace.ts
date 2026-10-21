@@ -31,6 +31,8 @@ export interface RepoLayout {
   fileView: "flat" | "tree";
   /** "Not now" on the commit-graph offer. */
   commitGraphDismissed: boolean;
+  /** Recent path searches, newest first (suggested in the history search). */
+  recentPaths: string[];
 }
 
 export const DEFAULT_LAYOUT: RepoLayout = {
@@ -44,6 +46,7 @@ export const DEFAULT_LAYOUT: RepoLayout = {
   scope: "all",
   fileView: "flat",
   commitGraphDismissed: false,
+  recentPaths: [],
 };
 
 export type DiffMode = "unified" | "split";

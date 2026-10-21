@@ -57,6 +57,7 @@ export const backend: Backend = {
   getDiff: (repo, request) => invoke("get_diff", { repo, request }),
   searchHistory: (repo, options, field, query) =>
     invoke("search_history", { repo, options, field, query }),
+  pathSuggestions: (repo, query, limit) => invoke("path_suggestions", { repo, query, limit }),
   getBlame: (repo, path, rev, force) => invoke("get_blame", { repo, path, rev, force }),
   getFileHistory: (repo, path, rev, skip, limit) =>
     invoke("get_file_history", { repo, path, rev, skip, limit }),

@@ -20,6 +20,7 @@ mod integrate;
 mod log;
 mod ops;
 mod patch;
+mod paths;
 mod rebase;
 mod refs;
 mod remote;
@@ -49,6 +50,7 @@ pub use history::{GraphCell, HistoryBatch, HistoryRow, Segment, SegmentTracker};
 pub use integrate::{ConflictSide, FastForward, IntegrateOutcome, ResetMode};
 pub use log::{LogCommit, LogOptions, LogOrder, LogScope, SearchField};
 pub use patch::{LineAction, LinesRequest};
+pub use paths::{PathIndex, PathKind, PathQuery, PathSuggestion};
 pub use rebase::{RebaseTodo, TodoAction, TodoCommit, TodoItem};
 pub use refs::{
     Branch, Head, RefsSnapshot, Remote, RemoteBranch, Stash, Submodule, SubmoduleState, Tag,

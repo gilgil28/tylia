@@ -2,6 +2,7 @@ pub mod askpass;
 mod commands;
 mod error;
 mod operation;
+mod path_index;
 mod settings;
 mod state;
 mod terminal;
@@ -58,6 +59,7 @@ pub fn run() {
             commands::get_commit,
             commands::get_diff,
             commands::search_history,
+            commands::path_suggestions,
             commands::get_blame,
             commands::get_file_history,
             commands::watch_repo,

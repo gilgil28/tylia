@@ -13,6 +13,15 @@ can change behaviour.
   repository folder. It uses Windows Terminal (else PowerShell) on Windows, Terminal on
   macOS, and `$TERMINAL` or your desktop's terminal on Linux. Settings → General →
   Terminal picks another program.
+- **Search history by file:**
+  - **What you can type:** a file or folder name finds it in any folder, case doesn't
+    matter, and wildcards work (`*.gradle`, `src/**/*.rs`).
+  - **Renames:** a single file's search follows them.
+  - **Suggestions** come from every file and folder the history has had, so deleted and
+    renamed files appear too, marked "History only". Your recent path searches are
+    offered first.
+  - **Prefixes:** typing `path:` (or `file:`, `author:`, `message:`, `hash:`) in the
+    search box switches what it searches.
 
 ## [0.1.0] - 2026-10-21
 

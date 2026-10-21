@@ -31,6 +31,7 @@ import type { PullMode } from "./bindings/PullMode";
 import type { PullOutcome } from "./bindings/PullOutcome";
 import type { PushOutcome } from "./bindings/PushOutcome";
 import type { PushRequest } from "./bindings/PushRequest";
+import type { PathSuggestions } from "./bindings/PathSuggestions";
 import type { RebaseTodo } from "./bindings/RebaseTodo";
 import type { RefsSnapshot } from "./bindings/RefsSnapshot";
 import type { RepoChanged } from "./bindings/RepoChanged";
@@ -111,6 +112,9 @@ export interface Backend {
     field: SearchField,
     query: string,
   ): Promise<string[]>;
+  /** Files and folders from the whole history whose name or path matches `query` (for the
+   * path search); `indexing` while the history is still being read. */
+  pathSuggestions(repo: string, query: string, limit: number): Promise<PathSuggestions>;
   /** Blame at `rev`, or of the working copy with `null`. `force` skips the size limit. */
   getBlame(repo: string, path: string, rev: string | null, force: boolean): Promise<Blame>;
   /** Commits that changed `path` (following renames), newest first, from `rev` (`null`:

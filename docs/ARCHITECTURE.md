@@ -630,6 +630,20 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
     an app execution alias.
   - **Environment:** Tylia sets no variables on its own process, so the terminal inherits
     a clean one.
+- **Path search** (`crates/tylia-git/src/paths.rs`, `src-tauri/src/path_index.rs`):
+  - **Index:** every path the history has had (`log --stdin --no-renames --diff-filter=A
+--name-only`, refs fed on stdin) is kept per repository for the session.
+  - **Updates:** the next update walks only commits not reachable from the tips already
+    walked. That's about 5 s the first time on git/git, then milliseconds.
+  - **Resolving a query:** the search resolves what was typed (a name anywhere, a path,
+    a folder, wildcards; case ignored) into exact `:(literal)` pathspecs, which Git
+    searches with tree pruning and changed-path Bloom filters. A glob pathspec on git/git
+    takes 5–7 s, against 0.3 s for exact paths. A single file uses `--follow`. Over 200
+    matches fall back to one `:(glob,icase)` pathspec.
+  - **Suggestions** (`path_suggestions`) never wait for the first build: until it's
+    ready they rank tracked files and report `indexing`.
+  - **In the search box:** recent path searches (`RepoLayout.recentPaths`) and the
+    `path:`-style prefixes are handled by the history search box (`HistorySearch.tsx`).
 - **git-flow** (`crates/tylia-git/src/flow.rs`): plain Git, no git-flow binary. Setup is
   read from and written to `gitflow.branch.{master,develop}` and `gitflow.prefix.*`
   (CLI-compatible). Finish = `merge --no-ff` into the production branch (annotated tag
