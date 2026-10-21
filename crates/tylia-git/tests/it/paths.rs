@@ -1,8 +1,6 @@
 //! History path index and search by file, on temp repositories.
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{Git, LogOptions, LogOrder, LogScope, PathIndex, PathKind};
 
 fn git() -> Git {

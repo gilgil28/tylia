@@ -2,11 +2,9 @@
 //! refusals. The repositories' editors fail (`core.editor=false`, `sequence.editor=false`), so
 //! passing tests prove no editor was opened.
 
-mod common;
-
 use std::process::Command;
 
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{Git, GitError, IntegrateOutcome, OperationKind, TodoAction, TodoItem};
 
 fn git() -> Git {

@@ -1,9 +1,7 @@
 //! Merge, rebase, cherry-pick, revert, reset, conflict resolution and the operation-in-progress
 //! state on temp repositories (Phase 4).
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{
     ConflictSide, DiffContent, DiffRequest, DiffTarget, FastForward, Git, GitError,
     IntegrateOutcome, LineAction, LinesRequest, OperationKind, RepoOperation, ResetMode,

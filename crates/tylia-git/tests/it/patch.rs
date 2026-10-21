@@ -1,11 +1,9 @@
 //! Line staging, unstaging and discarding (ARCHITECTURE §5.6): each case builds a temp repo,
 //! shows the diff the way the UI does, selects lines by index and checks the exact result.
 
-mod common;
-
 use std::process::Command;
 
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{
     DiffContent, DiffRequest, DiffTarget, FULL_CONTEXT, FileDiff, Git, GitError, LineAction,
     LineKind, LinesRequest,

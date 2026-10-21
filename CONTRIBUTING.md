@@ -101,7 +101,10 @@ design system is [`docs/DESIGN.md`](docs/DESIGN.md) and the architecture is
   never a shell, `--` before pathspecs, ref names validated.
 - Logic such as parsing, graph layout and patch building belongs in Rust, not the frontend.
 - Never delete user data silently. Destructive actions confirm and explain the consequence.
-- Every `tylia-git` feature gets integration tests on temporary repositories.
+- Every `tylia-git` feature gets integration tests on temporary repositories. They form
+  one test binary, `crates/tylia-git/tests/it/`, with a module per area; add a new area
+  as a module in `it/main.rs`, not as a new file under `tests/`. Run one area with
+  `cargo test -p tylia-git --test it flow`.
 - No telemetry, and no network requests the user did not trigger.
 - Use platform-correct modifiers (Cmd on macOS, Ctrl elsewhere) and `std::path` for paths.
 - Do not copy assets, text or branding from other Git clients.

@@ -1,8 +1,6 @@
 //! Blame and file history on temp repositories.
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{Blame, BlameContent, FileStatus, Git, GitError};
 
 fn git() -> Git {

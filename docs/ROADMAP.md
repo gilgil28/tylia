@@ -333,10 +333,13 @@ The items:
       (`debug/deps` 4.08 → 1.71 GB, `incremental` 1.35 → 0.55 GB, `build` 0.57 → 0.34 GB);
       building the tests 177 s → 143 s, running them 118 s → 104 s. The 29.7 GB was
       mostly accumulated incremental sessions, which `cargo clean` removes._
-- [ ] Merge `crates/tylia-git/tests/*.rs` into one integration-test binary
+- [x] Merge `crates/tylia-git/tests/*.rs` into one integration-test binary
       (`tests/it/main.rs` with one module per current file, keeping `tests/common`). That
       is one link instead of about 16. Test names and filters must keep working, e.g.
       `cargo test -p tylia-git --test it flow`.
+      _Done: 14 files, 141 tests, one binary. From clean: `target/` 3.02 → 2.79 GB,
+      building the tests 143 → 127 s, running them 104 → 80 s (all tests now share one
+      parallel run)._
 - [ ] Release `target/` is 2.4 GB, but almost none of it ships: `tylia.exe` is 15.8 MB
       and the installers are 4–6 MB. The rest is build cache: - 423 compiled libraries (`.rlib`, 1.0 GB, larger because `lto = true` keeps LLVM
       bitcode in them); - their metadata (`.rmeta`, 0.6 GB); - proc-macro DLLs with their `.lib` / `.pdb` (0.3 GB).

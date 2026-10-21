@@ -1,8 +1,6 @@
 //! Repository settings (identity, SSH key, credentials, remotes) on temp repositories.
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{ConfigScope, Git, GitError, UrlProtocol};
 
 fn git() -> Git {

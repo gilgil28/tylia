@@ -1,8 +1,6 @@
 //! Worktrees, LFS detection and submodule updates on temp repositories.
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tokio::sync::oneshot;
 use tylia_git::{Git, OpContext, SubmoduleState};
 

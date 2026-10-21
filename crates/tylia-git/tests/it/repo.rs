@@ -1,6 +1,4 @@
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tokio::sync::oneshot;
 use tylia_git::{
     CloneRequest, DiffContent, DiffRequest, DiffTarget, FileStatus, Git, GitError, LineKind,

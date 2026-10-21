@@ -1,8 +1,6 @@
 //! Fetch, pull, push and remote management against local bare repositories.
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tokio::sync::oneshot;
 use tylia_git::{
     FetchRequest, Git, GitError, OpContext, PullMode, PullOutcome, PushOutcome, PushRejection,

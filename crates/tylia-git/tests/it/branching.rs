@@ -1,8 +1,6 @@
 //! Branches, checkout, tags and stashes on temp repositories (Phase 4).
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tokio::sync::oneshot;
 use tylia_git::{
     CheckoutOutcome, CheckoutRequest, CheckoutTarget, Git, GitError, OpContext, PushRejection,

@@ -1,8 +1,6 @@
 //! Resolving conflict blocks one at a time in a real merge conflict.
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{BlockResolution, ConflictSegment, Git, GitError};
 
 fn git() -> Git {

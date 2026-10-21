@@ -1,8 +1,6 @@
 //! git-flow helpers on temp repositories.
 
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{FlowConfig, FlowFinishRequest, FlowKind, Git, GitError};
 
 fn git() -> Git {

@@ -1,6 +1,4 @@
-mod common;
-
-use common::TestRepo;
+use crate::common::TestRepo;
 use tylia_git::{FileStatus, Git, GitError};
 
 fn git() -> Git {
