@@ -10,12 +10,12 @@ Website: https://tylia.dev · Repository: https://github.com/tylia-dev/tylia
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/history-dark.png">
-  <img alt="Tylia's history view: the commit graph, a commit's details and its diff" src="docs/screenshots/history-light.png">
+  <img width="1280" alt="Tylia's history view: the commit graph, a commit's details and its diff" src="docs/screenshots/history-light.png">
 </picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/changes-dark.png">
-  <img alt="Tylia's changes view: unstaged and staged files, a diff and the commit message" src="docs/screenshots/changes-light.png">
+  <img width="1280" alt="Tylia's changes view: unstaged and staged files, a diff and the commit message" src="docs/screenshots/changes-light.png">
 </picture>
 
 ## Status

@@ -58,6 +58,7 @@ pnpm tauri dev
 | `pnpm tauri dev`                                        | Run the app                                                         |
 | `pnpm dev:web`                                          | Run the frontend in a browser against the mock backend              |
 | `pnpm shots`                                            | Playwright screenshots, light and dark, into `e2e/__screenshots__/` |
+| `pnpm shots:publish`                                    | The README and website screenshots, at 2×, light and dark           |
 | `pnpm test`                                             | Frontend tests (Vitest)                                             |
 | `pnpm lint`                                             | ESLint                                                              |
 | `pnpm format`                                           | Prettier                                                            |

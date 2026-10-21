@@ -14,7 +14,15 @@ export default defineConfig({
     deviceScaleFactor: 1,
     reducedMotion: "reduce",
   },
-  projects: [{ name: "chromium", use: { browserName: "chromium" } }],
+  projects: [
+    { name: "chromium", use: { browserName: "chromium" }, testIgnore: "publish.spec.ts" },
+    // `pnpm shots:publish`: the README and website screenshots, at 2×.
+    {
+      name: "publish",
+      use: { browserName: "chromium", deviceScaleFactor: 2 },
+      testMatch: "publish.spec.ts",
+    },
+  ],
   webServer: {
     command: `pnpm dev:web --port ${PORT} --strictPort`,
     url: `http://localhost:${PORT}`,

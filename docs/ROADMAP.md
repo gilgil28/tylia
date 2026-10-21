@@ -390,10 +390,13 @@ one source. Everything else is generated from it, and the generators are committ
     `appPosition` and `applicationFolderPosition`, so the window shows the app, an arrow
     and Applications.
   - **Open Graph image** for the website, 1200×630.
-- [ ] Screenshots: refresh `docs/screenshots/*` (README) and `website/assets/*` from
+- [x] Screenshots: refresh `docs/screenshots/*` (README) and `website/assets/*` from
       `pnpm shots`. Since they were taken, the Commit button, search row, lighter dark
       panels and Settings button have landed. Add a "screenshots" spec that renders the
       exact README / website set at 2× in both themes, so a refresh is one command.
+      _Done: `pnpm shots:publish` (`e2e/publish.spec.ts`, its own Playwright project so
+      `pnpm shots` doesn't overwrite committed images) writes the README and website
+      images at 2560 × 1600, plus WebP copies encoded by Chromium._
 - [ ] README and website copy updated for v0.2.0 features and the new install channels.
 - **Acceptance:** `pnpm artwork` reproduces every committed image byte-for-byte. The
   installers show Tylia's icon, header and sidebar instead of Tauri / NSIS defaults
