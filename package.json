@@ -37,6 +37,7 @@
     "contrast": "node scripts/contrast.ts",
     "conventions": "node scripts/conventions.ts",
     "fixture": "node scripts/make-fixture.ts",
+    "artwork": "node scripts/artwork.ts",
     "gen:types": "cargo test --workspace export_bindings"
   },
   "dependencies": {

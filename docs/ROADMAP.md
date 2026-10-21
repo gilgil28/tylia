@@ -375,7 +375,7 @@ tauri dev` build, `target/` is under 8 GB on Windows; full `cargo test` wall tim
 The app icon (`src-tauri/icons/app-icon.svg`, the "y" drawn as two graph lanes) is the
 one source. Everything else is generated from it, and the generators are committed.
 
-- [ ] `scripts/artwork.ts` (`pnpm artwork`) renders the SVG and the installer images with
+- [x] `scripts/artwork.ts` (`pnpm artwork`) renders the SVG and the installer images with
       Playwright (already a dev dependency) and writes BMPs with a small BMP encoder
       (24-bit; no new dependency). Then it runs `pnpm tauri icon` for the app icons. It
       produces:
@@ -390,6 +390,15 @@ one source. Everything else is generated from it, and the generators are committ
     `appPosition` and `applicationFolderPosition`, so the window shows the app, an arrow
     and Applications.
   - **Open Graph image** for the website, 1200×630.
+    _Done 2026-10-21. Artwork is HTML with the design tokens and the bundled Inter, rendered
+    by Playwright's Chromium; BMPs come from a small PNG decoder + BMP writer (no new
+    dependency). `tauri icon` writes the `.icns` entries in random order, so the script sorts
+    them. `pnpm artwork --check` passes twice in a row on Windows (not in CI: font
+    rasterization differs per OS). The NSIS header sits top left in Tauri's template, so
+    the wordmark is left-aligned. The dmg background is 1× only: a Retina variant needs a
+    multi-resolution TIFF made with macOS's `tiffutil`. Seen in the real installers:
+    NSIS welcome page (sidebar), its inner pages (header) and the title-bar icon; MSI
+    welcome dialog (dialog image). Not seen yet: the MSI banner, the dmg._
 - [x] Screenshots: refresh `docs/screenshots/*` (README) and `website/assets/*` from
       `pnpm shots`. Since they were taken, the Commit button, search row, lighter dark
       panels and Settings button have landed. Add a "screenshots" spec that renders the

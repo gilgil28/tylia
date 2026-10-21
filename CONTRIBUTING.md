@@ -52,22 +52,23 @@ pnpm tauri dev
 
 ## Commands
 
-| Command                                                 | What it does                                                        |
-| ------------------------------------------------------- | ------------------------------------------------------------------- |
-| `pnpm install`                                          | Install frontend dependencies                                       |
-| `pnpm tauri dev`                                        | Run the app                                                         |
-| `pnpm dev:web`                                          | Run the frontend in a browser against the mock backend              |
-| `pnpm shots`                                            | Playwright screenshots, light and dark, into `e2e/__screenshots__/` |
-| `pnpm shots:publish`                                    | The README and website screenshots, at 2×, light and dark           |
-| `pnpm test`                                             | Frontend tests (Vitest)                                             |
-| `pnpm lint`                                             | ESLint                                                              |
-| `pnpm format`                                           | Prettier                                                            |
-| `pnpm typecheck`                                        | `tsc --noEmit`                                                      |
-| `pnpm contrast`                                         | Check contrast of the design tokens                                 |
-| `pnpm gen:types`                                        | Regenerate the TypeScript IPC bindings from Rust                    |
-| `cargo test --workspace`                                | Rust tests                                                          |
-| `cargo clippy --workspace --all-targets -- -D warnings` | Rust lints                                                          |
-| `cargo fmt --all`                                       | Format Rust code                                                    |
+| Command                                                 | What it does                                                                                                             |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `pnpm install`                                          | Install frontend dependencies                                                                                            |
+| `pnpm tauri dev`                                        | Run the app                                                                                                              |
+| `pnpm dev:web`                                          | Run the frontend in a browser against the mock backend                                                                   |
+| `pnpm shots`                                            | Playwright screenshots, light and dark, into `e2e/__screenshots__/`                                                      |
+| `pnpm shots:publish`                                    | The README and website screenshots, at 2×, light and dark                                                                |
+| `pnpm artwork`                                          | Regenerate the app icons, installer images and Open Graph image from `src-tauri/icons/app-icon.svg` (`--check` compares) |
+| `pnpm test`                                             | Frontend tests (Vitest)                                                                                                  |
+| `pnpm lint`                                             | ESLint                                                                                                                   |
+| `pnpm format`                                           | Prettier                                                                                                                 |
+| `pnpm typecheck`                                        | `tsc --noEmit`                                                                                                           |
+| `pnpm contrast`                                         | Check contrast of the design tokens                                                                                      |
+| `pnpm gen:types`                                        | Regenerate the TypeScript IPC bindings from Rust                                                                         |
+| `cargo test --workspace`                                | Rust tests                                                                                                               |
+| `cargo clippy --workspace --all-targets -- -D warnings` | Rust lints                                                                                                               |
+| `cargo fmt --all`                                       | Format Rust code                                                                                                         |
 
 CI runs all of these checks on Linux, Windows and macOS. It also fails if the generated
 bindings in `src/ipc/bindings` are out of date, so commit the result of `pnpm gen:types`
