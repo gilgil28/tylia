@@ -53,4 +53,9 @@ gitPath: string | null,
  * Ask GitHub for a newer release once at start. Off by default: no network request
  * unless the user turns this on or presses "Check now".
  */
-checkForUpdates: boolean, };
+checkForUpdates: boolean, 
+/**
+ * Terminal for "Open in terminal": a program (or, on macOS, an app name); `None` = the
+ * platform's usual terminal (see `terminal.rs`).
+ */
+terminal: string | null, };

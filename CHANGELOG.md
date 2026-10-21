@@ -7,6 +7,13 @@ can change behaviour.
 
 ## [Unreleased]
 
+### Added
+
+- **Open in terminal** (toolbar, palette, Ctrl/Cmd+Shift+T) opens your terminal in the
+  repository folder. It uses Windows Terminal (else PowerShell) on Windows, Terminal on
+  macOS, and `$TERMINAL` or your desktop's terminal on Linux. Settings → General →
+  Terminal picks another program.
+
 ## [0.1.0] - 2026-10-21
 
 The first release.

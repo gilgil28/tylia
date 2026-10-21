@@ -16,7 +16,7 @@ import { useMemo, useState, type KeyboardEvent, type ReactNode } from "react";
 
 import { useActionRegistry, type KnownAction } from "@/app/actions";
 import { themeOptions } from "@/app/AppearanceMenu";
-import { appVersion } from "@/app/boot";
+import { appVersion, platform } from "@/app/boot";
 import { effectiveShortcut, eventShortcut, normalizeShortcut } from "@/app/keyboard";
 import { useOverlays, type SettingsSection } from "@/app/overlays";
 import { UI_FONT_SIZES, useSettings } from "@/app/settings";
@@ -128,6 +128,7 @@ function General() {
           aria-label={t("settings.nativeTitleBar")}
         />
       </Row>
+      <TerminalSetting />
       <Updates />
     </div>
   );
@@ -150,6 +151,35 @@ function updateHint(status: UpdateStatus): ReactNode {
         </span>
       );
   }
+}
+
+const TERMINAL_HINT = {
+  windows: t("settingsScreen.terminalAutoWindows"),
+  macos: t("settingsScreen.terminalAutoMacos"),
+  linux: t("settingsScreen.terminalAutoLinux"),
+}[platform];
+
+/** "Open in terminal": a program of the user's choice, else the platform's usual one. */
+function TerminalSetting() {
+  const { settings, update } = useSettings();
+  const [value, setValue] = useState(settings.terminal ?? "");
+  const save = () => {
+    const terminal = value.trim() || null;
+    if (terminal !== settings.terminal) update({ terminal });
+  };
+  return (
+    <Row label={t("settingsScreen.terminal")} hint={TERMINAL_HINT}>
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={save}
+        onKeyDown={(e) => e.key === "Enter" && save()}
+        placeholder={t("settingsScreen.terminalAutomatic")}
+        aria-label={t("settingsScreen.terminal")}
+        className="w-72"
+      />
+    </Row>
+  );
 }
 
 /** Opt-in update check: off by default, and "Check now" is the only other way to ask. */

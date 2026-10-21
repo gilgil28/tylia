@@ -565,6 +565,8 @@ export const en = {
   "actions.settings": "Settings…",
   "actions.keyboard": "Keyboard shortcuts…",
   "actions.checkUpdates": "Check for updates",
+  "actions.openTerminal": "Open in terminal",
+  "actions.openTerminalFailed": "Couldn’t open a terminal",
   "actions.openRepo": "Open repository…",
   "actions.cloneRepo": "Clone repository…",
   "actions.createRepo": "Create repository…",
@@ -648,6 +650,14 @@ export const en = {
   "settingsScreen.none": "None",
   "settingsScreen.reset": "Reset {name} to its default",
   "settingsScreen.remove": "Remove the shortcut for {name}",
+  "settingsScreen.terminal": "Terminal",
+  "settingsScreen.terminalAutomatic": "Automatic",
+  "settingsScreen.terminalAutoWindows":
+    "Opens in the repository folder. Automatic uses Windows Terminal, else PowerShell. Or enter a program, e.g. C:\\tools\\cmder\\Cmder.exe.",
+  "settingsScreen.terminalAutoMacos":
+    "Opens in the repository folder. Automatic uses Terminal. Or enter an app name, e.g. iTerm.",
+  "settingsScreen.terminalAutoLinux":
+    "Opens in the repository folder. Automatic uses $TERMINAL, then your desktop’s terminal. Or enter a program, e.g. kitty.",
 
   "flow.button": "Git-flow",
   "flow.tooltip": "Start or finish features, releases and hotfixes (git-flow)",

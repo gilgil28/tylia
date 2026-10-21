@@ -19,6 +19,7 @@ import {
   SkipForward,
   SquarePen,
   SquareSplitHorizontal,
+  SquareTerminal,
 } from "lucide-react";
 
 import { useRegisterActions, type Action } from "@/app/actions";
@@ -46,6 +47,7 @@ import {
   type WorkingStatus,
 } from "@/ipc";
 
+import { openTerminal } from "./openTerminal";
 import { useRepoUi } from "./repo-store";
 
 export function useRepoActions(
@@ -116,6 +118,15 @@ export function useRepoActions(
       group: "repository",
       icon: FolderOpen,
       run: () => void ipc.revealInFileManager(repo),
+    },
+    {
+      id: "repo.terminal",
+      title: t("actions.openTerminal"),
+      group: "repository",
+      icon: SquareTerminal,
+      shortcut: "Mod+Shift+T",
+      keywords: ["shell", "console", "command line", "cli", "powershell", "bash"],
+      run: () => openTerminal(repo),
     },
     {
       id: "file.diffTool",

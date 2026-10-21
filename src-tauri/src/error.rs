@@ -85,6 +85,19 @@ impl From<GitError> for IpcError {
     }
 }
 
+impl IpcError {
+    /// A refusal Tylia explains itself (shown as the toast's text).
+    pub fn invalid(message: String) -> Self {
+        Self {
+            kind: IpcErrorKind::InvalidInput,
+            message,
+            command: None,
+            stderr: None,
+            files: None,
+        }
+    }
+}
+
 impl From<std::io::Error> for IpcError {
     fn from(err: std::io::Error) -> Self {
         Self {

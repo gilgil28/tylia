@@ -112,13 +112,9 @@ pub async fn install_update(
     on_progress: Channel<DownloadProgress>,
 ) -> Result<(), IpcError> {
     let Some(update) = lock(&pending.0).clone() else {
-        return Err(IpcError {
-            kind: IpcErrorKind::InvalidInput,
-            message: "There's no update to install. Check for updates first.".to_owned(),
-            command: None,
-            stderr: None,
-            files: None,
-        });
+        return Err(IpcError::invalid(
+            "There's no update to install. Check for updates first.".to_owned(),
+        ));
     };
     let mut downloaded = 0u64;
     update

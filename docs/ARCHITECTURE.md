@@ -617,6 +617,19 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   replace themselves (dev builds, deb/rpm without their package tool, any install where
   `pacman` exists, i.e. the AUR package); the dialog then opens the releases page, the only
   URL the opener capability allows.
+- **Open in terminal** (`src-tauri/src/terminal.rs`, command `open_terminal`): the terminal
+  program is started directly, never through a shell, with the repository as its working
+  directory (plus the folder flag of terminals that ignore it).
+  - **Choice:** `settings.terminal` first. If that program is missing, Tylia reports it
+    instead of falling back. Otherwise:
+    - **Windows:** `wt.exe -d`, then pwsh, powershell, cmd.
+    - **macOS:** `open -a Terminal` (an app name in the setting also goes through `open -a`).
+    - **Linux:** `$TERMINAL`, the desktop's own terminal (`XDG_CURRENT_DESKTOP`),
+      `x-terminal-emulator`, then a list of common terminals.
+  - **Lookup:** programs are found on `PATH` with `symlink_metadata`, because `wt.exe` is
+    an app execution alias.
+  - **Environment:** Tylia sets no variables on its own process, so the terminal inherits
+    a clean one.
 - **git-flow** (`crates/tylia-git/src/flow.rs`): plain Git, no git-flow binary. Setup is
   read from and written to `gitflow.branch.{master,develop}` and `gitflow.prefix.*`
   (CLI-compatible). Finish = `merge --no-ff` into the production branch (annotated tag

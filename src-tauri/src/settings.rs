@@ -70,6 +70,9 @@ pub struct Settings {
     /// Ask GitHub for a newer release once at start. Off by default: no network request
     /// unless the user turns this on or presses "Check now".
     pub check_for_updates: bool,
+    /// Terminal for "Open in terminal": a program (or, on macOS, an app name); `None` = the
+    /// platform's usual terminal (see `terminal.rs`).
+    pub terminal: Option<String>,
 }
 
 impl Default for Settings {
@@ -88,6 +91,7 @@ impl Default for Settings {
             tab_width: 4,
             git_path: None,
             check_for_updates: false,
+            terminal: None,
         }
     }
 }
@@ -160,6 +164,7 @@ mod tests {
             tab_width: 8,
             git_path: Some("/usr/local/bin/git".to_owned()),
             check_for_updates: true,
+            terminal: Some("wezterm".to_owned()),
         };
         store.save(&settings).unwrap();
         assert_eq!(store.load(), settings);

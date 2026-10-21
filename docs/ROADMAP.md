@@ -211,6 +211,7 @@ both themes, acceptance list ticked, a short summary to the user, and a **stop**
 - [x] Opt-in update check via Tauri updater (off by default; no data sent beyond the request).
 - [x] Website at https://tylia.dev (GitHub Pages, custom domain, HTTPS enforced): one page with hero screenshot (light + dark), features, download links per OS, pronunciation. _Domain registration, DNS and "Enforce HTTPS" are repository settings (docs/RELEASING.md)._
 - [x] CHANGELOG.md (Keep a Changelog), semver tags, v0.1.0.
+- [x] Open in terminal (toolbar, palette, Ctrl/Cmd+Shift+T, Settings → Terminal): it was marked done in the feature inventory but had never been built. Added 2026-10-21 at the user's request.
 - [x] Closed the open items: git-flow helpers, interactive rebase in the real app, SSH acceptance, screen-reader check, earlier untested real-app paths.
 - Status 2026-10-21: **built; verified locally.**
   - **Release:** `.github/workflows/release.yml` drafts a release from the tag's

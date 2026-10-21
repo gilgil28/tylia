@@ -7,6 +7,7 @@ import {
   GitBranchPlus,
   PanelLeft,
   Search,
+  SquareTerminal,
   X,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -21,6 +22,7 @@ import { FlowMenu } from "@/features/flow/FlowMenu";
 import { RemoteButtons } from "@/features/remote/RemoteButtons";
 import { RemoteDialogs } from "@/features/remote/RemoteDialogs";
 import { useAutoFetch } from "@/features/remote/useAutoFetch";
+import { openTerminal } from "@/features/repo/openTerminal";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { t } from "@/i18n";
 import { ipc, type RefsSnapshot, type SearchField, type WorkingStatus } from "@/ipc";
@@ -227,7 +229,7 @@ export function RepoToolbar({
             className="flex h-full shrink-0 items-center gap-1 rounded-l-control border-r border-line-subtle pr-1.5 pl-2 text-small text-fg-secondary outline-none hover:text-fg focus-visible:text-fg"
           >
             <Search size={14} strokeWidth={1.75} aria-hidden />
-            <span className="@max-[48rem]:sr-only">{field.label}</span>
+            <span className="@max-[64rem]:sr-only">{field.label}</span>
             <ChevronDown size={12} strokeWidth={2} aria-hidden />
           </Menu.Trigger>
           <Menu.Content align="start">
@@ -266,7 +268,7 @@ export function RepoToolbar({
             onClick={() => setSearch({ query: "" })}
           />
         ) : (
-          <Kbd shortcut="Mod+F" className="mr-1.5 @max-[48rem]:hidden" />
+          <Kbd shortcut="Mod+F" className="mr-1.5 @max-[64rem]:hidden" />
         )}
       </div>
       {lfs.data?.used && (
@@ -276,6 +278,12 @@ export function RepoToolbar({
           </span>
         </Tooltip>
       )}
+      <IconButton
+        icon={SquareTerminal}
+        label={t("actions.openTerminal")}
+        shortcut="Mod+Shift+T"
+        onClick={() => openTerminal(repo)}
+      />
       <IconButton
         icon={FolderOpen}
         label={revealLabel}

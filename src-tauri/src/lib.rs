@@ -4,6 +4,7 @@ mod error;
 mod operation;
 mod settings;
 mod state;
+mod terminal;
 mod ui_state;
 mod watcher;
 mod window;
@@ -81,6 +82,7 @@ pub fn run() {
             commands::head_message,
             commands::ignore_pattern,
             commands::open_file,
+            commands::open_terminal,
             commands::create_branch,
             commands::checkout,
             commands::rename_branch,

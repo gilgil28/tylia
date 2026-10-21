@@ -29,6 +29,7 @@
           tabWidth: 4,
           gitPath: null,
           checkForUpdates: false,
+          terminal: null,
         },
         stored,
       ),

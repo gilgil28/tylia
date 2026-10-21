@@ -74,6 +74,7 @@ export const backend: Backend = {
   headMessage: (repo) => invoke("head_message", { repo }),
   ignorePattern: (repo, pattern) => invoke("ignore_pattern", { repo, pattern }),
   openFile: (repo, path) => invoke("open_file", { repo, path }),
+  openTerminal: (repo) => invoke("open_terminal", { repo }),
 
   cloneRepo: (request, operationId, onProgress) =>
     invoke("clone_repo", { request, operationId, onProgress: channel<Progress>(onProgress) }),

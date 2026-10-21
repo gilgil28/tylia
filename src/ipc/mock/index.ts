@@ -357,6 +357,18 @@ export const backend: Backend = {
 
   pickFolder: async () => fixture.repo.path,
   revealInFileManager: async () => {},
+  // `?terminal=missing` simulates a machine where no terminal is found.
+  openTerminal: async () => {
+    if (new URLSearchParams(location.search).get("terminal") === "missing") {
+      throw {
+        kind: "invalidInput",
+        message: "No terminal was found. Choose one in Settings → General → Terminal.",
+        command: null,
+        stderr: null,
+      } satisfies IpcError;
+    }
+    return "wt.exe";
+  },
   homeDir: async () => HOME,
   onFolderDrop: async () => () => {},
 

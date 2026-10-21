@@ -8,6 +8,7 @@ use tylia_git::{LinesRequest, add_to_gitignore, repo_path};
 
 use crate::error::IpcError;
 use crate::state::{AppState, git};
+use crate::terminal::{self, Env};
 
 #[tauri::command]
 pub async fn stage_files(
@@ -93,6 +94,35 @@ pub async fn ignore_pattern(
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
     Ok(add_to_gitignore(Path::new(&repo), &pattern)?)
+}
+
+/// Opens the terminal from Settings (else the platform's usual one) in the repository.
+#[tauri::command]
+pub fn open_terminal(repo: String, state: State<'_, AppState>) -> Result<String, IpcError> {
+    let dir = Path::new(&repo);
+    if !dir.is_dir() {
+        return Err(IpcError::invalid(format!("{repo} doesn't exist.")));
+    }
+    let settings = state.settings.load();
+    let terminal_var = std::env::var("TERMINAL").ok();
+    let desktop = std::env::var("XDG_CURRENT_DESKTOP").ok();
+    let env = Env {
+        os: std::env::consts::OS,
+        custom: settings.terminal.as_deref(),
+        terminal_var: terminal_var.as_deref(),
+        desktop: desktop.as_deref(),
+    };
+    let opened = terminal::open(&env, dir).map_err(|err| match &settings.terminal {
+        Some(custom) if err.kind() == std::io::ErrorKind::NotFound => IpcError::invalid(format!(
+            "The terminal set in Settings ({custom}) wasn't found. Change it in Settings → General → Terminal, or clear it to use the automatic choice."
+        )),
+        _ => err.into(),
+    })?;
+    opened.ok_or_else(|| {
+        IpcError::invalid(
+            "No terminal was found. Choose one in Settings → General → Terminal.".to_owned(),
+        )
+    })
 }
 
 /// Opens a file of the working tree with the OS default application.

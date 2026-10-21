@@ -140,6 +140,9 @@ export interface Backend {
   headMessage(repo: string): Promise<string | null>;
   ignorePattern(repo: string, pattern: string): Promise<void>;
   openFile(repo: string, path: string): Promise<void>;
+  /** Opens the terminal from Settings (else the platform's usual one) in the repository;
+   * resolves to the program started. */
+  openTerminal(repo: string): Promise<string>;
 
   cloneRepo(
     request: CloneRequest,
