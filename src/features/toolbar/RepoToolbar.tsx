@@ -10,7 +10,6 @@ import {
   SquareTerminal,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { useRef } from "react";
 
 import { revealLabel } from "@/app/labels";
 import { useRegisterActions } from "@/app/actions";
@@ -29,10 +28,7 @@ import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
 import { CountBadge } from "@/ui/CountBadge";
 import { IconButton } from "@/ui/IconButton";
-import { SegmentedControl } from "@/ui/SegmentedControl";
 import { Tooltip } from "@/ui/Tooltip";
-
-import { HistorySearch } from "./HistorySearch";
 
 function BranchIndicator({
   repo,
@@ -95,8 +91,6 @@ export function RepoToolbar({
   const changed = status?.entries.length ?? 0;
   const hasChanges = changed > 0;
   const updateLayout = useWorkspace((s) => s.updateLayout);
-  const setView = useRepoUi((s) => s.setView);
-  const inputRef = useRef<HTMLInputElement>(null);
   const requestFocus = useRepoUi((s) => s.requestFocus);
   useAutoFetch(repo, (refs?.remotes.length ?? 0) > 0);
   const lfs = useQuery({
@@ -146,14 +140,7 @@ export function RepoToolbar({
         icon: Search,
         shortcut: "Mod+F",
         keywords: ["find"],
-        run: () => {
-          // The search box is in the history view; switch there first.
-          setView("history");
-          requestAnimationFrame(() => {
-            inputRef.current?.focus();
-            inputRef.current?.select();
-          });
-        },
+        run: () => requestFocus("search"),
       },
     ],
     active,
@@ -226,17 +213,6 @@ export function RepoToolbar({
         <FlowMenu repo={repo} refs={refs} status={status} active={active} />
       </span>
       <span className="flex-1" />
-      <SegmentedControl
-        className="@max-[60rem]:hidden"
-        aria-label={t("toolbar.scope")}
-        value={layout.scope}
-        onValueChange={(scope) => updateLayout(repo, { scope })}
-        segments={[
-          { value: "all", label: t("toolbar.allBranches") },
-          { value: "head", label: t("toolbar.currentBranch") },
-        ]}
-      />
-      <HistorySearch repo={repo} inputRef={inputRef} recentPaths={layout.recentPaths} />
       {lfs.data?.used && (
         <Tooltip content={lfs.data.installed ? t("toolbar.lfs") : t("toolbar.lfsMissing")}>
           <span tabIndex={0} className="rounded-badge focus-ring">

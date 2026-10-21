@@ -154,6 +154,8 @@ The checked-out branch's lane is always colour 1 (accent family) when it is visi
 ├───────────────────────────────────────────────────────────────────────────────┤
 │ ⎇ main ▾ ↑2 │ ⊸ Commit ³ │ ⟳ Fetch  ↓ Pull ¹  ↑ Push ² │ ⑂ ⊕ ⋯       ⌨ 📁 │ toolbar (44)
 ├──────────────┬────────────────────────────────────────────────────────────────┤
+│              │ [🔍 Message ▾  Search messages   Ctrl F]   [All | Current]   │ history filter row (40)
+│              ├────────────────────────────────────────────────────────────────┤
 │ WORKSPACE    │  Graph │ Description                     │ Author  │ Date │ Hash│
 │  ◉ Changes 3 │  ●─┐   │ [main] [origin/main] Fix parser │ GC      │ 2h   │ a1b2│
 │  ○ History   │  │ ●   │ [feature/x] Add lanes           │ AB      │ 5h   │ c3d4│
@@ -459,3 +461,7 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   of changed files in the same accent count as Push / Pull. It is bordered (secondary)
   when there is something to commit and quiet (ghost) when there isn't, and opens Changes
   with the cursor in the commit message (also Mod+Shift+C and the palette).
+- **2026-10-21 — History search on its own row.** The search box and the All / Current
+  branch switch moved from the toolbar to a 40 px row above the history, so the toolbar
+  only holds repository actions. The search box gets up to 30rem there, and Mod+F reaches
+  it from any view.

@@ -12,6 +12,7 @@ import { useFileActions } from "@/features/file-view/fileActions";
 import { FileView } from "@/features/file-view/FileView";
 import { useHistoryStream } from "@/features/history/history-stream";
 import { useRebaseActions } from "@/features/rebase/rebaseActions";
+import { HistoryFilterBar } from "@/features/history/HistoryFilterBar";
 import { HistoryView } from "@/features/history/HistoryView";
 import { Sidebar } from "@/features/sidebar/Sidebar";
 import { RepoToolbar } from "@/features/toolbar/RepoToolbar";
@@ -125,22 +126,27 @@ function RepoLoaded({ path, active }: { path: string; active: boolean }) {
           ) : view === "file" ? (
             <FileView repo={path} layout={layout} active={active} />
           ) : (
-            <BottomSplit
-              history={
-                <HistoryView
-                  repo={path}
-                  stream={stream}
-                  refs={refs.data}
-                  status={status.data}
-                  layout={layout}
-                  onActivate={() => setFocusToken((n) => n + 1)}
-                  active={active}
+            <div className="flex h-full flex-col">
+              <HistoryFilterBar repo={path} layout={layout} />
+              <div className="min-h-0 flex-1">
+                <BottomSplit
+                  history={
+                    <HistoryView
+                      repo={path}
+                      stream={stream}
+                      refs={refs.data}
+                      status={status.data}
+                      layout={layout}
+                      onActivate={() => setFocusToken((n) => n + 1)}
+                      active={active}
+                    />
+                  }
+                  details={<DetailsPane repo={path} layout={layout} focusToken={focusToken} />}
+                  height={layout.detailsHeight}
+                  onHeight={(detailsHeight) => updateLayout(path, { detailsHeight })}
                 />
-              }
-              details={<DetailsPane repo={path} layout={layout} focusToken={focusToken} />}
-              height={layout.detailsHeight}
-              onHeight={(detailsHeight) => updateLayout(path, { detailsHeight })}
-            />
+              </div>
+            </div>
           )
         }
       />

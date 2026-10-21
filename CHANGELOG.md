@@ -25,6 +25,11 @@ can change behaviour.
 - **Commit button in the toolbar,** with the number of changed files. It opens Changes
   with the cursor in the message box (also Ctrl/Cmd+Shift+C).
 
+### Changed
+
+- The history search and the All / Current branch switch moved from the toolbar to their
+  own row above the history.
+
 ### Fixed
 
 - **Feedback after push, pull and fetch:**

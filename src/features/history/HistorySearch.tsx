@@ -4,7 +4,7 @@
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { ChevronDown, FileText, Folder, History, Search, X } from "lucide-react";
-import { useId, useState, type KeyboardEvent, type RefObject } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 
 import { useDebounced } from "@/app/useDebounced";
 import { useWorkspace } from "@/app/workspace";
@@ -63,15 +63,17 @@ function splitPath(path: string): { name: string; dir: string } {
   };
 }
 
-export function HistorySearch({
-  repo,
-  inputRef,
-  recentPaths,
-}: {
-  repo: string;
-  inputRef: RefObject<HTMLInputElement | null>;
-  recentPaths: string[];
-}) {
+export function HistorySearch({ repo, recentPaths }: { repo: string; recentPaths: string[] }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const focusRequest = useRepoUi((s) => s.focusRequest);
+  const focusHandled = useRepoUi((s) => s.focusHandled);
+  // Mod+F (from any view) focuses the box once the history has rendered it.
+  useEffect(() => {
+    if (focusRequest !== "search") return;
+    inputRef.current?.focus();
+    inputRef.current?.select();
+    focusHandled();
+  }, [focusRequest, focusHandled]);
   const search = useRepoUi((s) => s.search);
   const setSearch = useRepoUi((s) => s.setSearch);
   const updateLayout = useWorkspace((s) => s.updateLayout);
@@ -171,7 +173,7 @@ export function HistorySearch({
   return (
     <div
       className={cn(
-        "relative flex h-7 w-72 min-w-0 items-center rounded-control @max-[64rem]:w-52 @max-[48rem]:w-40 border border-line bg-input transition-[border-color,box-shadow] duration-(--dur-fast)",
+        "relative flex h-7 w-full max-w-120 min-w-0 items-center rounded-control border border-line bg-input transition-[border-color,box-shadow] duration-(--dur-fast)",
         "focus-within:border-line-strong focus-within:shadow-(--focus-ring) hover:border-line-strong",
       )}
     >
@@ -181,7 +183,7 @@ export function HistorySearch({
           className="flex h-full shrink-0 items-center gap-1 rounded-l-control border-r border-line-subtle pr-1.5 pl-2 text-small text-fg-secondary outline-none hover:text-fg focus-visible:text-fg"
         >
           <Search size={14} strokeWidth={1.75} aria-hidden />
-          <span className="@max-[64rem]:sr-only">{field.label}</span>
+          <span className="@max-[32rem]:sr-only">{field.label}</span>
           <ChevronDown size={12} strokeWidth={2} aria-hidden />
         </Menu.Trigger>
         <Menu.Content align="start">
@@ -232,11 +234,11 @@ export function HistorySearch({
           onClick={() => setSearch({ query: "" })}
         />
       ) : (
-        <Kbd shortcut="Mod+F" className="mr-1.5 @max-[64rem]:hidden" />
+        <Kbd shortcut="Mod+F" className="mr-1.5 @max-[32rem]:hidden" />
       )}
       {open && (
         <div
-          className="absolute top-full right-0 z-50 mt-1 flex w-[min(30rem,calc(100vw-32px))] animate-float-in flex-col rounded-menu bg-elevated p-1 text-fg shadow-float"
+          className="absolute top-full left-0 z-50 mt-1 flex w-[min(30rem,calc(100vw-32px))] animate-float-in flex-col rounded-menu bg-elevated p-1 text-fg shadow-float"
           // Keep focus in the input while choosing with the mouse.
           onMouseDown={(e) => e.preventDefault()}
         >

@@ -48,8 +48,8 @@ export interface RepoUiState {
   search: { field: SearchField; query: string };
   /** Commit to scroll to and select once it has been loaded. */
   revealOid: string | null;
-  /** Something to focus once its view has rendered (the toolbar's Commit). */
-  focusRequest: "composer" | null;
+  /** Something to focus once its view has rendered (the toolbar's Commit, Mod+F). */
+  focusRequest: "search" | "composer" | null;
   setView(view: "history" | "changes"): void;
   /** Shows a file's history or blame; Back returns to the current view. */
   openFile(target: Pick<FileViewTarget, "path" | "mode"> & Partial<FileViewTarget>): void;
@@ -61,7 +61,7 @@ export interface RepoUiState {
   reveal(oid: string): void;
   revealed(): void;
   /** Shows the view that holds `target` and focuses it there. */
-  requestFocus(target: "composer"): void;
+  requestFocus(target: "search" | "composer"): void;
   focusHandled(): void;
 }
 
@@ -126,7 +126,7 @@ export function createRepoStore(repo: string): StoreApi<RepoUiState> {
       set({ revealOid: null });
     },
     requestFocus(target) {
-      get().setView("changes");
+      get().setView(target === "search" ? "history" : "changes");
       set({ focusRequest: target });
     },
     focusHandled() {
