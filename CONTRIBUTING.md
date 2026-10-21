@@ -105,13 +105,70 @@ each new one in the pull request (what it does, why it is needed instead of a fe
 our own code, and its license). Versions are pinned exactly; see the pinned versions table
 in `docs/ARCHITECTURE.md`.
 
-## Commit messages
+## Commits and branches
 
-One terse, lowercase line that starts with the area being changed, for example:
+`pnpm install` turns on a `commit-msg` hook (`.githooks/`) that checks both rules below;
+CI checks them again for every pull request. The rules live in `scripts/conventions.ts`.
+
+### Workflow
+
+`main` is always releasable, and releases are tags on `main` (see
+[docs/RELEASING.md](docs/RELEASING.md)). Work happens on short-lived branches that are
+rebased on `main` and merged when they pass review and CI. Keep each branch to one change.
+History stays linear: merge with `--ff-only` or squash, never with a merge commit.
+
+### Branch names
+
+`<kind>/<topic>` in lowercase kebab-case, optionally with an issue number:
+
+| Kind       | For                                         | Example                    |
+| ---------- | ------------------------------------------- | -------------------------- |
+| `feat`     | a new feature or visible behaviour          | `feat/open-in-terminal`    |
+| `fix`      | a bug fix                                   | `fix/123-crlf-staging`     |
+| `perf`     | speed or memory, same behaviour             | `perf/history-first-rows`  |
+| `refactor` | code structure, same behaviour              | `refactor/split-diff-view` |
+| `docs`     | documentation only                          | `docs/releasing`           |
+| `test`     | tests only                                  | `test/rebase-matrix`       |
+| `build`    | build, packaging, tooling                   | `build/aur-deps`           |
+| `ci`       | GitHub Actions                              | `ci/cache-playwright`      |
+| `deps`     | dependency updates                          | `deps/tauri-2.13`          |
+| `chore`    | anything else that isn't user-facing        | `chore/commit-conventions` |
+| `release`  | preparing a release, when it needs a branch | `release/v0.2.0`           |
+
+At most 60 characters. Bot branches (`dependabot/…`, `renovate/…`) are exempt.
+
+### Commit messages
 
 ```
-graph: draw merge curves as beziers
+<area>: <summary>
+
+<body: optional; why the change, not what the diff already says>
 ```
+
+- **Subject:** one line of at most 72 characters. `<area>` is the part of the codebase
+  (below). The summary is lowercase, in the imperative ("add", "fix", not "added",
+  "fixes"), with no full stop: `graph: draw merge curves as beziers`. Add `!` after the
+  area for a change that breaks users' expectations or data: `settings!: rename the
+theme key`.
+- **Body** (after a blank line), when the subject isn't enough: why the change is needed,
+  what was considered, and anything a reviewer or a future reader needs. Wrap at 72.
+- **New dependency:** the body must say what it does, why it's needed rather than a few
+  lines of our own code, and its license (see [Dependencies](#dependencies)).
+- Git's own subjects (`Merge …`, `Revert "…"`, `fixup! …`) are accepted.
+
+Areas:
+
+- **Features:** `a11y`, `branch`, `changes`, `commit`, `conflict`, `diff`, `file-view`,
+  `flow`, `graph`, `history`, `i18n`, `palette`, `rebase`, `remote`, `repo`, `settings`,
+  `sidebar`, `terminal`, `toolbar`, `update`, `welcome`.
+- **Layers:**
+  - `app`: the shell, window and state
+  - `git`: `crates/tylia-git`
+  - `ipc`: commands, bindings, mock
+  - `ui`: design-system components and tokens
+- **Project:** `build`, `ci`, `deps`, `docs`, `release`, `site` (the website), `test`.
+
+A new area goes in `AREAS` in `scripts/conventions.ts`.
 
 No sign-off is required: Tylia does not use a DCO.
 

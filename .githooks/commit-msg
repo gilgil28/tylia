@@ -1,0 +1,8 @@
+#!/bin/sh
+# Checks the commit message and the branch name; see CONTRIBUTING.md → "Commits and branches".
+# Installed by `pnpm install` (git config core.hooksPath .githooks).
+if ! command -v node >/dev/null 2>&1; then
+  echo "commit-msg: node not found; skipping the commit message check." >&2
+  exit 0
+fi
+exec node "$(git rev-parse --show-toplevel)/scripts/conventions.ts" commit-msg "$1"

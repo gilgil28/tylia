@@ -42,8 +42,16 @@ Read before working: `docs/ROADMAP.md` (current phase + checkboxes), `docs/DESIG
 ## Git
 
 - Never commit unless the user asks in the current request.
-- Commit messages: one terse lowercase line (e.g. `graph: draw merge curves as beziers`);
-  no Co-Authored-By trailer.
+- Branches: `<kind>/<topic>` (`feat/open-in-terminal`, `fix/123-crlf-staging`; kinds
+  feat, fix, perf, refactor, docs, test, build, ci, deps, chore, release). Do the work on
+  such a branch, never directly on `main`, and merge into `main` fast-forward only (or
+  squash). History stays linear.
+- Commit messages: `<area>: <summary>`, lowercase imperative, ≤ 72 chars, no full stop
+  (e.g. `graph: draw merge curves as beziers`). Areas are listed in `scripts/conventions.ts`.
+  A body only when needed (why; new dependencies with what, why and license). No
+  Co-Authored-By trailer.
+- The `commit-msg` hook (`.githooks/`, enabled by `pnpm install`) enforces both; never skip
+  it with `--no-verify`. Full rules: CONTRIBUTING.md → "Commits and branches".
 
 ## Docs
 

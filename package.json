@@ -19,6 +19,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
+    "prepare": "node scripts/conventions.ts install-hooks",
     "dev": "vite",
     "dev:web": "vite --mode web",
     "build": "tsc --noEmit && vite build",
@@ -33,6 +34,7 @@
     "shots": "playwright test",
     "i18n:audit": "node scripts/i18n-audit.ts",
     "contrast": "node scripts/contrast.ts",
+    "conventions": "node scripts/conventions.ts",
     "fixture": "node scripts/make-fixture.ts",
     "gen:types": "cargo test --workspace export_bindings"
   },
