@@ -484,3 +484,8 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   no longer brings one up (and leaves it on screen).
 - **2026-10-21 — Dialogs fade in** (opacity only). The old 4px rise used `transform`,
   which added to the `translate` that centres them and slid them in from the left.
+- **2026-10-21 — Repository settings.** A dialog with the same layout as Settings
+  (sections on the left): Remotes, Authentication and Identity. It opens from a
+  folder-with-gear button in the toolbar, the palette, and a "Manage remotes" button on
+  the sidebar's Remotes header. Global Git settings are shown with where they come from
+  and never changed.

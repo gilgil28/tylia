@@ -8,6 +8,7 @@ import type { FileDiff } from "../bindings/FileDiff";
 import type { HistoryRow } from "../bindings/HistoryRow";
 import type { IpcError } from "../bindings/IpcError";
 import type { RefsSnapshot } from "../bindings/RefsSnapshot";
+import type { RepoConfig } from "../bindings/RepoConfig";
 import type { RepoInfo } from "../bindings/RepoInfo";
 import type { WorkingStatus } from "../bindings/WorkingStatus";
 import demo from "./fixtures/demo.json";
@@ -133,6 +134,18 @@ function repoFor(path: string): RepoInfo {
 }
 
 const cancelled = new Set<number>();
+
+const GLOBAL_NAME = { value: "Ada Moreno", scope: "global" as const };
+const GLOBAL_EMAIL = { value: "ada@example.com", scope: "global" as const };
+/** Repository settings; the remotes come from `refs`. */
+let repoConfig: RepoConfig = {
+  userName: GLOBAL_NAME,
+  userEmail: GLOBAL_EMAIL,
+  sshCommand: null,
+  sshKey: null,
+  credentialHelpers: [{ value: "manager", scope: "global" }],
+  remotes: [],
+};
 
 const branching = branchingMock(
   {
@@ -403,6 +416,50 @@ export const backend: Backend = {
   ...fileViewMock(fixture),
 
   pickFolder: async () => fixture.repo.path,
+  pickFile: async () => "C:/Users/ada/.ssh/id_ed25519",
+  repoConfig: async () => {
+    const remotes = refs.remotes.map((r) => {
+      const url = r.url ?? "";
+      const https = url.startsWith("https://");
+      const m = https
+        ? /^https:\/\/([^/]+)\/(.+?)(\.git)?$/.exec(url)
+        : /^git@([^:]+):(.+?)(\.git)?$/.exec(url);
+      return {
+        name: r.name,
+        url,
+        pushUrl: r.pushUrl,
+        protocol: https
+          ? ("https" as const)
+          : url.startsWith("git@")
+            ? ("ssh" as const)
+            : ("local" as const),
+        alternateUrl: m
+          ? https
+            ? `git@${m[1]}:${m[2]}.git`
+            : `https://${m[1]}/${m[2]}.git`
+          : null,
+      };
+    });
+    return { ...repoConfig, remotes };
+  },
+  setIdentity: async (_repo, name, email) => {
+    const local = (value: string | null) =>
+      value?.trim() ? { value: value.trim(), scope: "local" as const } : null;
+    repoConfig = {
+      ...repoConfig,
+      userName: local(name) ?? GLOBAL_NAME,
+      userEmail: local(email) ?? GLOBAL_EMAIL,
+    };
+  },
+  setSshKey: async (_repo, key) => {
+    const value = key ? `ssh -i '${key.replace(/\\/g, "/")}' -o IdentitiesOnly=yes` : null;
+    repoConfig = {
+      ...repoConfig,
+      sshCommand: value ? { value, scope: "local" } : null,
+      sshKey: key ? key.replace(/\\/g, "/") : null,
+    };
+  },
+  forgetCredentials: async () => {},
   revealInFileManager: async () => {},
   // `?terminal=missing` simulates a machine where no terminal is found.
   openTerminal: async () => {

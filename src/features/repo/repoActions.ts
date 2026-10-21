@@ -10,6 +10,7 @@ import {
   CircleCheck,
   CircleX,
   Cloud,
+  FolderCog,
   FolderOpen,
   GitBranch,
   GitBranchPlus,
@@ -46,6 +47,8 @@ import {
   type RefsSnapshot,
   type WorkingStatus,
 } from "@/ipc";
+
+import { useRepoSettings } from "@/features/repo-settings/store";
 
 import { openTerminal } from "./openTerminal";
 import { useRepoUi } from "./repo-store";
@@ -118,6 +121,26 @@ export function useRepoActions(
       group: "repository",
       icon: FolderOpen,
       run: () => void ipc.revealInFileManager(repo),
+    },
+    {
+      id: "repo.settings",
+      title: t("actions.repoSettings"),
+      group: "repository",
+      icon: FolderCog,
+      // Each keyword is matched on its own, so include the phrases people type.
+      keywords: [
+        "remotes",
+        "remote url",
+        "ssh key",
+        "https",
+        "credentials",
+        "sign in",
+        "token",
+        "user name",
+        "email",
+        "identity",
+      ],
+      run: () => useRepoSettings.getState().open(repo),
     },
     {
       id: "repo.terminal",

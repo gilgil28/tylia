@@ -13,6 +13,7 @@ import { FileView } from "@/features/file-view/FileView";
 import { useHistoryStream } from "@/features/history/history-stream";
 import { useRebaseActions } from "@/features/rebase/rebaseActions";
 import { HistoryFilterBar } from "@/features/history/HistoryFilterBar";
+import { RepoSettingsDialog } from "@/features/repo-settings/RepoSettingsDialog";
 import { HistoryView } from "@/features/history/HistoryView";
 import { Sidebar } from "@/features/sidebar/Sidebar";
 import { RepoToolbar } from "@/features/toolbar/RepoToolbar";
@@ -112,6 +113,7 @@ function RepoLoaded({ path, active }: { path: string; active: boolean }) {
       />
       <OperationBanner repo={path} refs={refs.data} status={status.data} />
       <BranchDialogs repo={path} refs={refs.data} status={status.data} />
+      <RepoSettingsDialog repo={path} name={path.split(/[\\/]/).pop() ?? path} />
       <SplitPane
         className="flex-1"
         size={layout.sidebarWidth}

@@ -652,3 +652,13 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   `git merge-tree --write-tree` (Git ≥ 2.38, below our minimum); a conflict refuses with
   the file names and leaves the repository untouched, and tracked local changes refuse
   with `LocalChanges`.
+- **Repository settings** (`crates/tylia-git/src/repo_config.rs`): reads `user.*`,
+  `core.sshCommand`, `credential.helper` and remote URLs with `config --show-scope -z`.
+  - **Writes** are only ever `--local`:
+    - identity: `user.name` / `user.email`, or `--unset-all`;
+    - SSH key: `core.sshCommand = ssh -i '<key>' -o IdentitiesOnly=yes`, with the path
+      quoted for the shell Git runs it through (refused for `.pub` files and missing
+      files);
+    - forget a sign-in: `git credential reject` with `url=` on stdin.
+  - **Protocol switch:** SSH ↔ HTTPS alternatives are computed in Rust
+    (`https://host/owner/repo` ↔ `git@host:owner/repo.git`).

@@ -153,6 +153,15 @@ export const backend: Backend = {
   onAskpassClosed: (handler) => listen<number>("askpass-closed", (e) => handler(e.payload)),
   askpassRespond: (id, answer) => invoke("askpass_respond", { id, answer }),
 
+  repoConfig: (repo) => invoke("repo_config", { repo }),
+  setIdentity: (repo, name, email) => invoke("set_identity", { repo, name, email }),
+  setSshKey: (repo, key) => invoke("set_ssh_key", { repo, key }),
+  forgetCredentials: (repo, url) => invoke("forget_credentials", { repo, url }),
+
+  pickFile: async (title, defaultPath) => {
+    const picked = await open({ directory: false, multiple: false, title, defaultPath });
+    return typeof picked === "string" ? picked : null;
+  },
   pickFolder: async (title, defaultPath) => {
     const picked = await open({ directory: true, multiple: false, title, defaultPath });
     return typeof picked === "string" ? picked : null;

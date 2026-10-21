@@ -1,8 +1,18 @@
-import { ChevronRight, Cloud, Copy, Ellipsis, GitBranch, Pencil, Trash2 } from "lucide-react";
+import {
+  ChevronRight,
+  Cloud,
+  Copy,
+  Ellipsis,
+  GitBranch,
+  Pencil,
+  Settings2,
+  Trash2,
+} from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 import { RemoteBranchItems, type MenuContext } from "@/features/branching/menus";
 import { useRemoteDialog } from "@/features/remote/RemoteDialogs";
+import { useRepoSettings } from "@/features/repo-settings/store";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { t } from "@/i18n";
 import type { Remote, RemoteBranch } from "@/ipc";
@@ -28,6 +38,9 @@ function RemoteActions({
     <>
       <M.Item icon={Pencil} onSelect={() => open({ repo, mode: "edit", name: remote.name })}>
         {t("remotes.edit")}
+      </M.Item>
+      <M.Item icon={Settings2} onSelect={() => useRepoSettings.getState().open(repo, "remotes")}>
+        {t("remotes.settings")}
       </M.Item>
       <M.Item
         icon={Copy}

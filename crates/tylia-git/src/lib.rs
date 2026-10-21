@@ -25,6 +25,7 @@ mod rebase;
 mod refs;
 mod remote;
 mod repo;
+mod repo_config;
 mod runner;
 mod stash;
 mod status;
@@ -57,6 +58,7 @@ pub use refs::{
 };
 pub use remote::{FetchRequest, PullMode, PullOutcome, PushOutcome, PushRejection, PushRequest};
 pub use repo::RepoInfo;
+pub use repo_config::{ConfigScope, ConfigValue, RemoteSettings, RepoConfig, UrlProtocol};
 pub use runner::{AccessFailure, Git, GitOutput, OpContext, RunOptions};
 pub use stash::{StashOutcome, StashRequest};
 pub use status::{FileStatus, OperationKind, RepoOperation, StatusEntry, WorkingStatus};

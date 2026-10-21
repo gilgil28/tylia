@@ -11,6 +11,7 @@ import {
   History,
   Package,
   Plus,
+  Settings2,
   RefreshCw,
   Search,
   SquarePen,
@@ -25,6 +26,7 @@ import { useBranchDialog } from "@/features/branching/dialog-store";
 import { BranchItems, StashItems, TagItems, useMenuContext } from "@/features/branching/menus";
 import { updateSubmodules } from "@/features/remote/operations";
 import { useRemoteDialog } from "@/features/remote/RemoteDialogs";
+import { useRepoSettings } from "@/features/repo-settings/store";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { openRepoAt } from "@/features/welcome/open";
 import { joinPath } from "@/features/welcome/paths";
@@ -325,12 +327,20 @@ export function Sidebar({
           collapsed={isCollapsed("remotes")}
           onToggle={toggle}
           action={
-            <IconButton
-              icon={Plus}
-              label={t("remotes.add")}
-              compact
-              onClick={() => openRemoteDialog({ repo, mode: "add" })}
-            />
+            <>
+              <IconButton
+                icon={Settings2}
+                label={t("remotes.manage")}
+                compact
+                onClick={() => useRepoSettings.getState().open(repo, "remotes")}
+              />
+              <IconButton
+                icon={Plus}
+                label={t("remotes.add")}
+                compact
+                onClick={() => openRemoteDialog({ repo, mode: "add" })}
+              />
+            </>
           }
         >
           {remotes.length === 0 ? (

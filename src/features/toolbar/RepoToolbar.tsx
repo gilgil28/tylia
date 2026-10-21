@@ -6,6 +6,7 @@ import {
   GitBranchPlus,
   PanelLeft,
   Search,
+  FolderCog,
   GitCommitHorizontal,
   SquareTerminal,
 } from "lucide-react";
@@ -22,6 +23,7 @@ import { RemoteDialogs } from "@/features/remote/RemoteDialogs";
 import { useAutoFetch } from "@/features/remote/useAutoFetch";
 import { openTerminal } from "@/features/repo/openTerminal";
 import { useRepoUi } from "@/features/repo/repo-store";
+import { useRepoSettings } from "@/features/repo-settings/store";
 import { plural, t } from "@/i18n";
 import { ipc, type RefsSnapshot, type WorkingStatus } from "@/ipc";
 import { Badge } from "@/ui/Badge";
@@ -220,6 +222,11 @@ export function RepoToolbar({
           </span>
         </Tooltip>
       )}
+      <IconButton
+        icon={FolderCog}
+        label={t("toolbar.repoSettings")}
+        onClick={() => useRepoSettings.getState().open(repo)}
+      />
       <IconButton
         icon={SquareTerminal}
         label={t("actions.openTerminal")}

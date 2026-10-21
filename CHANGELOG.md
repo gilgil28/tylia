@@ -25,6 +25,13 @@ can change behaviour.
 - **Commit button in the toolbar,** with the number of changed files. It opens Changes
   with the cursor in the message box (also Ctrl/Cmd+Shift+C).
 - **Fetch's tooltip** says when you last fetched.
+- **Repository settings** (toolbar, palette, the sidebar's Remotes header), with three
+  sections:
+  - **Remotes:** add, edit, rename and remove remotes, and switch one between HTTPS and
+    SSH in one click.
+  - **Authentication:** pick the SSH key this repository uses, or forget a saved HTTPS
+    sign-in (after changing a token).
+  - **Identity:** the name and email for commits in this repository.
 
 ### Changed
 

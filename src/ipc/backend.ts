@@ -34,6 +34,7 @@ import type { PushRequest } from "./bindings/PushRequest";
 import type { PathSuggestions } from "./bindings/PathSuggestions";
 import type { RebaseTodo } from "./bindings/RebaseTodo";
 import type { RefsSnapshot } from "./bindings/RefsSnapshot";
+import type { RepoConfig } from "./bindings/RepoConfig";
 import type { RepoChanged } from "./bindings/RepoChanged";
 import type { RepoInfo } from "./bindings/RepoInfo";
 import type { ResetMode } from "./bindings/ResetMode";
@@ -263,6 +264,17 @@ export interface Backend {
   /** Answers a prompt; `null` cancels it. */
   askpassRespond(id: number, answer: string | null): Promise<void>;
 
+  // Repository settings (writes go to the repository's own config only).
+  repoConfig(repo: string): Promise<RepoConfig>;
+  /** `null` or blank removes the repository's own value (the global one applies). */
+  setIdentity(repo: string, name: string | null, email: string | null): Promise<void>;
+  /** The private key for this repository's SSH remotes; `null` for the defaults. */
+  setSshKey(repo: string, key: string | null): Promise<void>;
+  /** Asks the credential helper to forget the sign-in saved for an HTTPS remote URL. */
+  forgetCredentials(repo: string, url: string): Promise<void>;
+
+  /** Native file picker; `null` if cancelled. */
+  pickFile(title: string, defaultPath?: string): Promise<string | null>;
   /** Native folder picker; `null` if cancelled. */
   pickFolder(title: string, defaultPath?: string): Promise<string | null>;
   revealInFileManager(path: string): Promise<void>;

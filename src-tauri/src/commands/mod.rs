@@ -9,6 +9,7 @@ mod flow;
 mod rebase;
 mod remote;
 mod repo;
+mod repo_settings;
 mod update;
 mod worktree;
 
@@ -21,5 +22,6 @@ pub use flow::*;
 pub use rebase::*;
 pub use remote::*;
 pub use repo::*;
+pub use repo_settings::*;
 pub use update::*;
 pub use worktree::*;

@@ -26,7 +26,10 @@ export const useRemoteDialog = create<{
   close: () => set({ dialog: null }),
 }));
 
-const refreshRefs = (repo: string) => queryClient.invalidateQueries({ queryKey: ["refs", repo] });
+const refreshRefs = (repo: string) => {
+  void queryClient.invalidateQueries({ queryKey: ["refs", repo] });
+  void queryClient.invalidateQueries({ queryKey: ["repo-config", repo] });
+};
 
 /** Add a remote, or edit one's name and URLs. */
 function RemoteForm({
