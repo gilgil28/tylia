@@ -350,8 +350,12 @@ The items:
       matter more than the last few % of binary size. Record the binary size before and
       after.
 
-- [ ] CI: cache with `Swatinem/rust-cache` keyed per job. Run the Linux bindings check
+- [x] CI: cache with `Swatinem/rust-cache` keyed per job. Run the Linux bindings check
       without a second full build.
+      _The cache was already in place (its key includes OS and job); now only `main`
+      saves it. The bindings check reuses `cargo test`'s build. The real second build was
+      the LTO release build in "Tauri build": it is now `tauri build --debug`, which
+      recompiles only `tauri`, its plugins and `tylia` (36 s instead of about 8 min)._
 - [ ] Document `cargo clean` and these settings in CONTRIBUTING.md ("Disk space").
 - **Acceptance:** after `cargo clean` and one `cargo test --workspace` plus one `pnpm
 tauri dev` build, `target/` is under 8 GB on Windows; full `cargo test` wall time is

@@ -62,6 +62,9 @@ jobs:
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: ". -> target"
+          # The cache key already includes the OS and job. Only main saves, so pull
+          # requests reuse main's cache instead of filling the repository's quota.
+          save-if: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6
@@ -103,5 +106,7 @@ jobs:
       - name: Vitest
         run: pnpm test
 
+      # A debug build reuses the dependencies `cargo test` just compiled; the optimized
+      # LTO build is left to the release workflow.
       - name: Tauri build
-        run: pnpm tauri build --no-bundle
+        run: pnpm tauri build --debug --no-bundle
