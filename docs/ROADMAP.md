@@ -770,6 +770,10 @@ Details and tests: Phase 7 E.
 
 - [ ] Run 0.2.0 (or later) on the user's **CachyOS** machine: first run on a real Linux
       desktop, and `git/git` first rows and scrolling against the Phase 1 numbers.
+      _2026-10-23, first start (0.3.0 build, NVIDIA RTX 3070, driver 615.78, Wayland):
+      the window died with "Error 71 (Protocol error) dispatching to Wayland display".
+      Worked around for 0.3.0 (see "Known issues"). The `git/git` numbers are still to
+      do._
 - [ ] Run the dmg on a **Mac** (unsigned: right-click → Open). Also exercises the Finder /
       Dock open events.
 - [ ] **GitHub acceptance run** (Phase 3): fetch / pull / push to `gilgil28/tylia` from
@@ -926,6 +930,23 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
 - [ ] CHANGELOG `[0.4.0]`, version bump, tag `v0.4.0` (the user publishes the draft), then
       every channel that exists by then (RELEASING.md). Update this ROADMAP and stop for
       review.
+
+## Known issues
+
+Workarounds that stand in for a real fix. Check each one now and then, and replace it
+once the cause is fixed upstream.
+
+- **NVIDIA on Wayland (Linux):** WebKitGTK's GPU buffers fail with NVIDIA's explicit
+  sync, and the window dies at start with "Error 71 (Protocol error) dispatching to
+  Wayland display" (found 2026-10-23: driver 615.78, WebKitGTK 2.54.1, CachyOS).
+  _Workaround since 0.3.0:_ `nvidia_wayland_workaround` (`src-tauri/src/lib.rs`) sets
+  `__NV_DISABLE_EXPLICIT_SYNC=1` when the NVIDIA driver is loaded on Wayland and the user
+  hasn't set it (by exec'ing itself with it, as `unsafe_code` is forbidden). It keeps GPU rendering, unlike `WEBKIT_DISABLE_DMABUF_RENDERER=1` (CPU
+  copies, on every GPU) or `GDK_BACKEND=x11` (blurry at fractional scales).
+  - **Look for a real fix:** follow WebKitGTK's and NVIDIA's release notes for explicit
+    sync on Wayland. With each new WebKitGTK or driver version, start Tylia with
+    `__NV_DISABLE_EXPLICIT_SYNC=0` (the workaround leaves a set value alone). When it
+    starts, limit the workaround to the versions that still need it, or remove it.
 
 ## Feature inventory (Sourcetree parity reference)
 

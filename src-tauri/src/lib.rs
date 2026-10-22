@@ -22,6 +22,39 @@ use crate::settings::SettingsStore;
 use crate::state::AppState;
 use crate::ui_state::UiStateStore;
 
+/// NVIDIA's driver on Wayland breaks WebKitGTK's GPU buffers with explicit sync: the window
+/// dies at start with "Error 71 (Protocol error) dispatching to Wayland display". Falling
+/// back to implicit sync keeps rendering on the GPU (unlike `WEBKIT_DISABLE_DMABUF_RENDERER`).
+/// Only with the NVIDIA driver loaded, and never over the user's own value. A workaround:
+/// remove it once WebKitGTK or the driver fixes this (ROADMAP → "Known issues").
+///
+/// Setting our own environment is `unsafe` (and forbidden here), so Tylia replaces itself
+/// with a copy that has the variable set; that copy skips this, as the variable is there.
+/// If the exec fails, Tylia carries on without the workaround.
+#[cfg(target_os = "linux")]
+pub fn nvidia_wayland_workaround() {
+    use std::os::unix::process::CommandExt;
+
+    const VAR: &str = "__NV_DISABLE_EXPLICIT_SYNC";
+    let wayland = std::env::var_os("WAYLAND_DISPLAY").is_some_and(|v| !v.is_empty());
+    let nvidia = std::path::Path::new("/proc/driver/nvidia/version").exists();
+    if !(wayland && nvidia) || std::env::var_os(VAR).is_some() {
+        return;
+    }
+    let Ok(exe) = std::env::current_exe() else {
+        return;
+    };
+    let mut args = std::env::args_os();
+    let arg0 = args.next().unwrap_or_else(|| exe.clone().into_os_string());
+    // `exec` only returns on failure.
+    let error = std::process::Command::new(&exe)
+        .arg0(arg0)
+        .args(args)
+        .env(VAR, "1")
+        .exec();
+    eprintln!("tylia: couldn't restart with {VAR}=1: {error}");
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 /// Starts the app; `open` are the folders from the command line (see `launch`).
 pub fn run(open: Vec<PathBuf>) {

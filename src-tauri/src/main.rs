@@ -14,6 +14,8 @@ fn main() -> ExitCode {
     let cwd = std::env::current_dir().unwrap_or_default();
     match launch::parse(std::env::args_os().skip(1), &cwd) {
         Command::Open(paths) => {
+            #[cfg(target_os = "linux")]
+            tylia_lib::nvidia_wayland_workaround();
             tylia_lib::run(paths);
             ExitCode::SUCCESS
         }
