@@ -48,6 +48,14 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
    `brew audit --cask --online gilgil28/tap/tylia` and `brew style`. Moving it to
    homebrew-cask needs the project to meet Homebrew's notability rules.
 
+6. **winget.** The first version goes in by hand: fork
+   https://github.com/microsoft/winget-pkgs, copy `packaging/winget/manifests/t/Tylia/Tylia`
+   into the same path, check it with `winget validate --manifest <folder>`, and open a pull
+   request. Later versions are submitted by the **winget** workflow
+   (`.github/workflows/winget.yml`) when a release is published: set the repository
+   variable `WINGET_ENABLED` to `true` and the secret `WINGET_TOKEN` to a classic token
+   with `public_repo` from the account that owns the fork.
+
 ## Making a release
 
 1. Update `CHANGELOG.md`: move the entries from "Unreleased" into a new

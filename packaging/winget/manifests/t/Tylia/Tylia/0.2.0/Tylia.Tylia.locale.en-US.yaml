@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.28.0.schema.json
+PackageIdentifier: Tylia.Tylia
+PackageVersion: 0.2.0
+PackageLocale: en-US
+Publisher: The Tylia contributors
+PublisherUrl: https://github.com/gilgil28/tylia
+PublisherSupportUrl: https://github.com/gilgil28/tylia/issues
+PackageName: Tylia
+PackageUrl: https://gilgil28.github.io/tylia/
+License: MIT OR Apache-2.0
+LicenseUrl: https://github.com/gilgil28/tylia/blob/main/LICENSE-MIT
+ShortDescription: A calm, fast desktop Git client
+Description: |-
+  Tylia is a desktop Git client with a clear commit graph, staging down to single lines, and
+  no clutter. It uses the Git you already have, so hooks, credential helpers, signing and your
+  Git configuration work exactly as on the command line. No telemetry.
+Moniker: tylia
+Tags:
+  - git
+  - git-client
+  - version-control
+  - vcs
+ReleaseNotesUrl: https://github.com/gilgil28/tylia/releases/tag/v0.2.0
+ManifestType: defaultLocale
+ManifestVersion: 1.28.0

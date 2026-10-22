@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.28.0.schema.json
+PackageIdentifier: Tylia.Tylia
+PackageVersion: 0.2.0
+InstallerLocale: en-US
+InstallerType: nullsoft
+Scope: user
+ElevationRequirement: elevationProhibited
+UpgradeBehavior: install
+ReleaseDate: 2026-10-22
+Commands:
+  - tylia
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/gilgil28/tylia/releases/download/v0.2.0/Tylia_0.2.0_x64-setup.exe
+    InstallerSha256: 7690D03094B4F3A59EAFA80447F788F2E6211A6F13A761A8E1C7FDF7E9E45BBD
+ManifestType: installer
+ManifestVersion: 1.28.0
