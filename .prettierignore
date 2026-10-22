@@ -10,3 +10,5 @@ playwright-report
 docs/KICKOFF.md
 LICENSE-APACHE
 CODE_OF_CONDUCT.md
+# Prettier reads .wxs as WeChat script; these are WiX (XML) fragments.
+*.wxs
