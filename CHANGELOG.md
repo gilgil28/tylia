@@ -39,8 +39,24 @@ can change behaviour.
   come from Flathub.
 - **Packages:** a portable zip on each release (for Scoop), and the manifests for Scoop,
   Homebrew, winget and the AUR (`tylia-bin` and `tylia`, built from source).
+- **Several commits at once:** Ctrl/Cmd+click and Shift+click (or Shift+↑/↓) select more
+  than one commit in the history; Esc goes back to one. The details pane sums them up
+  (authors, dates, changed files), and their menu cherry-picks (oldest first), reverts
+  (newest first), saves them as a numbered patch series or copies their hashes.
+- **Hosting accounts** (Settings → Accounts): add a GitHub, GitLab or Bitbucket account
+  with a personal access token (GitLab and GitHub Enterprise on your own server too). The
+  Clone dialog then lists your repositories to search and clone. Tokens are kept by Git's
+  credential helper; "Sign out" deletes them.
+- **Git LFS:** LFS files are marked in Changes and in a commit's files; a file's menu
+  tracks it, or its extension, with LFS. The toolbar's LFS menu pulls the LFS objects and
+  lists the locks, where you can lock a file or release your own locks. Tylia says when a
+  repository uses LFS but Git LFS isn't installed.
 
 ### Changed
+
+- **Changes flow upwards:** Staged is now above Unstaged (conflicts stay on top), so
+  staging moves a file up towards the commit box. ↑ / ↓ cross between the lists.
+- Muted text in a focused selection is easier to read in the light theme.
 
 - The update dialog says how to update copies installed with pacman (the AUR) or Scoop,
   instead of offering an installer that would leave a second copy.
@@ -48,6 +64,11 @@ can change behaviour.
 ### Fixed
 
 - On Windows, cancelling a clone could leave the half-cloned folder behind.
+- **Flatpak:** "Open in terminal" opens your computer's terminal (with the same one-time
+  permission as "Use the system's Git") instead of saying none was found. With "Use the
+  system's Git" on but not yet permitted, opening a repository explains how to allow it.
+- **Linux:** the deb, rpm and AppImage install the 256-pixel icon in the right size slot,
+  so it is sharp on HiDPI desktops.
 - Remote URLs and key paths in Repository settings now use the code font.
 
 ## [0.2.0] - 2026-10-22

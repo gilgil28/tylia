@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 8 — Packages, power features and v0.3.0** (2026-10-22: built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox; waiting for review before v0.3.0). Phase 9 is planned below. Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
+Current phase: **Phase 9 — Workflow polish, hosting accounts and v0.4.0** (2026-10-22: A–E built, tested and pushed; untested against the real hosting APIs and a real LFS server; the OAuth device flow waits for the user's OAuth apps; v0.3.0 and v0.4.0 not yet released, waiting for review). Phase 8 is built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox. Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
 
 ## Product vision
 
@@ -890,20 +890,34 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
 
 #### E. Fixes found in Phase 8
 
-- [ ] **Flatpak: "Open in terminal"** runs the host's terminal through
+- [x] **Flatpak: "Open in terminal"** runs the host's terminal through
       `flatpak-spawn --host` when the user granted the same permission as "Use the
       system's Git"; without it, the error explains how to grant it instead of "No
       terminal was found".
-- [ ] **Flatpak: the system's Git without the permission:** opening a repository says that
+      _Done 2026-10-22: the usual candidates are looked up on the host
+      (`command -v` through `flatpak-spawn`). Checked in the Flatpak container: without
+      the override the error gives the `flatpak override` command; with it, the host's
+      xterm opens in the repository._
+- [x] **Flatpak: the system's Git without the permission:** opening a repository says that
       Tylia may not run the system's Git yet, with the `flatpak override` command and a
       link to Settings → Git, instead of "Couldn't open repository".
-- [ ] **Linux icons:** Tauri installs the 256-px icon as `256x256@2` (a 512-px slot), so it
+      _Done 2026-10-22, checked in the Flatpak container. The message names Settings → Git
+      → "Use the system's Git" in words rather than linking to it (errors are plain text);
+      the permission is probed once per run, as it only changes with a restart._
+- [x] **Linux icons:** Tauri installs the 256-px icon as `256x256@2` (a 512-px slot), so it
       looks soft on HiDPI desktops. Install it as `hicolor/256x256` in the deb, rpm and
       AppImage (and check what `tauri icon` should generate), like the AUR and Flatpak
       packages already do.
-- [ ] **Faster review builds:** a `review` Cargo profile (release with `lto = "thin"` and
+      _Done 2026-10-22: the bundler names a slot after the PNG's pixels plus `@2` for an
+      `@2x` file name, so `pnpm artwork` now saves `tauri icon`'s `128x128@2x.png` as
+      `256x256.png`. Checked in the Ubuntu container: deb, rpm and AppImage install 32, 64,
+      128, 256 and 512 with no `@2` slot._
+- [x] **Faster review builds:** a `review` Cargo profile (release with `lto = "thin"` and
       `codegen-units = 16`) for local builds, documented in CONTRIBUTING.md; measure a
       rebuild after a one-line change against today's 238 s. Release builds keep full LTO.
+      _Done 2026-10-22, changed from the plan: thin LTO only took a one-line rebuild from
+      245 s to 205 s, so `review` has no LTO, 16 incremental codegen units: 55 s (64 s
+      with the frontend through `pnpm build:review`). Measured on Windows, 4 jobs._
 - **Acceptance:** each fix is checked where it applies (the Flatpak and Linux packages in
   the containers used in Phase 8), with tests where the code allows.
 
