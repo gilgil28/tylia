@@ -77,7 +77,7 @@ impl Git {
         }
         args.extend(["--".into(), url.to_owned(), dest.display().to_string()]);
         if let Err(err) = self.run_operation(RunOptions::default(), &args, ctx).await {
-            remove_partial(&dest, existed);
+            remove_partial(&dest, existed).await;
             return Err(err);
         }
         self.open_repo(&dest).await
@@ -128,17 +128,34 @@ impl Git {
 
 /// Removes what a failed clone wrote: the whole folder if the clone created it, otherwise
 /// only its contents (it was empty before).
-fn remove_partial(dest: &Path, existed: bool) {
-    if !existed {
-        let _ = std::fs::remove_dir_all(dest);
-    } else if let Ok(entries) = dest.read_dir() {
-        for entry in entries.flatten() {
-            let path = entry.path();
-            let _ = if path.is_dir() {
-                std::fs::remove_dir_all(path)
-            } else {
-                std::fs::remove_file(path)
+/// Removes what a failed or cancelled clone left. On Windows, Git's children can still hold
+/// files open (or even write a few more) for a moment after `taskkill`, so this retries
+/// until the folder is gone (or empty) for up to about two seconds.
+async fn remove_partial(dest: &Path, existed: bool) {
+    for attempt in 0..20 {
+        if attempt > 0 {
+            tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+        }
+        if !existed {
+            let _ = std::fs::remove_dir_all(dest);
+            if !dest.exists() {
+                return;
+            }
+        } else {
+            let Ok(entries) = dest.read_dir() else {
+                return;
             };
+            for entry in entries.flatten() {
+                let path = entry.path();
+                let _ = if path.is_dir() {
+                    std::fs::remove_dir_all(path)
+                } else {
+                    std::fs::remove_file(path)
+                };
+            }
+            if dest.read_dir().is_ok_and(|mut d| d.next().is_none()) {
+                return;
+            }
         }
     }
 }
