@@ -1,4 +1,4 @@
-use std::ffi::OsStr;
+use std::ffi::{OsStr, OsString};
 use std::path::{Path, PathBuf};
 use std::process::Stdio;
 
@@ -89,12 +89,31 @@ pub struct GitOutput {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Git {
     path: PathBuf,
+    /// Started through `flatpak-spawn --host`: the host system's Git, outside Tylia's
+    /// Flatpak sandbox. The working directory and environment reach it as arguments.
+    flatpak_host: bool,
 }
 
 impl Git {
     /// Uses the given executable without checking it.
     pub fn with_path(path: impl Into<PathBuf>) -> Self {
-        Self { path: path.into() }
+        Self {
+            path: path.into(),
+            flatpak_host: false,
+        }
+    }
+
+    /// The `git` on the host's `PATH`, run from inside a Flatpak (needs the
+    /// `org.freedesktop.Flatpak` bus name, which the user grants with `flatpak override`).
+    pub fn flatpak_host() -> Self {
+        Self {
+            path: PathBuf::from("git"),
+            flatpak_host: true,
+        }
+    }
+
+    pub fn runs_on_flatpak_host(&self) -> bool {
+        self.flatpak_host
     }
 
     /// Finds `git` on `PATH`, then in common install locations.
@@ -121,10 +140,36 @@ impl Git {
         I: IntoIterator<Item = S>,
         S: AsRef<OsStr>,
     {
-        let mut cmd = Command::new(&self.path);
+        let mut env = vec![("GIT_TERMINAL_PROMPT", "0")];
+        if opts.c_locale {
+            env.push(("LC_ALL", "C"));
+        }
+        if opts.no_optional_locks {
+            env.push(("GIT_OPTIONAL_LOCKS", "0"));
+        }
+        env.extend(opts.env.iter().map(|(k, v)| (k.as_str(), v.as_str())));
+        let mut cmd = if self.flatpak_host {
+            // --watch-bus: the host's Git ends when flatpak-spawn does (a cancel kills it).
+            let mut cmd = Command::new("flatpak-spawn");
+            cmd.args(["--host", "--watch-bus"]);
+            if let Some(dir) = opts.cwd {
+                let mut arg = OsString::from("--directory=");
+                arg.push(dir);
+                cmd.arg(arg);
+            }
+            cmd.args(env.iter().map(|(k, v)| format!("--env={k}={v}")));
+            cmd.arg(&self.path);
+            cmd
+        } else {
+            let mut cmd = Command::new(&self.path);
+            if let Some(dir) = opts.cwd {
+                cmd.current_dir(dir);
+            }
+            cmd.envs(env);
+            cmd
+        };
         cmd.args(BASE_ARGS)
             .args(args)
-            .env("GIT_TERMINAL_PROMPT", "0")
             .stdin(if opts.stdin.is_some() {
                 Stdio::piped()
             } else {
@@ -133,16 +178,6 @@ impl Git {
             .stdout(Stdio::piped())
             .stderr(Stdio::piped())
             .kill_on_drop(true);
-        if let Some(dir) = opts.cwd {
-            cmd.current_dir(dir);
-        }
-        if opts.c_locale {
-            cmd.env("LC_ALL", "C");
-        }
-        if opts.no_optional_locks {
-            cmd.env("GIT_OPTIONAL_LOCKS", "0");
-        }
-        cmd.envs(opts.env.iter().map(|(k, v)| (k, v)));
         #[cfg(windows)]
         {
             const CREATE_NO_WINDOW: u32 = 0x0800_0000;
@@ -341,7 +376,11 @@ impl Git {
     fn spawn_error(&self, display: &str, source: std::io::Error) -> GitError {
         GitError::Spawn {
             command: display.to_owned(),
-            path: self.path.clone(),
+            path: if self.flatpak_host {
+                PathBuf::from("flatpak-spawn")
+            } else {
+                self.path.clone()
+            },
             source,
         }
     }
@@ -476,6 +515,36 @@ pub(crate) fn lossy(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn flatpak_host_passes_directory_and_environment_as_arguments() {
+        let env = [("GIT_ASKPASS".to_owned(), "/home/ada/askpass".to_owned())];
+        let opts = RunOptions {
+            cwd: Some(Path::new("/home/ada/repo")),
+            c_locale: true,
+            env: &env,
+            ..RunOptions::default()
+        };
+        let cmd = Git::flatpak_host().command(&opts, ["status", "--", "a b"]);
+        let cmd = cmd.as_std();
+        assert_eq!(cmd.get_program(), "flatpak-spawn");
+        let args: Vec<_> = cmd.get_args().map(|a| a.to_string_lossy()).collect();
+        let mut expected = vec![
+            "--host",
+            "--watch-bus",
+            "--directory=/home/ada/repo",
+            "--env=GIT_TERMINAL_PROMPT=0",
+            "--env=LC_ALL=C",
+            "--env=GIT_ASKPASS=/home/ada/askpass",
+            "git",
+        ];
+        expected.extend(BASE_ARGS);
+        expected.extend(["status", "--", "a b"]);
+        assert_eq!(args, expected);
+        // Nothing is set on flatpak-spawn itself: the sandbox's values mustn't leak.
+        assert_eq!(cmd.get_envs().count(), 0);
+        assert_eq!(cmd.get_current_dir(), None);
+    }
 
     #[test]
     fn display_command_quotes_whitespace() {

@@ -30,6 +30,7 @@
           dateFormat: "relative",
           tabWidth: 4,
           gitPath: null,
+          hostGit: false,
           checkForUpdates: false,
           terminal: null,
         },

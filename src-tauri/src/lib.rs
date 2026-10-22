@@ -38,7 +38,7 @@ pub fn run(open: Vec<PathBuf>) {
             let config_dir = app.path().app_config_dir()?;
             let store = SettingsStore::new(&config_dir);
             let settings = store.load();
-            state::set_git_path(settings.git_path.as_deref());
+            state::set_git(&settings);
             window::create_main(app.handle(), &settings)?;
             app.manage(AppState::new(
                 store,

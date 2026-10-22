@@ -728,3 +728,14 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   - **AppStream ID:** `io.github.gilgil28.tylia`, the Flathub app ID, in every package, so
     software centres show the distribution packages and the Flatpak as one app. The bundle
     identifier `dev.tylia.app` is separate: it names the settings folder.
+- **The system's Git in the Flatpak** (Settings → Git, `settings.hostGit`, off by default):
+  `Git::flatpak_host()` runs `flatpak-spawn --host --watch-bus --directory=<cwd>
+--env=<each variable> git …`, so nothing of the sandbox's own environment leaks to the
+  host, and killing `flatpak-spawn` (cancel) ends the host's Git. Needs the
+  `org.freedesktop.Flatpak` bus name, which the manifest doesn't request (it weakens the
+  sandbox); the user grants it with `flatpak override --user
+--talk-name=org.freedesktop.Flatpak io.github.gilgil28.tylia`, which Settings shows when
+  `git --version` fails. Credential prompts: `GIT_ASKPASS` / `SSH_ASKPASS` point at
+  `$XDG_DATA_HOME/tylia-askpass`, a script (written on first use; the host sees the same
+  path) that runs `flatpak run --command=tylia <app id>`; that helper reaches the askpass
+  server over the shared loopback.

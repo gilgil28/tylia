@@ -717,6 +717,15 @@ export const en = {
   "settingsScreen.gitFound": "{version} · {path}",
   "settingsScreen.gitNotFound": "Git couldn’t be run from this path.",
   "settingsScreen.gitReset": "Use automatic",
+  "settingsScreen.hostGit": "Use the system’s Git",
+  "settingsScreen.hostGitHint":
+    "Off: the Git inside Tylia’s Flatpak. On: the Git installed on this computer, with its credential helpers, signing and diff tools.",
+  "settingsScreen.gitInFlatpak": "{version} · inside the Flatpak",
+  "settingsScreen.gitOnHost": "{version} · on this computer",
+  "settingsScreen.hostGitDenied":
+    "Tylia may not run programs outside its sandbox yet. Allow it once in a terminal, then restart Tylia:",
+  "settingsScreen.hostGitCommand":
+    "flatpak override --user --talk-name=org.freedesktop.Flatpak io.github.gilgil28.tylia",
   "settingsScreen.nativeTitleBarHint":
     "Use the system’s window frame instead of Tylia’s title bar.",
   "settingsScreen.pullMode": "Pull with",

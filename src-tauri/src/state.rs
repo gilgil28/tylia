@@ -1,14 +1,16 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex, RwLock};
 
 use tokio::sync::{OwnedMutexGuard, oneshot};
 use tylia_git::Git;
 
 use crate::askpass::Askpass;
+use crate::commands::{Distribution, distribution};
 use crate::error::IpcError;
 use crate::path_index::PathIndexes;
-use crate::settings::SettingsStore;
+use crate::settings::{Settings, SettingsStore};
 use crate::ui_state::UiStateStore;
 use crate::watcher::RepoWatcher;
 
@@ -56,18 +58,35 @@ impl AppState {
 
 /// The Git executable chosen in Settings, if any (set at start and on every settings save).
 static GIT_PATH: RwLock<Option<PathBuf>> = RwLock::new(None);
+/// Settings → Git → "Use the system's Git", in the Flatpak only.
+static HOST_GIT: AtomicBool = AtomicBool::new(false);
 
-pub fn set_git_path(path: Option<&str>) {
-    let path = path
+pub fn set_git(settings: &Settings) {
+    let path = settings
+        .git_path
+        .as_deref()
         .map(str::trim)
         .filter(|p| !p.is_empty())
         .map(PathBuf::from);
     *GIT_PATH.write().unwrap_or_else(|e| e.into_inner()) = path;
+    HOST_GIT.store(
+        settings.host_git && distribution() == Distribution::Flatpak,
+        Ordering::Relaxed,
+    );
 }
 
-/// The Git executable: the one chosen in Settings, else discovered per call (cheap, and picks
-/// up an install or PATH change without restarting).
+/// Whether Git runs outside the Flatpak sandbox (its prompts need the host-side helper).
+pub fn host_git() -> bool {
+    HOST_GIT.load(Ordering::Relaxed)
+}
+
+/// The Git executable: the host's when chosen in the Flatpak, else the one chosen in
+/// Settings, else discovered per call (cheap, and picks up an install or PATH change
+/// without restarting).
 pub fn git() -> Result<Git, IpcError> {
+    if host_git() {
+        return Ok(Git::flatpak_host());
+    }
     if let Some(path) = GIT_PATH.read().unwrap_or_else(|e| e.into_inner()).clone() {
         return if path.is_file() {
             Ok(Git::with_path(path))

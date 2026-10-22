@@ -50,6 +50,11 @@ tabWidth: number,
  */
 gitPath: string | null, 
 /**
+ * In the Flatpak: run the host system's Git (through `flatpak-spawn --host`) instead of
+ * the bundled one. Ignored elsewhere.
+ */
+hostGit: boolean, 
+/**
  * Ask GitHub for a newer release once at start. Off by default: no network request
  * unless the user turns this on or presses "Check now".
  */

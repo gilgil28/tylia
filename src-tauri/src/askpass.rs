@@ -190,7 +190,7 @@ impl Askpass {
         lock(&server.state)
             .operations
             .insert(operation_id, repo.map(str::to_owned));
-        let mut env = helper_env(&server.helper);
+        let mut env = helper_env(&helper_for_git(&server.helper));
         env.extend([
             (ENV_ADDR.to_owned(), server.addr.to_string()),
             (ENV_TOKEN.to_owned(), server.token.clone()),
@@ -203,7 +203,7 @@ impl Askpass {
     /// helper exits without contacting the app), so nothing pops up unasked.
     pub fn env_quiet(&self) -> Vec<(String, String)> {
         let helper = match &self.server {
-            Some(server) => server.helper.clone(),
+            Some(server) => helper_for_git(&server.helper),
             None => match std::env::current_exe()
                 .ok()
                 .and_then(|p| p.to_str().map(str::to_owned))
@@ -342,6 +342,52 @@ impl Server {
             }
         }
     }
+}
+
+/// The helper Git runs for prompts: `helper` (this executable), except for the system's Git
+/// in the Flatpak (Settings → Git), which runs outside the sandbox where `/app/bin/tylia`
+/// doesn't exist. That one gets [`host_helper_script`], kept in the app's data folder (the
+/// host sees it at the same path), which starts the helper in a new sandbox instance. If the
+/// script can't be written, the prompt fails like a declined one.
+fn helper_for_git(helper: &str) -> String {
+    if !crate::state::host_git() {
+        return helper.to_owned();
+    }
+    let script = std::env::var("FLATPAK_ID")
+        .ok()
+        .zip(std::env::var_os("XDG_DATA_HOME"))
+        .and_then(|(app_id, data)| {
+            let script = host_helper_script(&app_id)?;
+            let path = Path::new(&data).join("tylia-askpass");
+            if std::fs::read_to_string(&path).ok().as_deref() != Some(script.as_str()) {
+                std::fs::create_dir_all(&data).ok()?;
+                std::fs::write(&path, &script).ok()?;
+                #[cfg(unix)]
+                {
+                    use std::os::unix::fs::PermissionsExt;
+                    std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o755)).ok()?;
+                }
+            }
+            path.to_str().map(str::to_owned)
+        });
+    script.unwrap_or_else(|| helper.to_owned())
+}
+
+/// The host-side helper script for the app ID `app_id` (refused unless it's a plain
+/// reverse-DNS name, since it goes into a shell script).
+fn host_helper_script(app_id: &str) -> Option<String> {
+    let plain = !app_id.is_empty()
+        && app_id
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '.' | '_' | '-'));
+    plain.then(|| {
+        format!(
+            "#!/bin/sh\n\
+             # Tylia's sign-in prompts for the system's Git, which runs outside Tylia's Flatpak\n\
+             # (Settings → Git → \"Use the system's Git\"). Written by Tylia; safe to delete.\n\
+             exec flatpak run --command=tylia {app_id} \"$@\"\n"
+        )
+    })
 }
 
 /// `GIT_ASKPASS` / `SSH_ASKPASS` pointing at `helper`.
@@ -517,6 +563,19 @@ mod tests {
         assert_eq!(var(&quiet, "GIT_ASKPASS"), "tylia");
         assert_eq!(var(&quiet, ENV_DENY), "1");
         assert!(!quiet.iter().any(|(k, _)| k == ENV_TOKEN || k == ENV_ADDR));
+    }
+
+    #[test]
+    fn host_helper_script_starts_the_flatpak_and_refuses_odd_app_ids() {
+        let script = host_helper_script("io.github.gilgil28.tylia").unwrap();
+        assert!(script.starts_with("#!/bin/sh\n"));
+        assert!(
+            script
+                .ends_with("\nexec flatpak run --command=tylia io.github.gilgil28.tylia \"$@\"\n")
+        );
+        for odd in ["", "a b", "x;rm -rf ~", "$(id)", "a\nb"] {
+            assert_eq!(host_helper_script(odd), None, "{odd:?}");
+        }
     }
 
     #[test]

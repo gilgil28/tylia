@@ -20,7 +20,7 @@ pub fn set_settings(
     window: WebviewWindow,
 ) -> Result<(), IpcError> {
     state.settings.save(&settings)?;
-    crate::state::set_git_path(settings.git_path.as_deref());
+    crate::state::set_git(&settings);
     window::apply_theme(&window, settings.theme);
     Ok(())
 }

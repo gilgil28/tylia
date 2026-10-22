@@ -67,6 +67,9 @@ pub struct Settings {
     pub tab_width: u32,
     /// Git executable to use instead of the one found on PATH; `None` = find it.
     pub git_path: Option<String>,
+    /// In the Flatpak: run the host system's Git (through `flatpak-spawn --host`) instead of
+    /// the bundled one. Ignored elsewhere.
+    pub host_git: bool,
     /// Ask GitHub for a newer release once at start. Off by default: no network request
     /// unless the user turns this on or presses "Check now".
     pub check_for_updates: bool,
@@ -90,6 +93,7 @@ impl Default for Settings {
             date_format: DateFormat::default(),
             tab_width: 4,
             git_path: None,
+            host_git: false,
             check_for_updates: false,
             terminal: None,
         }
@@ -163,6 +167,7 @@ mod tests {
             date_format: DateFormat::Absolute,
             tab_width: 8,
             git_path: Some("/usr/local/bin/git".to_owned()),
+            host_git: true,
             check_for_updates: true,
             terminal: Some("wezterm".to_owned()),
         };

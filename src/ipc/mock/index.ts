@@ -165,7 +165,20 @@ const branching = branchingMock(
 );
 
 export const backend: Backend = {
-  gitVersion: async () => gitInfo,
+  // `?hostgit=denied`: the Flatpak may not run the system's Git (no `flatpak override` yet).
+  gitVersion: async () => {
+    const settings = storage<{ hostGit?: boolean } | null>(SETTINGS_KEY, null);
+    if (!settings?.hostGit) return gitInfo;
+    if (new URLSearchParams(location.search).get("hostgit") === "denied") {
+      throw {
+        kind: "gitFailed",
+        message: "git --version failed",
+        command: "git --version",
+        stderr: "Portal call failed: org.freedesktop.DBus.Error.ServiceUnknown",
+      } satisfies IpcError;
+    }
+    return { ...gitInfo, raw: "git version 2.53.0", path: "git" };
+  },
   setSettings: async (settings) => store(SETTINGS_KEY, settings),
   loadUiState: async () => {
     const params = new URLSearchParams(location.search);

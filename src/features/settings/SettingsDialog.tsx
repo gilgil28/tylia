@@ -272,11 +272,57 @@ function GitExecutable() {
   );
 }
 
+/** In the Flatpak: its own Git, or (opt-in) the system's, which needs a permission the user
+ * grants with `flatpak override`. */
+function FlatpakGit() {
+  const { settings, update } = useSettings();
+  const info = useQuery({
+    queryKey: ["git-version", "flatpak", settings.hostGit],
+    queryFn: () => ipc.gitVersion(),
+    retry: false,
+  });
+  return (
+    <Row
+      label={t("settingsScreen.hostGit")}
+      hint={
+        <>
+          {t("settingsScreen.hostGitHint")}
+          <br />
+          {info.isError ? (
+            <span className="text-danger">
+              {settings.hostGit
+                ? t("settingsScreen.hostGitDenied")
+                : t("settingsScreen.gitNotFound")}
+            </span>
+          ) : info.data ? (
+            settings.hostGit ? (
+              t("settingsScreen.gitOnHost", { version: info.data.raw })
+            ) : (
+              t("settingsScreen.gitInFlatpak", { version: info.data.raw })
+            )
+          ) : null}
+          {settings.hostGit && info.isError && (
+            <code className="mt-1 block font-mono text-fg-secondary" data-selectable>
+              {t("settingsScreen.hostGitCommand")}
+            </code>
+          )}
+        </>
+      }
+    >
+      <Checkbox
+        checked={settings.hostGit}
+        onCheckedChange={(hostGit) => update({ hostGit })}
+        aria-label={t("settingsScreen.hostGit")}
+      />
+    </Row>
+  );
+}
+
 function Git() {
   const { settings, update } = useSettings();
   return (
     <div className="flex flex-col">
-      <GitExecutable />
+      {distribution === "flatpak" ? <FlatpakGit /> : <GitExecutable />}
       <Row label={t("settingsScreen.pullMode")} hint={t(`ops.modeHint.${settings.pullMode}`)}>
         <div className="w-48">
           <Select
