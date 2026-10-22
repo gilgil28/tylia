@@ -119,13 +119,13 @@ function RemoteCard({ repo, remote }: { repo: string; remote: RemoteSettings }) 
           {t("remotes.remove")}
         </Button>
       </div>
-      <code className="truncate font-mono text-small text-fg-secondary" data-selectable>
+      <code className="truncate font-code text-small text-fg-secondary" data-selectable>
         {remote.url}
       </code>
       {remote.pushUrl && (
         <p className="truncate text-small text-fg-muted">
           {t("repoSettings.pushesTo")}{" "}
-          <code className="font-mono" data-selectable>
+          <code className="font-code" data-selectable>
             {remote.pushUrl}
           </code>
         </p>
@@ -136,7 +136,7 @@ function RemoteCard({ repo, remote }: { repo: string; remote: RemoteSettings }) 
             {target === "ssh" ? t("repoSettings.useSsh") : t("repoSettings.useHttps")}
           </Button>
           <span className="min-w-0 truncate">
-            <code className="font-mono">{remote.alternateUrl}</code>
+            <code className="font-code">{remote.alternateUrl}</code>
           </span>
         </div>
       )}
@@ -201,7 +201,7 @@ function SshKey({ repo, config, refresh }: { repo: string; config: RepoConfig; r
         <p className="rounded-menu border border-line-subtle bg-panel p-2 text-small text-fg-secondary">
           <Terminal size={12} className="mr-1 inline" aria-hidden />
           {t("repoSettings.customSsh", { scope: SCOPES[custom.scope] })}{" "}
-          <code className="font-mono" data-selectable>
+          <code className="font-code" data-selectable>
             {custom.value}
           </code>
         </p>
@@ -226,7 +226,7 @@ function SshKey({ repo, config, refresh }: { repo: string; config: RepoConfig; r
             onChange={(e) => setPath(e.target.value)}
             placeholder={t("repoSettings.keyPlaceholder")}
             aria-label={t("repoSettings.keyFile")}
-            className="flex-1 font-mono"
+            className="flex-1 font-code"
           />
           <Button icon={FolderOpen} onClick={() => void browse()}>
             {t("repoSettings.browse")}

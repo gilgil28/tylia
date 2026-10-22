@@ -302,7 +302,7 @@ function FlatpakGit() {
             )
           ) : null}
           {settings.hostGit && info.isError && (
-            <code className="mt-1 block font-mono text-fg-secondary" data-selectable>
+            <code className="mt-1 block font-code text-fg-secondary" data-selectable>
               {t("settingsScreen.hostGitCommand")}
             </code>
           )}
