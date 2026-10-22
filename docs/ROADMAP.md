@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 7 — Distribution, OS integration and polish** (in progress since 2026-10-21). Phases 0–6 delivered. The repository is public at https://github.com/gilgil28/tylia; **v0.2.0**, the first public release, was cut mid-phase on 2026-10-22 at the user's request (v0.1.0 stayed a local tag). The GitHub acceptance run from Phase 3 is still open.
+Current phase: **Phase 8 — Packages, power features and v0.3.0** (planned 2026-10-22; not started). Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
 
 ## Product vision
 
@@ -414,9 +414,11 @@ one source. Everything else is generated from it, and the generators are committ
 
 #### C. Installers and distribution channels
 
+_Open items continue in Phase 8; the details below still apply._
+
 Windows:
 
-- [ ] **NSIS `.exe`, the primary Windows download:**
+- [x] **NSIS `.exe`, the primary Windows download:**
   - **Install mode:** `installMode: "currentUser"` (no admin needed). **Decide**: also
     allow a per-machine install with `"both"` (recommendation: `"currentUser"`; the MSI
     covers managed per-machine installs).
@@ -425,7 +427,7 @@ Windows:
     tick a box. Ask NSIS: does it offer that? If not, use `installerHooks`.
   - **Language:** English only.
   - **Hooks:** `installerHooks` (`src-tauri/windows/hooks.nsh`) for OS integration (D).
-- [ ] **MSI:** the same branding and the same registry entries, via a WiX
+- [x] **MSI:** the same branding and the same registry entries, via a WiX
       `fragmentPaths` fragment.
 - _Progress 2026-10-22 (NSIS + MSI): built, not installed yet (ARCHITECTURE §5.19). NSIS:
   `installMode: "currentUser"`, Start Menu folder `Tylia`, English; the desktop shortcut
@@ -521,6 +523,8 @@ validate`.
 
 #### D. OS integration
 
+_Open items continue in Phase 8; the details below still apply._
+
 - [x] **One window, many tabs.** Opening Tylia again (or with a path) focuses the running
       window and opens the path as a tab (`tauri-plugin-single-instance`; verify its
       version and license; on Linux it uses D-Bus, which works in the Flatpak).
@@ -554,6 +558,8 @@ run`).
 
 #### E. Power features (backlog)
 
+_Open items continue in Phase 8; the details below still apply._
+
 - [ ] **Create and apply patches:**
   - **Create:** from one or more selected commits (`git format-patch`, to a folder the
     user picks) or from the working copy / staged changes (`git diff [--cached]
@@ -583,8 +589,10 @@ run`).
 
 #### F. Carried over (needs the user's accounts or hardware)
 
+_Open items continue in Phase 8; the details below still apply._
+
 - [ ] GitHub acceptance run (HTTPS token and SSH) once the repository is pushed (Phase 3).
-- [ ] First real release: push `main` and a tag, check the draft and every asset,
+- [x] First real release: push `main` and a tag, check the draft and every asset,
       publish, and confirm the download links (docs/RELEASING.md). _v0.2.0 was released
       2026-10-22. No website domain for now: links point at the repository, and the
       site can go to https://gilgil28.github.io/tylia/ by hand._
@@ -599,9 +607,134 @@ run`).
 - [x] **v0.2.0, the first public release** (2026-10-22, asked for mid-phase): workstreams
       A and B, the Windows installer integration and the command line / single instance.
       GitHub release assets only; the other channels in C come with v0.3.0.
-- [ ] CHANGELOG `[0.3.0]`, version bump in `package.json` and `Cargo.toml`, tag
-      `v0.3.0`, release through every channel in C. Then update the ROADMAP status and
-      stop for review.
+- Status 2026-10-22: **closed early, at the user's request, with v0.2.0.**
+  - **Done:**
+    - **A, build hygiene:** clean `target/` 7.84 → 2.79 GB, tests build 177 → 127 s and
+      run 118 → 80 s; CI's app check is a debug build (about 8 min → 36 s).
+    - **B, artwork:** `pnpm artwork` (icons, NSIS / WiX images, dmg background, Open Graph
+      image, README wordmark) and `pnpm shots:publish` (README and website screenshots
+      at 2×). The README has a logo header.
+    - **Windows installers:** per user, "Add the tylia command to PATH" and "Open in Tylia"
+      options, no desktop shortcut by default or in silent installs, clean uninstall;
+      tested with a real silent install on the dev machine. MSI: same entries for all
+      users, tables checked, not installed.
+    - **D, partly:** one window (single instance), `tylia <path>`, `--help`, `--version`,
+      Explorer integration; macOS Finder / Dock open events (untested).
+    - **Repository and release:** public at https://github.com/gilgil28/tylia (SSH remote,
+      key `~/.ssh/id_ed25519_gilgil28` via the repository's `core.sshCommand`); v0.2.0
+      published with installers for all three OSes and a signed `latest.json`;
+      `latest.json` notes fixed in the workflow for later releases.
+    - **Website:** no domain (tylia.dev was never registered); published at
+      https://gilgil28.github.io/tylia/ by the Pages workflow on site changes and on
+      every published release.
+  - **Moved to Phase 8:** everything still unticked above.
+
+### Phase 8 — Packages, power features and v0.3.0
+
+**Goal:** Tylia installs from the package managers people use on every OS, opens from
+every file manager and the command line, gains three power features, and has run for
+real on Linux and macOS. It ends with **v0.3.0**.
+
+**How to run this phase (clean session):**
+
+- **Before starting:**
+  - Read `CLAUDE.md`, this section, Phase 7 above (its sections C–F hold the details of
+    the items below), `docs/RELEASING.md`, `CONTRIBUTING.md` → "Commits and branches",
+    `docs/ARCHITECTURE.md` §5.19 and `docs/DESIGN.md`.
+  - Ask the user which of the accounts below exist yet. Build and verify everything
+    locally either way; publishing waits for them.
+- **While working:**
+  - One commit per feature, bug or fix, each on its own `<kind>/<topic>` branch (kinds:
+    feat, fix, perf, refactor, docs, test, build, ci, deps, chore, release; `site` is an
+    area, not a kind), fast-forwarded into `main`. The `commit-msg` hook checks both.
+  - Push to `origin` (`git@github.com:gilgil28/tylia.git`) only when the user asks.
+    The local `gh` CLI is logged in as the user's work account: it can read the public
+    repository but not write to it or see drafts.
+  - Verify every pinned version against crates.io / npm / the action's repository before
+    adding it, and justify each new dependency in its commit body.
+  - Run `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `cargo fmt --all -- --check`
+    and clippy before every push: CI runs them on three OSes.
+  - **Installers:** never drive an installer with synthetic key presses on the user's
+    machine (an MSI got installed that way once). Use Windows Sandbox or a VM, or a silent
+    per-user install only with the user's consent, backing up `%APPDATA%\dev.tylia.app`
+    and `HKCU\Environment` first.
+  - Docker Desktop is available: Ubuntu 22.04 (+ the git-core PPA) for Linux builds, the
+    Arch container for `makepkg`. Use a throwaway updater key there.
+- **Decided already:** Flatpak bundles Git (host Git as an opt-in setting); NSIS is per
+  user; Scoop uses a portable zip; AUR updates stay manual until after the first one.
+- **The user provides:** an AUR account with an SSH key; a fork of
+  `microsoft/winget-pkgs`; empty repositories `gilgil28/homebrew-tap` and
+  `gilgil28/scoop-bucket`; a Flathub submission (GitHub account).
+
+#### A. Linux packages and integration (first)
+
+- [ ] **Desktop entry and AppStream:** finish branch `build/linux-desktop-metadata` (not
+      merged): `packaging/linux/tylia.desktop` (`MimeType=inode/directory`,
+      `Exec=tylia %F`), `dev.tylia.app.metainfo.xml` and `src-tauri/tauri.linux.conf.json`.
+      Validate with `appstreamcli validate`, build deb / rpm / AppImage in the Ubuntu
+      container, check each package's files, and that "Open With Tylia" appears for
+      folders (`gio open` / `xdg-mime query default inode/directory` under Xvfb). Add a
+      v0.2.0 entry to the metainfo `<releases>`. Details: Phase 7 C → Linux.
+- [ ] **AUR `tylia-bin`** (repackaged release `.deb`) and **`tylia`** (from source), with
+      the desktop file, metainfo, icons and licenses; `makepkg -si` in the Arch container,
+      then start the app under Xvfb. Publish with the user's AUR account. Then list the
+      AUR packages again in the README and on the website (removed until they exist).
+- [ ] **Flathub:**
+  - **Decide the app ID with the user:** Flathub wants one the developer controls, e.g.
+    `io.github.gilgil28.tylia`. The bundle identifier `dev.tylia.app` names the settings
+    folder of installed copies, so the Flatpak may differ from it.
+  - The rest as in Phase 7 C (bundled Git, permissions, credential helpers, updates off,
+    manifest in `packaging/flatpak/`, `flatpak-builder` check).
+
+#### B. Windows and macOS channels
+
+- [ ] **winget** `Tylia.Tylia` (installer type `nullsoft`, user scope; silent installs
+      already add PATH and the Explorer menu and no desktop shortcut). Verify the update
+      action and its license before using it (e.g. `vedantmgoyal9/winget-releaser`).
+- [ ] **Scoop:** add a `Tylia_<v>_x64_portable.zip` (`tylia.exe` + `bin/tylia.cmd`) to the
+      release workflow, then `tylia.json` in `gilgil28/scoop-bucket` with `checkver` and
+      `autoupdate`.
+- [ ] **Homebrew cask** `tylia` in `gilgil28/homebrew-tap` (url, sha256,
+      `auto_updates true`, `zap` for `~/Library/Application Support/dev.tylia.app`, the
+      Gatekeeper note
+      for unsigned apps).
+- [ ] **Windows installer, still to check** (Windows Sandbox if the user enables it): the
+      interactive install with both options unticked, an update over 0.2.0 (choices kept),
+      and the MSI install / uninstall.
+- [ ] **macOS command line:** "Install the `tylia` command" in the palette, linking
+      `/usr/local/bin/tylia` (asks for permission).
+- **Acceptance:** each channel installs v0.3.0 on a clean machine or container (Windows
+  Sandbox, the Arch container, `flatpak-builder`, a GitHub macOS runner); uninstall
+  leaves only the user's settings; in-app updates are offered only where they can
+  install, and other channels say how to update.
+
+#### C. Power features
+
+Details and tests: Phase 7 E.
+
+- [ ] **Create and apply patches** (`git format-patch` / `git diff --binary`;
+      `git apply --check` / `git am --3way`).
+- [ ] **Export an archive** of any commit, branch or tag (`git archive`).
+- [ ] **Custom actions:** user-defined programs with variables in context menus and the
+      palette, run without a shell, output in a panel.
+- **Acceptance:** each is in its context menus and the palette, with integration / unit
+  and e2e tests, and passes axe in both themes.
+
+#### D. Real hardware and accounts (the user)
+
+- [ ] Run 0.2.0 (or later) on the user's **CachyOS** machine: first run on a real Linux
+      desktop, and `git/git` first rows and scrolling against the Phase 1 numbers.
+- [ ] Run the dmg on a **Mac** (unsigned: right-click → Open). Also exercises the Finder /
+      Dock open events.
+- [ ] **GitHub acceptance run** (Phase 3): fetch / pull / push to `gilgil28/tylia` from
+      Tylia over HTTPS (token) and SSH.
+- [ ] **Code signing** when certificates exist (docs/RELEASING.md).
+
+#### Release
+
+- [ ] CHANGELOG `[0.3.0]`, version bump in `package.json` and `Cargo.toml`, tag `v0.3.0`
+      (the user publishes the draft with Release label "None"), then the channels above.
+      Check `latest.json` now carries the notes. Update this ROADMAP and stop for review.
 
 ## Feature inventory (Sourcetree parity reference)
 
@@ -627,8 +760,8 @@ phases above, ⏳ = later / backlog, ✗ = intentionally out of scope for v1.
 | Conflicts    | Banner, external merge tool, mark resolved, continue/abort                          | ✅ P4                                                      |
 | Advanced     | Interactive rebase, blame ("Annotate"), log selected file                           | ✅ P5                                                      |
 | Advanced     | Submodules, Git LFS, git-flow, hg-flow                                              | ✅ P5 (submodules) / ⏳ LFS / ✅ P6 git-flow / ✗ Mercurial |
-| Advanced     | Custom actions (user scripts in context menu)                                       | ⏳ P7                                                      |
-| Advanced     | Patch create/apply, archive export                                                  | ⏳ P7                                                      |
+| Advanced     | Custom actions (user scripts in context menu)                                       | ⏳ P8                                                      |
+| Advanced     | Patch create/apply, archive export                                                  | ⏳ P8                                                      |
 | Advanced     | Pull request creation on hosting providers                                          | ✗ v1                                                       |
 | UX           | Terminal button, Explorer/Finder button, settings, themes                           | ✅                                                         |
 
