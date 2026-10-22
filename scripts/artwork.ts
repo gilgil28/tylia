@@ -302,7 +302,11 @@ function appIcons() {
       const bytes = readFileSync(join(dir, name));
       outputs.set(`src-tauri/icons/${name}`, name.endsWith(".icns") ? sortIcns(bytes) : bytes);
     }
-    outputs.set("website/assets/icon-256.png", readFileSync(join(dir, "128x128@2x.png")));
+    // Tauri's Linux bundles name an icon's hicolor slot after its pixels plus "@2" for an
+    // "@2x" file, so "128x128@2x.png" would land in 256x256@2 (a 512-px slot).
+    const icon256 = readFileSync(join(dir, "128x128@2x.png"));
+    outputs.set("src-tauri/icons/256x256.png", icon256);
+    outputs.set("website/assets/icon-256.png", icon256);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -312,7 +316,6 @@ const DESKTOP_ICONS = [
   "32x32.png",
   "64x64.png",
   "128x128.png",
-  "128x128@2x.png",
   "icon.png",
   "icon.ico",
   "icon.icns",

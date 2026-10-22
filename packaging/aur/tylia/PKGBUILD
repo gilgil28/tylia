@@ -47,7 +47,7 @@ package() {
     install -Dm644 "src-tauri/icons/${size}x${size}.png" \
       "${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/tylia.png"
   done
-  install -Dm644 src-tauri/icons/128x128@2x.png "${pkgdir}/usr/share/icons/hicolor/256x256/apps/tylia.png"
+  install -Dm644 src-tauri/icons/256x256.png "${pkgdir}/usr/share/icons/hicolor/256x256/apps/tylia.png"
   install -Dm644 src-tauri/icons/icon.png "${pkgdir}/usr/share/icons/hicolor/512x512/apps/tylia.png"
   install -Dm644 LICENSE-MIT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-MIT"
   install -Dm644 LICENSE-APACHE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-APACHE"
