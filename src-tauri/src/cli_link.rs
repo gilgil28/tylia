@@ -87,7 +87,8 @@ pub fn osascript_args(exe: &Path) -> Vec<OsString> {
 pub fn install() -> Result<CliLinkOutcome, crate::error::IpcError> {
     use crate::error::IpcError;
 
-    let exe = std::env::current_exe()?;
+    // Resolved, so a copy started through the link itself still finds Tylia.app.
+    let exe = std::fs::canonicalize(std::env::current_exe()?)?;
     let link = Path::new(LINK);
     let existing = match std::fs::symlink_metadata(link) {
         Err(_) => Existing::Nothing,

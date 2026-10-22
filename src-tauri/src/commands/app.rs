@@ -38,10 +38,13 @@ pub fn save_ui_state(value: Value, state: State<'_, AppState>) -> Result<(), Ipc
 /// "Install the tylia command": macOS only (`cli_link.rs`); elsewhere the installer or the
 /// package puts it on `PATH`.
 #[tauri::command]
-pub fn install_cli() -> Result<CliLinkOutcome, IpcError> {
+pub async fn install_cli() -> Result<CliLinkOutcome, IpcError> {
+    // The password prompt can take a while: off the async runtime's threads.
     #[cfg(target_os = "macos")]
     {
-        crate::cli_link::install()
+        tauri::async_runtime::spawn_blocking(crate::cli_link::install)
+            .await
+            .map_err(|err| IpcError::invalid(err.to_string()))?
     }
     #[cfg(not(target_os = "macos"))]
     {
