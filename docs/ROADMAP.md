@@ -805,8 +805,12 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
 
 #### A. Changes flow upwards (first)
 
-- [ ] **Staged above Unstaged**, as in Sourcetree: unstaged and untracked files at the
+- [x] **Staged above Unstaged**, as in Sourcetree: unstaged and untracked files at the
       bottom, staged files above them, so staging moves a file up towards the commit.
+      _Done 2026-10-22. Decided with the user: Conflicts stay on top, the commit box stays
+      at the bottom. ↑ / ↓ cross between the lists (Shift extends within one); the lists
+      have no shared split, so no saved layout to migrate. DESIGN.md, the README / website
+      screenshots and e2e updated._
   - **Order of the lists:** Conflicts (when there are any) on top, then Staged, then
     Unstaged. **Decide** whether conflicts stay first (recommendation: yes, they block the
     commit) or go just above Unstaged.

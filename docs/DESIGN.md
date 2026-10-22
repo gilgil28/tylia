@@ -179,12 +179,12 @@ The checked-out branch's lane is always colour 1 (accent family) when it is visi
 
 ```
 ├──────────────┬──────────────────────────────┬─────────────────────────────────┤
-│ sidebar      │ Unstaged (3)     Stage all ⤓ │ src/app.ts                      │
-│              │ ☐ M src/app.ts               │ @@ -1,4 +1,6 @@   [Stage hunk]  │
-│              │ ☐ ? notes.md                 │ ▢ 1  + import x from "y";       │
-│              │ ☐ D old.ts                   │ ▣ 2  + import z from "w";       │
-│              │ Staged (1)     Unstage all ⤒ │   3    const a = 1;             │
-│              │ ☑ A src/new.ts               │       [Stage 1 line] [Discard]  │
+│ sidebar      │ Staged (1)     Unstage all ⤒ │ src/app.ts                      │
+│              │ ☑ A src/new.ts               │ @@ -1,4 +1,6 @@   [Stage hunk]  │
+│              │ Unstaged (3)     Stage all ⤓ │ ▢ 1  + import x from "y";       │
+│              │ ☐ M src/app.ts               │ ▣ 2  + import z from "w";       │
+│              │ ☐ ? notes.md                 │   3    const a = 1;             │
+│              │ ☐ D old.ts                   │       [Stage 1 line] [Discard]  │
 │              ├──────────────────────────────┴─────────────────────────────────┤
 │              │ Summary (subject)                                      38/72   │
 │              │ Description…                                                   │
@@ -368,7 +368,7 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   merge / rebase / cherry-pick / revert is in progress: what is happening (rebase: commit n of
   m), conflicts left, "Show conflicts", Abort (confirms), Skip commit (not for merge), and
   Continue / Commit merge (disabled until conflicts are resolved). In Changes, conflicted files
-  get their own list above Unstaged (selected first); the diff pane shows the file with its
+  get their own list on top, above Staged (selected first); the diff pane shows the file with its
   markers against "my version", with Use my version / Use their version (during a rebase: the
   base version / my commit's version, since ours and theirs swap), Open merge tool, and Mark
   resolved, which warns if conflict markers are still in the file. Merge / rebase / pick /
@@ -489,3 +489,7 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   folder-with-gear button in the toolbar, the palette, and a "Manage remotes" button on
   the sidebar's Remotes header. Global Git settings are shown with where they come from
   and never changed.
+- **2026-10-22 — Changes flow upwards** (as in Sourcetree). Top to bottom: Conflicts (when
+  there are any: they block the commit), Staged, Unstaged. Staging moves a file up towards
+  the commit; the commit message box stays at the bottom of the view. ↑ / ↓ past the end
+  of one list continue in the next (Shift+↑ / ↓ still extend within one list).

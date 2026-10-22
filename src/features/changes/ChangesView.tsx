@@ -55,6 +55,11 @@ import { useRepoAction } from "./useRepoAction";
 /** Pointer travel before a press on a row becomes a drag. */
 const DRAG_THRESHOLD = 4;
 
+/** The lists top to bottom: changes flow upwards, from Unstaged to Staged to the commit. */
+const AREAS: Area[] = ["staged", "unstaged"];
+
+const NO_MODIFIERS = { ctrlKey: false, metaKey: false, shiftKey: false };
+
 interface Drag {
   from: Area;
   entries: ChangedEntry[];
@@ -285,8 +290,17 @@ export function ChangesView({
     if (list.length === 0) return;
     const current = list.findIndex((x) => entryKey(x) === focusKey);
     const move = (to: number) => {
+      // ↑ / ↓ past the end of a list continue in the next one (Staged above Unstaged), unless
+      // extending a selection, which stays in one list.
+      const next = to < 0 ? AREAS[AREAS.indexOf(area) - 1] : AREAS[AREAS.indexOf(area) + 1];
+      const other = next && groups[next];
+      if ((to < 0 || to >= list.length) && !e.shiftKey && other && other.length > 0) {
+        selectRow(other[to < 0 ? other.length - 1 : 0]!, NO_MODIFIERS);
+        document.querySelector<HTMLElement>(`[data-drop-area="${next}"] [role="listbox"]`)?.focus();
+        return;
+      }
       const entry = list[Math.max(0, Math.min(list.length - 1, to))]!;
-      selectRow(entry, { ctrlKey: false, metaKey: false, shiftKey: e.shiftKey });
+      selectRow(entry, { ...NO_MODIFIERS, shiftKey: e.shiftKey });
     };
     if (e.key === "ArrowDown") move(current + 1);
     else if (e.key === "ArrowUp") move(current - 1);
@@ -450,6 +464,37 @@ export function ChangesView({
           <div className="flex h-full flex-col">
             {conflicts.length > 0 && <ConflictList repo={repo} paths={conflicts} status={status} />}
             <ChangeList
+              area="staged"
+              entries={groups.staged}
+              selected={selection.area === "staged" ? selection.keys : new Set()}
+              focusKey={focusKey}
+              onRowPointerDown={onRowPointerDown}
+              onToggle={(e) => void toggle(e)}
+              onKeyDown={onListKeyDown("staged")}
+              dropActive={drag?.over === "staged"}
+              menu={menu}
+              action={{
+                label: t("changes.unstageAll"),
+                onClick: () => void unstageAll(),
+              }}
+              extra={
+                <IconButton
+                  icon={FileDown}
+                  label={t("patch.saveStaged")}
+                  compact
+                  disabled={groups.staged.length === 0}
+                  onClick={() => void saveChangesPatch(repo, true)}
+                />
+              }
+              empty={
+                <span className="flex flex-col gap-1">
+                  <span className="text-fg-secondary">{t("changes.nothingStaged")}</span>
+                  {t("changes.nothingStagedHint")}
+                </span>
+              }
+            />
+            <div className="h-px shrink-0 bg-line-subtle" />
+            <ChangeList
               area="unstaged"
               entries={groups.unstaged}
               selected={selection.area === "unstaged" ? selection.keys : new Set()}
@@ -481,37 +526,6 @@ export function ChangesView({
                 </>
               }
               empty={t("changes.nothingUnstaged")}
-            />
-            <div className="h-px shrink-0 bg-line-subtle" />
-            <ChangeList
-              area="staged"
-              entries={groups.staged}
-              selected={selection.area === "staged" ? selection.keys : new Set()}
-              focusKey={focusKey}
-              onRowPointerDown={onRowPointerDown}
-              onToggle={(e) => void toggle(e)}
-              onKeyDown={onListKeyDown("staged")}
-              dropActive={drag?.over === "staged"}
-              menu={menu}
-              action={{
-                label: t("changes.unstageAll"),
-                onClick: () => void unstageAll(),
-              }}
-              extra={
-                <IconButton
-                  icon={FileDown}
-                  label={t("patch.saveStaged")}
-                  compact
-                  disabled={groups.staged.length === 0}
-                  onClick={() => void saveChangesPatch(repo, true)}
-                />
-              }
-              empty={
-                <span className="flex flex-col gap-1">
-                  <span className="text-fg-secondary">{t("changes.nothingStaged")}</span>
-                  {t("changes.nothingStagedHint")}
-                </span>
-              }
             />
           </div>
         }

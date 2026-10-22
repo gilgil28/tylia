@@ -78,3 +78,35 @@ test("staging moves the file at once (before Git answers)", async ({ page }) => 
   ).toBeVisible();
   expect(Date.now() - started).toBeLessThan(1000);
 });
+
+for (const theme of ["light", "dark"]) {
+  test(`Staged sits above Unstaged, and ↑ / ↓ cross between them (${theme})`, async ({ page }) => {
+    await page.addInitScript(() => localStorage.removeItem("tylia.web.ui"));
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(`/?theme=${theme}&platform=windows&repo=demo`);
+    await page.getByRole("button", { name: /^Changes/ }).click();
+    const staged = page.getByRole("listbox", { name: "Staged", exact: true });
+    const unstaged = page.getByRole("listbox", { name: "Unstaged", exact: true });
+    await expect(unstaged.getByRole("option")).toHaveCount(2);
+    expect((await staged.boundingBox())!.y).toBeLessThan((await unstaged.boundingBox())!.y);
+    await page.screenshot({
+      path: `e2e/__screenshots__/changes-flow-${theme}.png`,
+      animations: "disabled",
+    });
+
+    const last = staged.getByRole("option").last();
+    await last.click();
+    await expect(last).toHaveAttribute("aria-selected", "true");
+    await page.keyboard.press("ArrowDown");
+    const first = unstaged.getByRole("option").first();
+    await expect(first).toHaveAttribute("aria-selected", "true");
+    await expect(unstaged).toBeFocused();
+    await page.keyboard.press("ArrowUp");
+    await expect(last).toHaveAttribute("aria-selected", "true");
+    await expect(staged).toBeFocused();
+    // Shift extends within one list instead of crossing.
+    await page.keyboard.press("Shift+ArrowDown");
+    await expect(last).toHaveAttribute("aria-selected", "true");
+    await expect(first).toHaveAttribute("aria-selected", "false");
+  });
+}
