@@ -97,6 +97,18 @@ const checks: Check[] = [
   { fg: "--text-muted", bg: "--bg-panel", min: 4.5, note: "muted text on panels" },
   { fg: "--text-muted", bg: "--bg-elevated", min: 4.5, note: "muted text on menus and dialogs" },
   { fg: "--text-muted", bg: "--bg-selected", min: 4.5, note: "muted text in selected rows" },
+  {
+    fg: "--text-muted",
+    bg: "--bg-selected-strong",
+    min: 4.5,
+    note: "muted text in selected rows of a focused list",
+  },
+  {
+    fg: "--text-secondary",
+    bg: "--bg-selected-strong",
+    min: 4.5,
+    note: "secondary text in selected rows of a focused list",
+  },
 ];
 
 const light = block(':root[data-theme="light"]');

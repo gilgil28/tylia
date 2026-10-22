@@ -65,7 +65,7 @@ All colours are tokens. Components never use raw hex.
 | `--bg-hover`               | `rgba(0,0,0,0.05)`                                           |
 | `--bg-active`              | `rgba(0,0,0,0.09)`                                           |
 | `--bg-selected`            | `rgba(61,107,245,0.13)`                                      |
-| `--bg-selected-strong`     | `rgba(61,107,245,0.20)`                                      |
+| `--bg-selected-strong`     | `rgba(61,107,245,0.17)`                                      |
 | `--border-subtle`          | `rgba(0,0,0,0.09)`                                           |
 | `--border`                 | `rgba(0,0,0,0.14)`                                           |
 | `--border-strong`          | `rgba(0,0,0,0.24)`                                           |
