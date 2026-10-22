@@ -159,9 +159,11 @@ export function UpdateDialog() {
           <p className="text-small text-fg-secondary">
             {distribution === "pacman"
               ? t("update.manualPacman")
-              : platform === "linux"
-                ? t("update.manualLinux")
-                : t("update.manual")}
+              : distribution === "scoop"
+                ? t("update.manualScoop")
+                : platform === "linux"
+                  ? t("update.manualLinux")
+                  : t("update.manual")}
           </p>
         )}
         {info.canInstall && !error && (

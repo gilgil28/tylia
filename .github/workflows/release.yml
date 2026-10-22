@@ -136,3 +136,20 @@ jobs:
           # already has them from the draft job).
           releaseBody: ${{ needs.draft.outputs.notes }}
           args: --config src-tauri/tauri.release.conf.json ${{ matrix.args }}
+
+      # Scoop installs this zip (its apps can't run installers). portable.txt tells Tylia it
+      # can't update itself (commands/update.rs); settings still go to %APPDATA%.
+      - name: Upload the portable zip
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = $env:GITHUB_REF_NAME.TrimStart("v")
+          $zip = "Tylia_${version}_x64_portable.zip"
+          New-Item -ItemType Directory -Force portable/bin | Out-Null
+          Copy-Item target/release/tylia.exe portable/
+          Copy-Item src-tauri/windows/tylia.cmd portable/bin/
+          Set-Content portable/portable.txt "Tylia $version, unpacked from the portable zip. It can't update itself: Scoop updates it (scoop update tylia), or download a new zip from https://github.com/gilgil28/tylia/releases."
+          Compress-Archive -Path portable/* -DestinationPath $zip
+          gh release upload $env:GITHUB_REF_NAME $zip --clobber

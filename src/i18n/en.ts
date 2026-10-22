@@ -840,6 +840,8 @@ export const en = {
     "Tylia was installed by a package manager (or isn’t an AppImage), so it can’t replace itself. Update it the way you installed it, or download the new version from the releases page.",
   "update.manualPacman":
     "Tylia was installed with pacman (from the AUR), so pacman updates it: use your AUR helper, or rebuild the package with makepkg.",
+  "update.manualScoop":
+    "Tylia was installed with Scoop, so Scoop updates it: run scoop update tylia.",
   "update.flatpak":
     "Flathub keeps this copy up to date: update it in your software centre, or run flatpak update.",
   "update.downloading": "Downloading…",

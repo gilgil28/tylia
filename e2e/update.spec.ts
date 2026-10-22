@@ -104,3 +104,12 @@ test("a pacman package points to pacman for the update", async ({ page }) => {
   await expect(dialog.getByRole("button", { name: "Install and restart" })).toHaveCount(0);
   await shot(page, "update-dialog-pacman-dark");
 });
+
+test("a Scoop copy points to scoop update", async ({ page }) => {
+  await open(page, "&distribution=scoop&update=available");
+  const settings = await openSettings(page);
+  await settings.getByRole("button", { name: "Check now" }).click();
+  const dialog = page.getByRole("dialog", { name: "Tylia 0.2.0 is available" });
+  await expect(dialog.getByText(/run scoop update tylia/)).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Install and restart" })).toHaveCount(0);
+});

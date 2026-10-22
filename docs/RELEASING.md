@@ -33,6 +33,15 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
 3. **AUR.** Create the `tylia-bin` package on aur.archlinux.org with a maintainer SSH key.
    The package sources are in `packaging/aur/tylia-bin`.
 
+4. **Scoop.** A public repository `gilgil28/scoop-bucket` with `bucket/tylia.json` (from
+   `packaging/scoop/tylia.json`). Users add it with
+   `scoop bucket add gilgil28 https://github.com/gilgil28/scoop-bucket` and install with
+   `scoop install gilgil28/tylia`. The manifest's `checkver` and `autoupdate` let Scoop's
+   [bucket template](https://github.com/ScoopInstaller/BucketTemplate) workflow (Excavator)
+   pick up new releases on its own; without it, copy the file after each release. Scoop
+   installs the release's `Tylia_<v>_x64_portable.zip` (the release workflow builds it),
+   because its apps can't run installers.
+
 ## Making a release
 
 1. Update `CHANGELOG.md`: move the entries from "Unreleased" into a new

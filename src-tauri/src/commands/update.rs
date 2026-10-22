@@ -56,15 +56,24 @@ fn update_error(err: tauri_plugin_updater::Error) -> IpcError {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export)]
-#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+// Each OS constructs only its own variants.
+#[allow(dead_code)]
 pub enum Distribution {
     /// A Flatpak: Flathub updates it, so Tylia doesn't check for updates at all.
     Flatpak,
     /// A pacman package (from the AUR): pacman must stay in charge of the files.
     Pacman,
+    /// The portable zip installed by Scoop (`scoop update tylia`).
+    Scoop,
+    /// The portable zip unpacked by hand: the installer would put a second copy elsewhere.
+    Portable,
     /// Tylia's own installers and bundles (the updater decides per bundle).
     Other,
 }
+
+/// Shipped next to `tylia.exe` in the portable zip (release workflow).
+#[cfg(windows)]
+const PORTABLE_MARKER: &str = "portable.txt";
 
 pub fn distribution() -> Distribution {
     #[cfg(target_os = "linux")]
@@ -76,7 +85,29 @@ pub fn distribution() -> Distribution {
             return Distribution::Pacman;
         }
     }
+    #[cfg(windows)]
+    if let Some(dir) = std::env::current_exe()
+        .ok()
+        .and_then(|exe| exe.parent().map(std::path::Path::to_owned))
+        && dir.join(PORTABLE_MARKER).is_file()
+    {
+        return if scoop_layout(&dir) {
+            Distribution::Scoop
+        } else {
+            Distribution::Portable
+        };
+    }
     Distribution::Other
+}
+
+/// Scoop unpacks apps into `<scoop>\apps\<name>\<version>` (and links `current` to it).
+#[cfg(any(windows, test))]
+fn scoop_layout(dir: &std::path::Path) -> bool {
+    let mut up = dir.ancestors().skip(1).map(|a| a.file_name());
+    let name = up.next().flatten();
+    let apps = up.next().flatten();
+    name.is_some_and(|n| n.eq_ignore_ascii_case("tylia"))
+        && apps.is_some_and(|a| a.eq_ignore_ascii_case("apps"))
 }
 
 #[cfg(target_os = "linux")]
@@ -89,12 +120,12 @@ fn on_path(tool: &str) -> bool {
 /// .rpm is installed with the system's package tool, so only where that tool exists and
 /// isn't pacman's (the AUR's `tylia-bin` repackages the .deb).
 fn can_install() -> bool {
+    if distribution() != Distribution::Other {
+        return false;
+    }
     #[cfg(target_os = "linux")]
     {
         use tauri::utils::config::BundleType;
-        if distribution() != Distribution::Other {
-            return false;
-        }
         match tauri::utils::platform::bundle_type() {
             Some(BundleType::AppImage) => std::env::var_os("APPIMAGE").is_some(),
             Some(BundleType::Deb) => on_path("dpkg"),
@@ -160,4 +191,32 @@ pub async fn install_update(
         .await
         .map_err(update_error)?;
     app.restart()
+}
+
+#[cfg(test)]
+mod tests {
+    use std::path::PathBuf;
+
+    use super::scoop_layout;
+
+    fn dir(parts: &[&str]) -> PathBuf {
+        parts.iter().collect()
+    }
+
+    #[test]
+    fn scoop_layout_matches_scoop_app_folders_only() {
+        assert!(scoop_layout(&dir(&[
+            "home", "scoop", "apps", "tylia", "current"
+        ])));
+        assert!(scoop_layout(&dir(&[
+            "D", "Tools", "Apps", "Tylia", "0.3.0"
+        ])));
+        assert!(!scoop_layout(&dir(&[
+            "home",
+            "Downloads",
+            "Tylia_0.3.0_x64_portable"
+        ])));
+        assert!(!scoop_layout(&dir(&["apps", "other", "current"])));
+        assert!(!scoop_layout(&dir(&["current"])));
+    }
 }

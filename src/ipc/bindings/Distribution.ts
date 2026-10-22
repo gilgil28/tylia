@@ -3,4 +3,4 @@
 /**
  * Where this copy of Tylia gets its updates, when that isn't Tylia itself.
  */
-export type Distribution = "flatpak" | "pacman" | "other";
+export type Distribution = "flatpak" | "pacman" | "scoop" | "portable" | "other";
