@@ -1,7 +1,8 @@
 ; Tylia's additions to Tauri's NSIS installer (bundle.windows.nsis.installerHooks; included
 ; before Tauri's pages are defined). See docs/ARCHITECTURE.md §5.19.
 ;
-; - The finish page's "Create desktop shortcut" starts unticked.
+; - The finish page's "Create desktop shortcut" starts unticked, and silent / passive installs
+;   don't add one.
 ; - The welcome page offers two options, both on by default and in passive / silent installs:
 ;   the `tylia` command (bin\tylia.cmd) on the user's PATH, and "Open in Tylia" in Explorer's
 ;   menu for folders and folder backgrounds.
@@ -26,6 +27,7 @@ Var TyliaMenuBox
 ; "1" when the user unticked the option; empty (the default) means on.
 Var TyliaNoPath
 Var TyliaNoMenu
+Var TyliaHadDesktopShortcut
 
 Function TyliaWelcomeShow
   ; MUI's welcome text label reaches down to 175u and would cover the options. Shorten it
@@ -89,7 +91,22 @@ FunctionEnd
   WriteRegStr SHCTX "${KEY}\command" "" '"$INSTDIR\${MAINBINARYNAME}.exe" "${ARG}"'
 !macroend
 
+!macro NSIS_HOOK_PREINSTALL
+  ${If} ${FileExists} "$DESKTOP\${PRODUCTNAME}.lnk"
+    StrCpy $TyliaHadDesktopShortcut 1
+  ${EndIf}
+!macroend
+
 !macro NSIS_HOOK_POSTINSTALL
+  ; Tauri adds a desktop shortcut to every silent or passive install (they skip the finish
+  ; page with its unticked box), e.g. winget's. Leave the desktop as it was.
+  ${If} $PassiveMode = 1
+  ${OrIf} ${Silent}
+    ${If} $TyliaHadDesktopShortcut != 1
+      Delete "$DESKTOP\${PRODUCTNAME}.lnk"
+    ${EndIf}
+  ${EndIf}
+
   ; An update (passive, no welcome page) keeps the earlier choice.
   ${If} $UpdateMode = 1
     ReadRegStr $0 SHCTX "${TYLIA_MENU_FOLDER}" ""

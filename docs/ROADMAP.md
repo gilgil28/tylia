@@ -434,8 +434,16 @@ Windows:
   Verified without installing: `bin\tylia.cmd` with the release exe (`--version`,
   `--help` and errors reach the console); the PATH edit against a scratch registry key
   (2,352-character PATH, `%VAR%` kept, no duplicates, removal leaves the rest); the MSI's
-  Registry / Environment / File tables (64-bit components, HKLM, system PATH). Still to
-  do: install, update and uninstall on a clean machine (Windows Sandbox)._
+  Registry / Environment / File tables (64-bit components, HKLM, system PATH).
+  2026-10-22, installed on the dev machine (silent, per user, with the user's consent):
+  files in `%LOCALAPPDATA%\Tylia` incl. `bin\tylia.cmd`; PATH appended and still
+  `REG_EXPAND_SZ` with `%NVM_HOME%` kept; `tylia --version` from a new console; the
+  Explorer command opened a folder as a tab in the installed app. Silent installs added a
+  desktop shortcut (Tauri does that when the finish page is skipped); the hook now removes
+  it unless one existed before. Uninstall left nothing: `HKCU\Environment` byte-identical
+  to before, no menu keys, shortcuts, files or uninstall entry; settings kept. Still to do:
+  the interactive install with options unticked, an update over an older version, the
+  MSI install._
 - [ ] **winget:** manifest `Tylia.Tylia` (installer type `nullsoft`, user scope).
       Submitted to microsoft/winget-pkgs. The release workflow opens the update PR on
       each release (e.g. `vedantmgoyal9/winget-releaser`; verify the current action and
