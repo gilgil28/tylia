@@ -93,6 +93,12 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
 6. Update the AUR package from an Arch machine or container:
    `packaging/aur/update.sh X.Y.Z`. Check `makepkg -si` installs and starts Tylia, then
    commit `PKGBUILD` and `.SRCINFO` and push them to `ssh://aur@aur.archlinux.org/tylia-bin.git`.
+7. Point Scoop, Homebrew and winget at the release: `packaging/release-manifests.sh X.Y.Z`
+   (Git Bash works) fills in the versions and checksums of the portable zip, the dmg and
+   the NSIS installer, and moves the winget manifests to the new version. Commit, then copy
+   `scoop/tylia.json` to the bucket and `homebrew/tylia.rb` to the tap. The winget workflow
+   opens its pull request by itself; without it, copy the new winget folder into a
+   winget-pkgs pull request.
 
 Installed copies with "Check for updates" on find the new version at their next start.
 Anyone can check from Settings → General → "Check now". The check fetches
