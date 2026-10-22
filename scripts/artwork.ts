@@ -4,7 +4,7 @@
 // - website/favicon.svg and website/assets/icon-256.png;
 // - installer artwork: NSIS header and sidebar, WiX banner and dialog (24-bit BMP), the
 //   macOS dmg background (PNG);
-// - the website's Open Graph image.
+// - the website's Open Graph image and the README's wordmark (light and dark).
 //
 // Artwork is laid out as HTML with the app's design tokens and the bundled Inter font, and
 // rendered with Playwright's Chromium. The output is deterministic for a given Chromium and
@@ -51,6 +51,10 @@ interface Art {
   theme: Theme;
   format: "bmp" | "png";
   body: string;
+  /** Device pixels per CSS pixel (default 1). */
+  scale?: number;
+  /** No page background: the PNG keeps an alpha channel. */
+  transparent?: boolean;
 }
 
 const BASE_CSS = `
@@ -153,16 +157,29 @@ const ARTS: Art[] = [
           macOS · tylia.dev</p>
       </div>`,
   },
+  // The README's header, on GitHub's light and dark page (transparent, 2× for sharp text).
+  ...(["light", "dark"] as const).map((theme): Art => ({
+    file: `docs/assets/wordmark-${theme}.png`,
+    width: 320,
+    height: 104,
+    theme,
+    format: "png",
+    scale: 2,
+    transparent: true,
+    body: `<div style="height:100%;display:flex;align-items:center;justify-content:center">
+        ${wordmark(96, 64, 18)}</div>`,
+  })),
 ];
 
 async function render(page: Page, art: Art): Promise<Buffer> {
   await page.setViewportSize({ width: art.width, height: art.height });
+  const background = art.transparent ? "body { background: transparent; }" : "";
   await page.setContent(
-    `<!doctype html><html data-theme="${art.theme}"><head><style>${BASE_CSS}</style>
+    `<!doctype html><html data-theme="${art.theme}"><head><style>${BASE_CSS}${background}</style>
      </head><body style="position:relative">${art.body}</body></html>`,
   );
   await page.evaluate(() => document.fonts.ready);
-  const png = await page.screenshot({ type: "png" });
+  const png = await page.screenshot({ type: "png", omitBackground: art.transparent ?? false });
   return art.format === "png" ? png : bmp(decodePng(png));
 }
 
@@ -308,8 +325,12 @@ outputs.set("website/favicon.svg", Buffer.from(ICON_SVG.replace(/\s*<!--[\s\S]*?
 
 const browser = await chromium.launch();
 try {
-  const page = await browser.newPage({ deviceScaleFactor: 1 });
-  for (const art of ARTS) outputs.set(art.file, await render(page, art));
+  const pages = new Map<number, Page>();
+  for (const art of ARTS) {
+    const scale = art.scale ?? 1;
+    if (!pages.has(scale)) pages.set(scale, await browser.newPage({ deviceScaleFactor: scale }));
+    outputs.set(art.file, await render(pages.get(scale)!, art));
+  }
 } finally {
   await browser.close();
 }

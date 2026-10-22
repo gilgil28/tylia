@@ -1,29 +1,66 @@
-# Tylia
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/wordmark-dark.png">
+    <img src="docs/assets/wordmark-light.png" alt="Tylia" width="320">
+  </picture>
+</p>
 
-The Git client you would show someone to prove a GUI can be faster and clearer than the
-command line: beautiful commit graph, effortless line-level staging, zero clutter.
+<p align="center">
+  <strong>A calm, fast Git client for Linux, Windows and macOS.</strong><br>
+  A beautiful commit graph, staging down to single lines, and zero clutter.
+</p>
 
-Tylia is pronounced **TEE-lee-a**. The name is a respelling of _Tilia_, botanical Latin
-for the linden tree.
+<p align="center">
+  <a href="https://github.com/gilgil28/tylia/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/gilgil28/tylia/actions/workflows/ci.yml/badge.svg?branch=main"></a>
+  <a href="#license"><img alt="License: MIT or Apache-2.0" src="https://img.shields.io/badge/license-MIT%20or%20Apache--2.0-3d6bf5"></a>
+  <a href="#platforms"><img alt="Platforms: Linux, Windows and macOS" src="https://img.shields.io/badge/platforms-Linux%20%C2%B7%20Windows%20%C2%B7%20macOS-5e7088"></a>
+  <a href="#privacy"><img alt="Telemetry: none" src="https://img.shields.io/badge/telemetry-none-1f9d63"></a>
+</p>
 
-Website: https://tylia.dev · Repository: https://github.com/gilgil28/tylia
+<p align="center">
+  <a href="https://tylia.dev"><b>Website</b></a> ·
+  <a href="#download"><b>Download</b></a> ·
+  <a href="CHANGELOG.md"><b>Changelog</b></a> ·
+  <a href="docs/ROADMAP.md"><b>Roadmap</b></a> ·
+  <a href="CONTRIBUTING.md"><b>Contributing</b></a>
+</p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/history-dark.png">
   <img width="1280" alt="Tylia's history view: the commit graph, a commit's details and its diff" src="docs/screenshots/history-light.png">
 </picture>
 
+## Why Tylia
+
+The Git client you would show someone to prove a GUI can be faster and clearer than the
+command line. It uses the system `git`, so hooks, credential helpers, signing and your Git
+config work exactly as they do on the command line.
+
+Tylia is pronounced **TEE-lee-a**. The name is a respelling of _Tilia_, botanical Latin
+for the linden tree.
+
+## Features
+
+- **A commit graph that stays fast** on very large repositories, with branch and tag
+  labels, all or current branch, and search by message, author, hash or file.
+- **Staging down to single lines:** stage, unstage or discard files, hunks or selected
+  lines. Discarded new files go to the trash, not into oblivion.
+- **Remotes:** fetch, pull and push with progress and cancel, and sign-in dialogs for
+  HTTPS tokens and SSH keys.
+- **Branching:** merge, rebase, cherry-pick, revert, reset, tags and stashes, with
+  per-block conflict resolution.
+- **Interactive rebase:** drag to reorder; pick, reword, edit, squash, fixup or drop.
+- **Blame and file history** that follow renames.
+- **A command palette** (Ctrl/Cmd+K) for every action, and rebindable shortcuts.
+- **git-flow, submodules, worktrees** and Git LFS indicators.
+- **Light and dark themes,** keyboard-first and screen-reader friendly.
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/changes-dark.png">
   <img width="1280" alt="Tylia's changes view: unstaged and staged files, a diff and the commit message" src="docs/screenshots/changes-light.png">
 </picture>
 
-## Status
-
-**0.1.0, the first release.** History and graph, staging down to single lines, commits,
-remotes with sign-in, branching, merge / rebase with per-block conflict resolution,
-interactive rebase, blame, file history, git-flow helpers, a command palette and
-rebindable shortcuts. See [`CHANGELOG.md`](CHANGELOG.md) for what's in each release and
+Tylia is young (0.x). See [`CHANGELOG.md`](CHANGELOG.md) for what's in each release and
 [`docs/ROADMAP.md`](docs/ROADMAP.md) for the plan.
 
 ## Download
@@ -55,9 +92,7 @@ See [docs/RELEASING.md](docs/RELEASING.md#code-signing-not-set-up-yet) for detai
 - **Cross-platform, native-respectful.** One app on Linux, Windows and macOS that follows
   each platform's conventions.
 
-Tylia is inspired by the workflow of Sourcetree; its design and code are its own. It uses
-the system `git` binary, so hooks, credential helpers, signing and your Git config work
-exactly as they do on the command line.
+Tylia is inspired by the workflow of Sourcetree; its design and code are its own.
 
 ## Platforms
 
@@ -68,7 +103,7 @@ exactly as they do on the command line.
 | macOS 12+ (Apple silicon and Intel)                   | WKWebView     |                                    |
 
 Packages: AppImage, deb, rpm and AUR on Linux; an NSIS installer and an MSI on Windows; a
-universal dmg on macOS. To build from source:
+universal dmg on macOS.
 
 ## Build from source
 
@@ -88,23 +123,8 @@ pnpm install
 pnpm tauri dev
 ```
 
-## Commands
-
-| Command                                                 | What it does                                                        |
-| ------------------------------------------------------- | ------------------------------------------------------------------- |
-| `pnpm install`                                          | Install frontend dependencies                                       |
-| `pnpm tauri dev`                                        | Run the app                                                         |
-| `pnpm dev:web`                                          | Run the frontend in a browser against the mock backend              |
-| `pnpm shots`                                            | Playwright screenshots, light and dark, into `e2e/__screenshots__/` |
-| `pnpm test`                                             | Frontend tests                                                      |
-| `pnpm lint`                                             | ESLint                                                              |
-| `pnpm format`                                           | Prettier                                                            |
-| `pnpm typecheck`                                        | TypeScript type check                                               |
-| `pnpm contrast`                                         | Check contrast of the design tokens                                 |
-| `pnpm gen:types`                                        | Regenerate the TypeScript IPC bindings from Rust                    |
-| `cargo test --workspace`                                | Rust tests                                                          |
-| `cargo clippy --workspace --all-targets -- -D warnings` | Rust lints                                                          |
-| `cargo fmt --all`                                       | Format Rust code                                                    |
+Tests, linters and the other commands are listed in
+[CONTRIBUTING.md](CONTRIBUTING.md#commands).
 
 ## Contributing
 
