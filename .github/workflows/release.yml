@@ -1,7 +1,8 @@
 name: Release
 
 # Pushing a tag `vX.Y.Z` builds the installers on all three OSes and attaches them to a
-# draft GitHub release (notes from CHANGELOG.md). Review the draft and publish it by hand.
+# draft GitHub release (notes from CHANGELOG.md). Review the draft and publish it by hand;
+# publishing starts the Pages workflow, which points the website's download links at it.
 # See docs/RELEASING.md.
 
 on:

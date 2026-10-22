@@ -1,9 +1,16 @@
 name: Pages
 
-# Run by hand for now (Actions → Pages → Run workflow), once Settings → Pages → Source is
-# "GitHub Actions". The site is served at https://gilgil28.github.io/tylia/. Add the push
-# and release triggers back when it should follow every release (docs/RELEASING.md).
+# Publishes website/ to https://gilgil28.github.io/tylia/ (Settings → Pages → Source:
+# "GitHub Actions"): when the site changes, and when a release is published, because the
+# download links name the version. See docs/RELEASING.md.
 on:
+  push:
+    branches: [main]
+    paths:
+      - "website/**"
+      - ".github/workflows/pages.yml"
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:

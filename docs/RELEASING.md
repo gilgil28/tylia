@@ -20,11 +20,11 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
    `tauri.conf.json`, ship one release signed with the **old** key, and switch the secrets
    to the new key from the release after that.
 
-2. **Website (optional, not published yet).** The project has no domain; links point at
-   the repository. To publish `website/` at **https://gilgil28.github.io/tylia/**: Settings
-   → Pages → Source: "GitHub Actions", then run the **Pages** workflow by hand (Actions →
-   Pages → Run workflow). It fills in the download links from the latest release. To have
-   it follow every release, add `release: types: [published]` back to its triggers.
+2. **Website.** `website/` is published at **https://gilgil28.github.io/tylia/** by the
+   **Pages** workflow (Settings → Pages → Source: "GitHub Actions"). It runs when the site
+   changes on `main`, when a release is published (the download links name the version),
+   and by hand (Actions → Pages → Run workflow). The project has no domain; other links
+   point at the repository.
    - **With a domain later:** add `website/CNAME` with the domain and set it under Settings →
      Pages → Custom domain (DNS: `A` records to 185.199.108.153–185.199.111.153, `AAAA` to
      2606:50c0:8000::153–2606:50c0:8003::153); tick **Enforce HTTPS** once the certificate
@@ -65,9 +65,9 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
 5. Check the draft: every asset is there, and `latest.json` lists `linux-x86_64`,
    `windows-x86_64` and `darwin-*` entries. Install at least one build. Then **publish**
    the release (Release label: **None**; a pre-release would be skipped by
-   `releases/latest`, which the update check and download links use). Once the website is
-   published and follows releases, publishing by hand matters: a release published by the
-   workflow's own token would not start the Pages workflow.
+   `releases/latest`, which the update check and download links use). Publishing by hand
+   matters: it starts the Pages workflow, which a release published by the workflow's own
+   token would not.
 6. Update the AUR package from an Arch machine or container:
    `packaging/aur/update.sh X.Y.Z`. Check `makepkg -si` installs and starts Tylia, then
    commit `PKGBUILD` and `.SRCINFO` and push them to `ssh://aur@aur.archlinux.org/tylia-bin.git`.

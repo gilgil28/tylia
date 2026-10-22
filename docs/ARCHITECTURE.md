@@ -21,8 +21,8 @@ near the top of the README.
   website, packaging, the updater endpoint and the releases link the app may open.
 - Website: the domain `tylia.dev` was not registered (decided 2026-10-22: no domain for
   now). `homepage` in `Cargo.toml`, `package.json`, `tauri.conf.json` and packaging points
-  at the GitHub repository. The site in `website/` is ready for GitHub Pages' default
-  address, https://gilgil28.github.io/tylia/, and published by hand (docs/RELEASING.md).
+  at the GitHub repository. The site in `website/` is published at GitHub Pages' default
+  address, https://gilgil28.github.io/tylia/ (docs/RELEASING.md).
   Security reports go through GitHub's private vulnerability reporting only.
 - Identifiers: product name `Tylia`; bundle identifier `dev.tylia.app` (reverse-DNS of
   tylia.dev, kept although the domain isn't ours: it names the settings folder of
