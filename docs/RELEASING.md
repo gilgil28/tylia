@@ -23,8 +23,7 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
 2. **Website.** `website/` is published at **https://gilgil28.github.io/tylia/** by the
    **Pages** workflow (Settings → Pages → Source: "GitHub Actions"). It runs when the site
    changes on `main`, when a release is published (the download links name the version),
-   and by hand (Actions → Pages → Run workflow). The project has no domain; other links
-   point at the repository.
+   and by hand (Actions → Pages → Run workflow). The project has no domain of its own.
    - **With a domain later:** add `website/CNAME` with the domain and set it under Settings →
      Pages → Custom domain (DNS: `A` records to 185.199.108.153–185.199.111.153, `AAAA` to
      2606:50c0:8000::153–2606:50c0:8003::153); tick **Enforce HTTPS** once the certificate

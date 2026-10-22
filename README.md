@@ -18,6 +18,7 @@
 </p>
 
 <p align="center">
+  <a href="https://gilgil28.github.io/tylia/"><b>Website</b></a> ·
   <a href="#download"><b>Download</b></a> ·
   <a href="CHANGELOG.md"><b>Changelog</b></a> ·
   <a href="docs/ROADMAP.md"><b>Roadmap</b></a> ·
@@ -64,7 +65,7 @@ Tylia is young (0.x). See [`CHANGELOG.md`](CHANGELOG.md) for what's in each rele
 
 ## Download
 
-Get the latest version from the
+Get the latest version from [the website](https://gilgil28.github.io/tylia/) or the
 [releases page](https://github.com/gilgil28/tylia/releases/latest):
 
 - **Windows 10 and 11:** `Tylia_<version>_x64-setup.exe` (or the `.msi`).
