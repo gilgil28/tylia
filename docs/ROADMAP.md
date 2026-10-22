@@ -481,6 +481,8 @@ validate`.
     `pnpm install --frozen-lockfile`, `pnpm tauri build --no-bundle`, then install the
     binary, the desktop file, metainfo, icons and licenses. Verify with makepkg in the
     Arch container used in Phase 6.
+  - **Website and README:** list the AUR packages again once they're published (the
+    `tylia-bin` entry was removed on 2026-10-22 because it didn't exist yet).
   - **Automation:** a release job pushes both packages to the AUR (an SSH deploy key as
     a secret), or `packaging/aur/update.sh` stays manual. **Decide** (recommendation:
     automate after the first manual release).

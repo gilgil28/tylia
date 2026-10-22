@@ -69,8 +69,8 @@ Get the latest version from the
 
 - **Windows 10 and 11:** `Tylia_<version>_x64-setup.exe` (or the `.msi`).
 - **macOS 12+:** `Tylia_<version>_universal.dmg` (Apple silicon and Intel).
-- **Linux:** `.AppImage`, `.deb` or `.rpm`. On Arch and CachyOS, install
-  [`tylia-bin`](https://aur.archlinux.org/packages/tylia-bin) from the AUR.
+- **Linux:** `.AppImage`, `.deb` or `.rpm`. Packages for the AUR, Flathub and other
+  package managers are on the way.
 
 Tylia needs Git 2.40 or newer on your `PATH`. Builds are not code-signed yet:
 
@@ -101,7 +101,7 @@ Tylia is inspired by the workflow of Sourcetree; its design and code are its own
 | Windows 10 and 11                                     | WebView2      |                                    |
 | macOS 12+ (Apple silicon and Intel)                   | WKWebView     |                                    |
 
-Packages: AppImage, deb, rpm and AUR on Linux; an NSIS installer and an MSI on Windows; a
+Packages: AppImage, deb and rpm on Linux; an NSIS installer and an MSI on Windows; a
 universal dmg on macOS.
 
 ## Build from source
