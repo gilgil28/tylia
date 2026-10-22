@@ -4,8 +4,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { App } from "./app/App";
+import { suppressBrowserMenu } from "./app/browserMenu";
 import { initWorkspace } from "./app/workspace";
 import { ipc } from "./ipc";
+
+suppressBrowserMenu();
 
 // Restore tabs and recent repositories before the first render, so the window never shows
 // an empty state that is replaced a moment later.
