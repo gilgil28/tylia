@@ -200,7 +200,7 @@ export const backend: Backend = {
       currentVersion: import.meta.env.VITE_APP_VERSION,
       date: "2026-11-02T10:00:00Z",
       notes: "### Added\n- git-flow helpers\n\n### Fixed\n- Faster status on large repositories",
-      canInstall: true,
+      canInstall: window.__TYLIA_BOOT__.distribution === "other",
     };
   },
   openDownloadPage: async () => {},

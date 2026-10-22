@@ -4,7 +4,7 @@
 import { Download, ExternalLink } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
-import { platform } from "@/app/boot";
+import { distribution, platform } from "@/app/boot";
 import { absoluteTime } from "@/app/format";
 import { t } from "@/i18n";
 import { ipc, isIpcError, type IpcError } from "@/ipc";
@@ -157,7 +157,11 @@ export function UpdateDialog() {
         )}
         {!info.canInstall && (
           <p className="text-small text-fg-secondary">
-            {platform === "linux" ? t("update.manualLinux") : t("update.manual")}
+            {distribution === "pacman"
+              ? t("update.manualPacman")
+              : platform === "linux"
+                ? t("update.manualLinux")
+                : t("update.manual")}
           </p>
         )}
         {info.canInstall && !error && (

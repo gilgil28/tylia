@@ -26,6 +26,7 @@ export type { DateFormat } from "./bindings/DateFormat";
 export type { Density } from "./bindings/Density";
 export type { DiffRequest } from "./bindings/DiffRequest";
 export type { DiffTarget } from "./bindings/DiffTarget";
+export type { Distribution } from "./bindings/Distribution";
 export type { DownloadProgress } from "./bindings/DownloadProgress";
 export type { Edge } from "./bindings/Edge";
 export type { FetchRequest } from "./bindings/FetchRequest";

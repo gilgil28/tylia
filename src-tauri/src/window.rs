@@ -12,6 +12,7 @@ use tauri::window::Color;
 use tauri::{AppHandle, Theme, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 use ts_rs::TS;
 
+use crate::commands::{Distribution, distribution};
 use crate::settings::{Settings, ThemePreference};
 
 /// `--bg-app` for each theme (docs/DESIGN.md §4.2).
@@ -27,12 +28,14 @@ const SHOW_FALLBACK: Duration = Duration::from_secs(3);
 #[ts(export)]
 pub struct BootInfo {
     pub platform: String,
+    pub distribution: Distribution,
     pub settings: Settings,
 }
 
 pub fn create_main(app: &AppHandle, settings: &Settings) -> tauri::Result<WebviewWindow> {
     let boot = BootInfo {
         platform: std::env::consts::OS.to_owned(),
+        distribution: distribution(),
         settings: settings.clone(),
     };
     let boot_json = serde_json::to_string(&boot).expect("BootInfo serializes");

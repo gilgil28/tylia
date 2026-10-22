@@ -16,7 +16,7 @@ import { useMemo, useState, type KeyboardEvent, type ReactNode } from "react";
 
 import { useActionRegistry, type KnownAction } from "@/app/actions";
 import { themeOptions } from "@/app/themeOptions";
-import { appVersion, platform } from "@/app/boot";
+import { appVersion, distribution, platform } from "@/app/boot";
 import { effectiveShortcut, eventShortcut, normalizeShortcut } from "@/app/keyboard";
 import { useOverlays, type SettingsSection } from "@/app/overlays";
 import { UI_FONT_SIZES, useSettings } from "@/app/settings";
@@ -39,14 +39,14 @@ const SECTIONS: { id: SettingsSection; label: string; icon: typeof Keyboard }[] 
   { id: "keyboard", label: t("settingsScreen.keyboard"), icon: Keyboard },
 ];
 
-function Row({ label, hint, children }: { label: string; hint?: ReactNode; children: ReactNode }) {
+function Row({ label, hint, children }: { label: string; hint?: ReactNode; children?: ReactNode }) {
   return (
     <div className="flex items-start justify-between gap-6 border-b border-line-subtle py-3 last:border-b-0">
       <div className="flex min-w-0 flex-col gap-0.5">
         <span className="text-fg">{label}</span>
         {hint && <span className="text-small text-fg-muted">{hint}</span>}
       </div>
-      <div className="shrink-0">{children}</div>
+      {children && <div className="shrink-0">{children}</div>}
     </div>
   );
 }
@@ -188,6 +188,9 @@ function Updates() {
   const status = useUpdate((s) => s.status);
   const check = useUpdate((s) => s.check);
   const setDialogOpen = useUpdate((s) => s.setDialogOpen);
+  if (distribution === "flatpak") {
+    return <Row label={t("update.version", { version: appVersion })} hint={t("update.flatpak")} />;
+  }
   return (
     <>
       <Row label={t("update.checkAtStart")} hint={t("update.privacy")}>

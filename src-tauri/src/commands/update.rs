@@ -52,21 +52,53 @@ fn update_error(err: tauri_plugin_updater::Error) -> IpcError {
     }
 }
 
+/// Where this copy of Tylia gets its updates, when that isn't Tylia itself.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export)]
+#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+pub enum Distribution {
+    /// A Flatpak: Flathub updates it, so Tylia doesn't check for updates at all.
+    Flatpak,
+    /// A pacman package (from the AUR): pacman must stay in charge of the files.
+    Pacman,
+    /// Tylia's own installers and bundles (the updater decides per bundle).
+    Other,
+}
+
+pub fn distribution() -> Distribution {
+    #[cfg(target_os = "linux")]
+    {
+        if std::path::Path::new("/.flatpak-info").is_file() {
+            return Distribution::Flatpak;
+        }
+        if on_path("pacman") {
+            return Distribution::Pacman;
+        }
+    }
+    Distribution::Other
+}
+
+#[cfg(target_os = "linux")]
+fn on_path(tool: &str) -> bool {
+    std::env::var_os("PATH")
+        .is_some_and(|paths| std::env::split_paths(&paths).any(|d| d.join(tool).is_file()))
+}
+
 /// Installing in place works for the Windows and macOS bundles and the AppImage. A .deb or
-/// .rpm is installed with the system's package tool, so only where that tool exists (the
-/// AUR package repackages the .deb, and pacman must stay in charge there).
+/// .rpm is installed with the system's package tool, so only where that tool exists and
+/// isn't pacman's (the AUR's `tylia-bin` repackages the .deb).
 fn can_install() -> bool {
     #[cfg(target_os = "linux")]
     {
         use tauri::utils::config::BundleType;
-        let has = |tool: &str| {
-            std::env::var_os("PATH")
-                .is_some_and(|paths| std::env::split_paths(&paths).any(|d| d.join(tool).is_file()))
-        };
+        if distribution() != Distribution::Other {
+            return false;
+        }
         match tauri::utils::platform::bundle_type() {
             Some(BundleType::AppImage) => std::env::var_os("APPIMAGE").is_some(),
-            Some(BundleType::Deb) => has("dpkg") && !has("pacman"),
-            Some(BundleType::Rpm) => has("rpm") && !has("pacman"),
+            Some(BundleType::Deb) => on_path("dpkg"),
+            Some(BundleType::Rpm) => on_path("rpm"),
             _ => false,
         }
     }

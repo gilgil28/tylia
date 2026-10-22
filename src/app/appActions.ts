@@ -21,7 +21,7 @@ import { openRepoAt, pickAndOpenRepo } from "@/features/welcome/open";
 import { t } from "@/i18n";
 
 import { useRegisterActions, type Action } from "./actions";
-import { platform } from "./boot";
+import { distribution, platform } from "./boot";
 import { useOverlays } from "./overlays";
 import { useSettings } from "./settings";
 import { useWorkspace } from "./workspace";
@@ -80,6 +80,8 @@ export function useAppActions() {
       group: "app",
       icon: RefreshCw,
       keywords: ["update", "upgrade", "version", "release"],
+      // Flathub updates a Flatpak; Settings → General says so instead.
+      hidden: distribution === "flatpak",
       run: () => void useUpdate.getState().check("palette"),
     },
     {

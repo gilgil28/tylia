@@ -621,6 +621,10 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   replace themselves (dev builds, deb/rpm without their package tool, any install where
   `pacman` exists, i.e. the AUR package); the dialog then opens the releases page, the only
   URL the opener capability allows.
+- **Distribution** (`BootInfo.distribution`, from `commands/update.rs`): `flatpak` when
+  `/.flatpak-info` exists, `pacman` when pacman is on `PATH`, else `other`. A Flatpak never
+  checks for updates (no start-up check, no palette action; Settings → General says Flathub
+  updates it). For `pacman` the update dialog says to update with pacman / the AUR helper.
 - **Open in terminal** (`src-tauri/src/terminal.rs`, command `open_terminal`): the terminal
   program is started directly, never through a shell, with the repository as its working
   directory (plus the folder flag of terminals that ignore it).
