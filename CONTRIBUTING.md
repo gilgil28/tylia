@@ -57,6 +57,7 @@ pnpm tauri dev
 | `pnpm install`                                          | Install frontend dependencies                                                                                            |
 | `pnpm tauri dev`                                        | Run the app                                                                                                              |
 | `pnpm dev:web`                                          | Run the frontend in a browser against the mock backend                                                                   |
+| `pnpm build:review`                                     | A fast release-like build to try a change (see "Review builds")                                                          |
 | `pnpm shots`                                            | Playwright screenshots, light and dark, into `e2e/__screenshots__/`                                                      |
 | `pnpm shots:publish`                                    | The README and website screenshots, at 2×, light and dark                                                                |
 | `pnpm artwork`                                          | Regenerate the app icons, installer images and Open Graph image from `src-tauri/icons/app-icon.svg` (`--check` compares) |
@@ -89,6 +90,31 @@ The workspace `Cargo.toml` keeps the cache small:
 
 To step through code in a debugger, turn full debug info back on for one build:
 `cargo build --config 'profile.dev.debug=true' --config 'profile.dev.package."*".debug=true'`.
+
+## Review builds
+
+Release builds use full link-time optimization in one code-generation unit, which makes
+the app small and fast but rebuilds slowly: after a one-line change, `pnpm tauri build`
+spends about 4 minutes in Rust alone. To try a change in an optimized app without that
+wait, use the `review` profile:
+
+```sh
+pnpm build:review   # tauri build --no-bundle -- --profile review
+```
+
+It is the release profile without LTO, with 16 code-generation units built in parallel and
+incremental compilation. The app lands in `target/review/` (no installers; add them with
+`pnpm tauri build -- --profile review`). Measured on Windows with `CARGO_BUILD_JOBS=4`,
+rebuilding after a one-line change in `src-tauri`:
+
+| Profile                 | Rebuild | From scratch |
+| ----------------------- | ------- | ------------ |
+| `release`               | 245 s   | —            |
+| `release` with thin LTO | 205 s   | 428 s        |
+| `review`                | 55 s    | 304 s        |
+
+The first build fills its own cache in `target/review/` (about 3 GB). Releases and CI keep
+the `release` profile.
 
 ## Working rules
 

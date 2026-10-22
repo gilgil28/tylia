@@ -25,6 +25,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "build:review": "tauri build --no-bundle -- --profile review",
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint .",

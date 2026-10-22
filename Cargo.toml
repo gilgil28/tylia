@@ -41,3 +41,12 @@ debug = false
 codegen-units = 1
 lto = true
 strip = true
+
+# A release-like build to try a change locally (CONTRIBUTING.md → "Review builds"): no LTO,
+# parallel and incremental code generation, so a one-line change rebuilds in a quarter of
+# the time. Releases keep the profile above.
+[profile.review]
+inherits = "release"
+codegen-units = 16
+incremental = true
+lto = false
