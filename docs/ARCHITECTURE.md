@@ -687,7 +687,9 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   `openRepoAt`, in order. A folder inside a repository opens the repository; anything else
   shows the "not a repository" toast.
 - **macOS** sends folders opened from Finder or dropped on the Dock icon as
-  `RunEvent::Opened`; they join the same queue.
+  `RunEvent::Opened`; they join the same queue. `src-tauri/Info.plist` (merged into the
+  bundle's by Tauri) declares `public.folder` as a document type (role Viewer, rank
+  Alternate), without which macOS offers neither.
 - **The `tylia` command on macOS** (`cli_link.rs`, palette: "Install the tylia command"): a
   symbolic link `/usr/local/bin/tylia` → the binary inside Tylia.app. Without write access
   to `/usr/local/bin`, `osascript … with administrator privileges` asks for a password; the

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Merged into the macOS bundle's Info.plist by Tauri. Registers folders as documents Tylia
+     can open, so Finder's "Open With" and dropping a folder on the Dock icon send it to
+     Tylia (RunEvent::Opened, docs/ARCHITECTURE.md §5.19). "Alternate" keeps Finder the
+     default for folders. -->
+<plist version="1.0">
+<dict>
+  <key>CFBundleDocumentTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleTypeName</key>
+      <string>Folder</string>
+      <key>CFBundleTypeRole</key>
+      <string>Viewer</string>
+      <key>LSHandlerRank</key>
+      <string>Alternate</string>
+      <key>LSItemContentTypes</key>
+      <array>
+        <string>public.folder</string>
+      </array>
+    </dict>
+  </array>
+</dict>
+</plist>
