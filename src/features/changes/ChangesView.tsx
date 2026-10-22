@@ -19,6 +19,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerE
 import { revealLabel, trashLabel } from "@/app/labels";
 import { isMod } from "@/app/keyboard";
 import { useWorkspace, type RepoLayout } from "@/app/workspace";
+import { CustomActionItems } from "@/features/custom-actions/CustomActionItems";
 import { saveChangesPatch } from "@/features/patch/patch";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { joinPath } from "@/features/welcome/paths";
@@ -411,6 +412,11 @@ export function ChangesView({
             </ContextMenu.Sub>
           </>
         )}
+        <CustomActionItems
+          M={ContextMenu}
+          scope="file"
+          context={{ repo, sha: null, branch: null, files: targets.map((e) => e.path) }}
+        />
       </>
     );
   };

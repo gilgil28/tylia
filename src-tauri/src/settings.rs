@@ -9,6 +9,8 @@ use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 use tylia_git::PullMode;
 
+use crate::custom_action::CustomAction;
+
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, TS)]
 #[serde(rename_all = "lowercase")]
 #[ts(export)]
@@ -76,6 +78,8 @@ pub struct Settings {
     /// Terminal for "Open in terminal": a program (or, on macOS, an app name); `None` = the
     /// platform's usual terminal (see `terminal.rs`).
     pub terminal: Option<String>,
+    /// Settings → Actions, in the order shown.
+    pub custom_actions: Vec<CustomAction>,
 }
 
 impl Default for Settings {
@@ -96,6 +100,7 @@ impl Default for Settings {
             host_git: false,
             check_for_updates: false,
             terminal: None,
+            custom_actions: Vec::new(),
         }
     }
 }
@@ -143,6 +148,7 @@ impl SettingsStore {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::custom_action::ActionScope;
 
     #[test]
     fn missing_file_gives_defaults() {
@@ -170,6 +176,15 @@ mod tests {
             host_git: true,
             check_for_updates: true,
             terminal: Some("wezterm".to_owned()),
+            custom_actions: vec![CustomAction {
+                id: "a1".to_owned(),
+                name: "Lint".to_owned(),
+                program: "cargo".to_owned(),
+                arguments: "clippy -- {file}".to_owned(),
+                scope: ActionScope::File,
+                confirm: true,
+                show_output: true,
+            }],
         };
         store.save(&settings).unwrap();
         assert_eq!(store.load(), settings);

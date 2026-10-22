@@ -33,6 +33,7 @@
           hostGit: false,
           checkForUpdates: false,
           terminal: null,
+          customActions: [],
         },
         stored,
       ),

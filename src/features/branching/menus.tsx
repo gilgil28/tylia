@@ -27,6 +27,7 @@ import {
 
 import { shortHash } from "@/app/format";
 import { exportArchive } from "@/features/archive/archive";
+import { CustomActionItems } from "@/features/custom-actions/CustomActionItems";
 import { classifyFlowBranch, useFlowState } from "@/features/flow/useFlow";
 import { saveCommitPatch } from "@/features/patch/patch";
 import { useRebaseBase } from "@/features/rebase/useRebaseBase";
@@ -192,6 +193,11 @@ export function BranchItems({ ctx, M, branch }: { ctx: MenuContext; M: M; branch
       >
         {t("archive.menuItem")}
       </M.Item>
+      <CustomActionItems
+        M={M}
+        scope="branch"
+        context={{ repo, sha: branch.oid, branch: branch.name, files: [] }}
+      />
       <M.Separator />
       <M.Item
         icon={Trash2}
@@ -478,6 +484,11 @@ export function CommitItems({
       <M.Item icon={FileArchive} onSelect={() => void exportArchive(repo, oid, short)}>
         {t("archive.menuItem")}
       </M.Item>
+      <CustomActionItems
+        M={M}
+        scope="commit"
+        context={{ repo, sha: oid, branch: null, files: [] }}
+      />
       {(locals.length > 0 || remotes.length > 0 || tags.length > 0) && <M.Separator />}
       {locals.map((x) => (
         <M.Sub key={`l:${x.name}`}>

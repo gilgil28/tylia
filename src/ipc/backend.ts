@@ -1,3 +1,5 @@
+import type { ActionContext } from "./bindings/ActionContext";
+import type { ActionRun } from "./bindings/ActionRun";
 import type { ArchiveFormat } from "./bindings/ArchiveFormat";
 import type { AskpassPrompt } from "./bindings/AskpassPrompt";
 import type { Blame } from "./bindings/Blame";
@@ -10,6 +12,7 @@ import type { CloneRequest } from "./bindings/CloneRequest";
 import type { ConflictFile } from "./bindings/ConflictFile";
 import type { ConflictSide } from "./bindings/ConflictSide";
 import type { CommitDetails } from "./bindings/CommitDetails";
+import type { CustomAction } from "./bindings/CustomAction";
 import type { DiffRequest } from "./bindings/DiffRequest";
 import type { DownloadProgress } from "./bindings/DownloadProgress";
 import type { FastForward } from "./bindings/FastForward";
@@ -167,6 +170,14 @@ export interface Backend {
     onProgress: (progress: Progress) => void,
   ): Promise<RepoInfo>;
   cancelOperation(operationId: number): Promise<void>;
+  /** A custom action's program and arguments here (errors when a variable has no value). */
+  customActionCommand(action: CustomAction, context: ActionContext): Promise<string[]>;
+  /** Runs a custom action (no shell); with `showOutput` waits for it (cancel by id). */
+  runCustomAction(
+    action: CustomAction,
+    context: ActionContext,
+    operationId: number,
+  ): Promise<ActionRun>;
 
   // Network operations: progress on `onProgress`, cancel with `cancelOperation`.
   /** `quiet` (background fetch) never shows a credential prompt. */

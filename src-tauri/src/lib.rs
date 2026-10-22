@@ -1,6 +1,7 @@
 pub mod askpass;
 mod cli_link;
 mod commands;
+mod custom_action;
 mod error;
 pub mod launch;
 mod operation;
@@ -125,6 +126,8 @@ pub fn run(open: Vec<PathBuf>) {
             commands::preview_patch,
             commands::apply_patch_file,
             commands::export_archive,
+            commands::custom_action_command,
+            commands::run_custom_action,
             commands::revert,
             commands::reset,
             commands::continue_operation,

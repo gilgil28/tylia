@@ -3,7 +3,7 @@
 
 import { create } from "zustand";
 
-export type SettingsSection = "general" | "git" | "keyboard";
+export type SettingsSection = "general" | "git" | "keyboard" | "actions";
 
 interface Overlays {
   palette: boolean;

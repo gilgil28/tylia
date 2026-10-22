@@ -29,9 +29,11 @@ import {
 import { useRegisterActions, type Action } from "@/app/actions";
 import { shortHash } from "@/app/format";
 import { revealLabel } from "@/app/labels";
+import { useSettings } from "@/app/settings";
 import { useBranchDialog } from "@/features/branching/dialog-store";
 import { useSwitcher } from "@/features/branching/BranchSwitcher";
 import { useBranching } from "@/features/branching/useBranching";
+import { customPaletteActions } from "@/features/custom-actions/CustomActionItems";
 import {
   fetchRepo,
   headBranch,
@@ -81,6 +83,7 @@ export function useRepoActions(
   const tracked = new Set(refs?.branches.map((x) => x.upstream));
   const selectedFile = useRepoUi((s) => s.selectedFile);
   const selection = useRepoUi((s) => s.selection);
+  const customActions = useSettings((s) => s.settings.customActions);
 
   // The selected file's diff, for the external diff tool.
   const diffRequest = (): DiffRequest | null => {
@@ -364,6 +367,31 @@ export function useRepoActions(
           run: () => openBranchDialog(repo, { mode: "checkoutRemote", remoteBranch: x.fullName }),
         })),
     ),
+    // Settings → Actions: each for the selected commit / current branch / selected file.
+    ...customPaletteActions(customActions, (scope) => {
+      const base = { repo, sha: null, branch: null, files: [] };
+      switch (scope) {
+        case "repository":
+          return base;
+        case "commit":
+          return selection?.kind === "commit" ? { ...base, sha: selection.oid } : null;
+        case "branch":
+          return refs?.head.branch
+            ? { ...base, branch: refs.head.branch, sha: refs.head.oid ?? null }
+            : null;
+        case "file":
+          return selectedFile
+            ? {
+                ...base,
+                files: [selectedFile.path],
+                sha:
+                  selectedFile.target === "commit" && selection?.kind === "commit"
+                    ? selection.oid
+                    : null,
+              }
+            : null;
+      }
+    }),
   ];
   useRegisterActions(`repo:${repo}`, actions, active);
 }

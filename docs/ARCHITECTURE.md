@@ -781,3 +781,20 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   The format follows the extension chosen in the save dialog (`.tar.gz` / `.tgz`, else
   zip). "Export archive…" is in the commit, branch and tag menus, and the palette exports
   the current branch.
+- **Custom actions** (`src-tauri/src/custom_action.rs`, Settings → Actions,
+  `settings.customActions`): a name, a program, one line of arguments, a scope
+  (palette / commit / branch / file menus), "ask before running" and "show output".
+  - **Command line:** Rust splits the line (whitespace separates; `"…"` and `'…'` group),
+    then substitutes `{repo}`, `{sha}`, `{shortSha}`, `{branch}`, `{file}` and `{files}`
+    in each argument (`{files}` alone becomes one argument per file). A missing value is
+    an error, unknown braces stay. The program is started directly with that list (no
+    shell), in the repository folder, so a value never becomes more arguments or commands.
+    `custom_action_command` returns the list for the confirmation; the frontend never
+    splits or substitutes.
+  - **Running:** with "show output" the command waits, keeps up to 1 MB of each stream and
+    registers in the operations map, so `cancel_operation` (Stop) kills it; otherwise it is
+    started with no pipes and reaped in the background. A missing program is reported as
+    such.
+  - **UI:** commit and branch menus, the Changes file menu (the selected files), and the
+    palette as `custom.<id>` (rebindable; each for the selected commit, current branch or
+    selected file). The output panel shows the command line, exit code, output and errors.

@@ -6,6 +6,7 @@ import { CommandPalette } from "@/features/palette/CommandPalette";
 import { RepoView } from "@/features/repo/RepoView";
 import { SettingsDialog } from "@/features/settings/SettingsDialog";
 import { UpdateDialog } from "@/features/update/UpdateDialog";
+import { CustomActionDialogs } from "@/features/custom-actions/CustomActionDialogs";
 import { useStartupUpdateCheck } from "@/features/update/useStartupUpdateCheck";
 import { WelcomeScreen } from "@/features/welcome/WelcomeScreen";
 import { Toaster } from "@/ui/Toast";
@@ -75,6 +76,7 @@ function Shell() {
       <CommandPalette />
       <SettingsDialog />
       <UpdateDialog />
+      <CustomActionDialogs />
       <AskpassHost />
     </div>
   );

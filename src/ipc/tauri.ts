@@ -81,6 +81,9 @@ export const backend: Backend = {
   cloneRepo: (request, operationId, onProgress) =>
     invoke("clone_repo", { request, operationId, onProgress: channel<Progress>(onProgress) }),
   cancelOperation: (operationId) => invoke("cancel_operation", { operationId }),
+  customActionCommand: (action, context) => invoke("custom_action_command", { action, context }),
+  runCustomAction: (action, context, operationId) =>
+    invoke("run_custom_action", { action, context, operationId }),
 
   fetch: (repo, request, quiet, operationId, onProgress) =>
     invoke("fetch", {

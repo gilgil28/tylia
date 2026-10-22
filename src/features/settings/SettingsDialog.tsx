@@ -1,5 +1,5 @@
 // Settings (Mod+,): General (appearance, density, font size, title bar), Git (pull, fetch,
-// push), Keyboard (every action's shortcut, rebindable).
+// push), Keyboard (every action's shortcut, rebindable), Actions (custom programs in menus).
 
 import {
   Keyboard,
@@ -8,6 +8,7 @@ import {
   Search,
   Settings2,
   SlidersHorizontal,
+  SquareChevronRight,
   X,
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -33,10 +34,13 @@ import { Kbd } from "@/ui/Kbd";
 import { SegmentedControl } from "@/ui/SegmentedControl";
 import { Select } from "@/ui/Select";
 
+import { ActionsSettings } from "./ActionsSettings";
+
 const SECTIONS: { id: SettingsSection; label: string; icon: typeof Keyboard }[] = [
   { id: "general", label: t("settingsScreen.general"), icon: SlidersHorizontal },
   { id: "git", label: t("settingsScreen.git"), icon: Settings2 },
   { id: "keyboard", label: t("settingsScreen.keyboard"), icon: Keyboard },
+  { id: "actions", label: t("settingsScreen.actions"), icon: SquareChevronRight },
 ];
 
 function Row({ label, hint, children }: { label: string; hint?: ReactNode; children?: ReactNode }) {
@@ -563,6 +567,7 @@ export function SettingsDialog() {
               {section === "general" && <General />}
               {section === "git" && <Git />}
               {section === "keyboard" && <KeyboardSettings />}
+              {section === "actions" && <ActionsSettings />}
             </div>
           </div>
         </D.Content>

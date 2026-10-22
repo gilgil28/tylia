@@ -2,6 +2,9 @@ import type { Backend } from "./backend";
 
 export { isIpcError } from "./backend";
 export type { FileFilter, Unlisten } from "./backend";
+export type { ActionContext } from "./bindings/ActionContext";
+export type { ActionRun } from "./bindings/ActionRun";
+export type { ActionScope } from "./bindings/ActionScope";
 export type { ArchiveFormat } from "./bindings/ArchiveFormat";
 export type { AskpassKind } from "./bindings/AskpassKind";
 export type { AskpassPrompt } from "./bindings/AskpassPrompt";
@@ -22,6 +25,7 @@ export type { CliLinkOutcome } from "./bindings/CliLinkOutcome";
 export type { CloneRequest } from "./bindings/CloneRequest";
 export type { CommitDetails } from "./bindings/CommitDetails";
 export type { ConflictFile } from "./bindings/ConflictFile";
+export type { CustomAction } from "./bindings/CustomAction";
 export type { ConflictSegment } from "./bindings/ConflictSegment";
 export type { ConflictSide } from "./bindings/ConflictSide";
 export type { DateFormat } from "./bindings/DateFormat";

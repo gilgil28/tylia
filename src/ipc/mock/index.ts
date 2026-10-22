@@ -420,6 +420,56 @@ export const backend: Backend = {
   cancelOperation: async (operationId) => {
     cancelled.add(operationId);
   },
+  // A rough stand-in for Rust's splitting (no quotes) and the common variables.
+  customActionCommand: async (action, context) => [
+    action.program,
+    ...action.arguments
+      .split(/\s+/)
+      .filter(Boolean)
+      .flatMap((arg) => (arg === "{files}" ? context.files : [arg]))
+      .map((arg) =>
+        arg
+          .replace("{repo}", context.repo)
+          .replace("{sha}", context.sha ?? "")
+          .replace("{shortSha}", (context.sha ?? "").slice(0, 7))
+          .replace("{branch}", context.branch ?? "")
+          .replace("{file}", context.files[0] ?? ""),
+      ),
+  ],
+  // `?action=fail|missing|slow` simulates a failing, missing or long-running program.
+  runCustomAction: async (action, context, operationId) => {
+    const mode = new URLSearchParams(location.search).get("action");
+    const [program, ...args] = await backend.customActionCommand(action, context);
+    if (mode === "missing") {
+      throw {
+        kind: "invalidInput",
+        message: `${program} wasn't found. Check the program in Settings → Actions.`,
+        command: null,
+        stderr: null,
+      } satisfies IpcError;
+    }
+    if (mode === "slow") {
+      for (let i = 0; i < 100 && !cancelled.has(operationId); i++) await delay(50);
+      if (cancelled.has(operationId)) {
+        throw {
+          kind: "cancelled",
+          message: `${action.name} was stopped.`,
+          command: null,
+          stderr: null,
+        } satisfies IpcError;
+      }
+    }
+    const failed = mode === "fail";
+    return {
+      program: program!,
+      args,
+      code: action.showOutput ? (failed ? 1 : 0) : null,
+      stdout: action.showOutput && !failed ? "Checked 42 files: no problems.\n" : "",
+      stderr: failed ? "error: tests/parser.rs:14: expected `;`\n" : "",
+      truncated: false,
+      waited: action.showOutput,
+    };
+  },
   ...remoteMock(
     () => refs,
     (next) => {
