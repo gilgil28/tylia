@@ -1,3 +1,4 @@
+import type { ArchiveFormat } from "./bindings/ArchiveFormat";
 import type { AskpassPrompt } from "./bindings/AskpassPrompt";
 import type { Blame } from "./bindings/Blame";
 import type { BlockOutcome } from "./bindings/BlockOutcome";
@@ -238,6 +239,14 @@ export interface Backend {
   previewPatch(repo: string, file: string): Promise<PatchPreview>;
   /** Applies `file` to the working tree, or as commits (`git am`, may stop on conflicts). */
   applyPatchFile(repo: string, file: string, mode: PatchApplyMode): Promise<IntegrateOutcome>;
+  /** Writes the files of `rev` into `file` (zip or tar.gz), in a `<repo>-<label>/` folder. */
+  exportArchive(
+    repo: string,
+    rev: string,
+    label: string,
+    format: ArchiveFormat,
+    file: string,
+  ): Promise<void>;
   revert(repo: string, oid: string): Promise<IntegrateOutcome>;
   reset(repo: string, oid: string, mode: ResetMode): Promise<void>;
   continueOperation(repo: string): Promise<IntegrateOutcome>;

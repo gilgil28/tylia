@@ -4,6 +4,7 @@
 //! argument vector (never a shell), with a fixed set of base options and environment so the
 //! output is stable and machine-readable. This crate has no Tauri dependency.
 
+mod archive;
 mod blame;
 mod branch;
 mod clone;
@@ -34,6 +35,7 @@ mod tag;
 mod version;
 mod worktree;
 
+pub use archive::ArchiveFormat;
 pub use blame::{Blame, BlameCommit, BlameContent, BlameLine, BlamePrevious};
 pub use branch::{CheckoutOutcome, CheckoutRequest, CheckoutTarget};
 pub use clone::{CloneRequest, Progress};

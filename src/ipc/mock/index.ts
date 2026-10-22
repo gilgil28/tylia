@@ -449,6 +449,7 @@ export const backend: Backend = {
     new URLSearchParams(location.search).get("save") === "cancel" ? null : defaultPath,
   saveCommitPatch: async () => {},
   saveChangesPatch: async () => {},
+  exportArchive: async () => {},
   // `?patch=threeWay|fails|diff` simulates other patch files and repository states.
   previewPatch: async () => {
     const mode = new URLSearchParams(location.search).get("patch");

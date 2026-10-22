@@ -124,6 +124,7 @@ pub fn run(open: Vec<PathBuf>) {
             commands::save_changes_patch,
             commands::preview_patch,
             commands::apply_patch_file,
+            commands::export_archive,
             commands::revert,
             commands::reset,
             commands::continue_operation,

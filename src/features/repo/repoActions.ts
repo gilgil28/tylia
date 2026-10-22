@@ -9,6 +9,7 @@ import {
   ArrowUpFromLine,
   CircleCheck,
   CircleX,
+  FileArchive,
   FileDown,
   FileUp,
   Cloud,
@@ -26,6 +27,7 @@ import {
 } from "lucide-react";
 
 import { useRegisterActions, type Action } from "@/app/actions";
+import { shortHash } from "@/app/format";
 import { revealLabel } from "@/app/labels";
 import { useBranchDialog } from "@/features/branching/dialog-store";
 import { useSwitcher } from "@/features/branching/BranchSwitcher";
@@ -37,6 +39,7 @@ import {
   pushRepo,
   useOperations,
 } from "@/features/remote/operations";
+import { exportArchive } from "@/features/archive/archive";
 import { pickPatch, saveChangesPatch, saveCommitPatch } from "@/features/patch/patch";
 import { useRemoteDialog } from "@/features/remote/RemoteDialogs";
 import { t } from "@/i18n";
@@ -183,6 +186,19 @@ export function useRepoActions(
         if (selection?.kind !== "commit") return;
         const commit = client.getQueryData<CommitDetails>(["commit", repo, selection.oid]);
         void saveCommitPatch(repo, selection.oid, commit?.subject ?? selection.oid);
+      },
+    },
+    {
+      id: "repo.exportArchive",
+      title: t("archive.action"),
+      group: "repository",
+      icon: FileArchive,
+      keywords: ["archive", "zip", "tar", "export", "snapshot"],
+      disabled: !refs?.head.oid,
+      run: () => {
+        const head = refs?.head;
+        if (!head?.oid) return;
+        void exportArchive(repo, head.oid, head.branch ?? shortHash(head.oid));
       },
     },
     {

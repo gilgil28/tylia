@@ -1,6 +1,7 @@
 //! Tauri commands: the whole backend API the frontend can call.
 
 mod app;
+mod archive;
 mod askpass;
 mod branch;
 mod clone;
@@ -15,6 +16,7 @@ mod update;
 mod worktree;
 
 pub use app::*;
+pub use archive::*;
 pub use askpass::*;
 pub use branch::*;
 pub use clone::*;

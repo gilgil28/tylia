@@ -545,6 +545,15 @@ export const en = {
   "banner.continueHint.revert": "Commits the revert",
   "banner.continueHint.am": "Commits this patch and goes on with the next one",
 
+  "archive.menuItem": "Export archive…",
+  "archive.action": "Export an archive of the current branch…",
+  "archive.saveTitle": "Export archive",
+  "archive.zip": "Zip archive",
+  "archive.tarGz": "Tar archive (gzip)",
+  "archive.exporting": "Exporting {label}…",
+  "archive.exported": "Exported {label}",
+  "archive.failed": "Couldn’t export the archive",
+
   "patch.saveCommit": "Save as patch…",
   "patch.saveCommitAction": "Save the selected commit as a patch…",
   "patch.saveStaged": "Save staged changes as a patch",

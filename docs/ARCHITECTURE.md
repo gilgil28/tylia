@@ -774,3 +774,10 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   - **UI:** "Save as patch…" in the commit menu, a button on each Changes list header, the
     palette ("Apply patch…", "Save … as a patch…"); `ApplyPatchDialog` shows the check, the
     commits and the files before anything changes.
+- **Archives** (`crates/tylia-git/src/archive.rs`): `git archive --format=zip|tar.gz
+--prefix=<repo>-<label>/ --output=<file> <oid>` after `resolve_commit`, so an option-like
+  or unknown revision is refused before Git writes anything. The folder name replaces
+  characters Windows refuses (`feature/graph` → `feature-graph`) and drops leading dots.
+  The format follows the extension chosen in the save dialog (`.tar.gz` / `.tgz`, else
+  zip). "Export archive…" is in the commit, branch and tag menus, and the palette exports
+  the current branch.

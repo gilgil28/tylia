@@ -7,6 +7,7 @@ import {
   ArrowUpFromLine,
   Cloud,
   Copy,
+  FileArchive,
   FileDown,
   Flag,
   GitBranch,
@@ -25,6 +26,7 @@ import {
 } from "lucide-react";
 
 import { shortHash } from "@/app/format";
+import { exportArchive } from "@/features/archive/archive";
 import { classifyFlowBranch, useFlowState } from "@/features/flow/useFlow";
 import { saveCommitPatch } from "@/features/patch/patch";
 import { useRebaseBase } from "@/features/rebase/useRebaseBase";
@@ -184,6 +186,12 @@ export function BranchItems({ ctx, M, branch }: { ctx: MenuContext; M: M; branch
       <M.Item icon={Copy} onSelect={() => copy(branch.name)}>
         {t("menu.copyName")}
       </M.Item>
+      <M.Item
+        icon={FileArchive}
+        onSelect={() => void exportArchive(repo, branch.name, branch.name)}
+      >
+        {t("archive.menuItem")}
+      </M.Item>
       <M.Separator />
       <M.Item
         icon={Trash2}
@@ -296,6 +304,9 @@ export function TagItems({ ctx, M, tag }: { ctx: MenuContext; M: M; tag: Tag }) 
       ))}
       <M.Item icon={Copy} onSelect={() => copy(tag.name)}>
         {t("menu.copyName")}
+      </M.Item>
+      <M.Item icon={FileArchive} onSelect={() => void exportArchive(repo, tag.name, tag.name)}>
+        {t("archive.menuItem")}
       </M.Item>
       <M.Separator />
       <M.Item
@@ -463,6 +474,9 @@ export function CommitItems({
       </M.Item>
       <M.Item icon={FileDown} onSelect={() => void saveCommitPatch(repo, oid, subject)}>
         {t("patch.saveCommit")}
+      </M.Item>
+      <M.Item icon={FileArchive} onSelect={() => void exportArchive(repo, oid, short)}>
+        {t("archive.menuItem")}
       </M.Item>
       {(locals.length > 0 || remotes.length > 0 || tags.length > 0) && <M.Separator />}
       {locals.map((x) => (

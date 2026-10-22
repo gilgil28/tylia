@@ -4,6 +4,7 @@
 #[path = "../common/mod.rs"]
 mod common;
 
+mod archive;
 mod branching;
 mod conflict;
 mod extras;

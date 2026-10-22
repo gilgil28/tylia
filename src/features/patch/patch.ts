@@ -3,6 +3,7 @@
 
 import { create } from "zustand";
 
+import { patchFileName } from "@/app/fileNames";
 import { t } from "@/i18n";
 import { ipc, isIpcError, type FileFilter } from "@/ipc";
 import { toast } from "@/ui/Toast";
@@ -11,17 +12,6 @@ const filters = (): FileFilter[] => [
   { name: t("patch.filterName"), extensions: ["patch", "diff", "eml", "mbox"] },
   { name: t("patch.filterAll"), extensions: ["*"] },
 ];
-
-/** `git format-patch`'s file name for a subject: `0001-fix-the-parser.patch`. */
-export function patchFileName(subject: string): string {
-  const slug = subject
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 52)
-    .replace(/-+$/, "");
-  return `0001-${slug || "patch"}.patch`;
-}
 
 /** Asks where to save, writes, and says where it went (with a way to show the file). */
 async function saveAs(defaultName: string, write: (file: string) => Promise<void>) {

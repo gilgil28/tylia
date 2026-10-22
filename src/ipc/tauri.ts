@@ -133,6 +133,8 @@ export const backend: Backend = {
   saveChangesPatch: (repo, staged, file) => invoke("save_changes_patch", { repo, staged, file }),
   previewPatch: (repo, file) => invoke("preview_patch", { repo, file }),
   applyPatchFile: (repo, file, mode) => invoke("apply_patch_file", { repo, file, mode }),
+  exportArchive: (repo, rev, label, format, file) =>
+    invoke("export_archive", { repo, rev, label, format, file }),
   revert: (repo, oid) => invoke("revert", { repo, oid }),
   reset: (repo, oid, mode) => invoke("reset", { repo, oid, mode }),
   continueOperation: (repo) => invoke("continue_operation", { repo }),

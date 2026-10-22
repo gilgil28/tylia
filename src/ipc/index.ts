@@ -2,6 +2,7 @@ import type { Backend } from "./backend";
 
 export { isIpcError } from "./backend";
 export type { FileFilter, Unlisten } from "./backend";
+export type { ArchiveFormat } from "./bindings/ArchiveFormat";
 export type { AskpassKind } from "./bindings/AskpassKind";
 export type { AskpassPrompt } from "./bindings/AskpassPrompt";
 export type { Blame } from "./bindings/Blame";
