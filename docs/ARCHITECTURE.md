@@ -706,3 +706,13 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
     machines their own way.
   - Windows 11 shows "Open in Tylia" under "Show more options"; a top-level entry needs a
     packaged (MSIX) app, which is out of scope.
+- **Linux packages** (`src-tauri/tauri.linux.conf.json`, merged by Tauri on Linux): the
+  deb and rpm use `packaging/linux/tylia.desktop` as their desktop template, installed as
+  `Tylia.desktop`. It has `Exec=tylia %F` and `MimeType=inode/directory;`, so file
+  managers list "Open With Tylia" for folders. Its `StartupWMClass=tylia` matches both the
+  X11 WM_CLASS and the Wayland app ID, which GTK takes from the program name because
+  `enableGTKAppId` is off. The metainfo goes to `/usr/share/metainfo` in the deb, rpm and
+  AppImage.
+  - **AppStream ID:** `io.github.gilgil28.tylia`, the Flathub app ID, in every package, so
+    software centres show the distribution packages and the Flatpak as one app. The bundle
+    identifier `dev.tylia.app` is separate: it names the settings folder.

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "bundle": {
+    "linux": {
+      "deb": {
+        "desktopTemplate": "../packaging/linux/tylia.desktop",
+        "files": {
+          "/usr/share/metainfo/io.github.gilgil28.tylia.metainfo.xml": "../packaging/linux/io.github.gilgil28.tylia.metainfo.xml"
+        }
+      },
+      "rpm": {
+        "desktopTemplate": "../packaging/linux/tylia.desktop",
+        "files": {
+          "/usr/share/metainfo/io.github.gilgil28.tylia.metainfo.xml": "../packaging/linux/io.github.gilgil28.tylia.metainfo.xml"
+        }
+      },
+      "appimage": {
+        "files": {
+          "/usr/share/metainfo/io.github.gilgil28.tylia.metainfo.xml": "../packaging/linux/io.github.gilgil28.tylia.metainfo.xml"
+        }
+      }
+    }
+  }
+}

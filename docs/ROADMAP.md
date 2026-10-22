@@ -668,13 +668,22 @@ real on Linux and macOS. It ends with **v0.3.0**.
 
 #### A. Linux packages and integration (first)
 
-- [ ] **Desktop entry and AppStream:** finish branch `build/linux-desktop-metadata` (not
+- [x] **Desktop entry and AppStream:** finish branch `build/linux-desktop-metadata` (not
       merged): `packaging/linux/tylia.desktop` (`MimeType=inode/directory`,
       `Exec=tylia %F`), `dev.tylia.app.metainfo.xml` and `src-tauri/tauri.linux.conf.json`.
       Validate with `appstreamcli validate`, build deb / rpm / AppImage in the Ubuntu
       container, check each package's files, and that "Open With Tylia" appears for
       folders (`gio open` / `xdg-mime query default inode/directory` under Xvfb). Add a
       v0.2.0 entry to the metainfo `<releases>`. Details: Phase 7 C → Linux.
+      _Done 2026-10-22 (ARCHITECTURE §5.19). The AppStream ID is the Flathub app ID,
+      `io.github.gilgil28.tylia`, in every package. AppStream 1.2.1 validates the metainfo
+      (with its URL checks); `desktop-file-validate` passes. Built in Ubuntu 22.04: the deb,
+      rpm and AppImage each carry `Tylia.desktop`, the metainfo, icons and `/usr/bin/tylia`.
+      With the deb installed, `gio mime inode/directory` lists Tylia; under Xvfb `gio open`
+      on a repository started Tylia with it, and `tylia <subfolder of another repo>` handed
+      off in 41 ms and opened it as a second tab. WM_CLASS is `tylia` / `Tylia` (and the
+      Wayland app ID is `tylia`), which `StartupWMClass=tylia` matches; `apt remove` leaves
+      no files._
 - [ ] **AUR `tylia-bin`** (repackaged release `.deb`) and **`tylia`** (from source), with
       the desktop file, metainfo, icons and licenses; `makepkg -si` in the Arch container,
       then start the app under Xvfb. Publish with the user's AUR account. Then list the

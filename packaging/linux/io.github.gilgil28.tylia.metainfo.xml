@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AppStream metadata for software centres and Flathub. Validate with
+     `appstreamcli validate packaging/linux/io.github.gilgil28.tylia.metainfo.xml`. -->
+<component type="desktop-application">
+  <id>io.github.gilgil28.tylia</id>
+  <name>Tylia</name>
+  <summary>A calm, fast Git client</summary>
+  <developer id="io.github.gilgil28">
+    <name>The Tylia contributors</name>
+  </developer>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT OR Apache-2.0</project_license>
+
+  <description>
+    <p>
+      Tylia is a desktop Git client with a clear commit graph, staging down to single
+      lines, and no clutter. It uses the Git you already have, so hooks, credential
+      helpers, signing and your Git configuration work exactly as on the command line.
+    </p>
+    <ul>
+      <li>History with a commit graph that stays fast on very large repositories</li>
+      <li>Stage, unstage and discard files, hunks or single lines</li>
+      <li>Fetch, pull and push with sign-in dialogs for HTTPS and SSH</li>
+      <li>Branches, merge, rebase, cherry-pick and revert, with per-block conflict resolution</li>
+      <li>Interactive rebase, blame, file history and git-flow helpers</li>
+      <li>A command palette and rebindable keyboard shortcuts</li>
+    </ul>
+    <p>Tylia collects no telemetry and makes no network requests you did not ask for.</p>
+  </description>
+
+  <!-- The deb, rpm and AppImage install Tylia.desktop; the Flatpak renames it. -->
+  <launchable type="desktop-id">Tylia.desktop</launchable>
+  <provides>
+    <binary>tylia</binary>
+  </provides>
+  <categories>
+    <category>Development</category>
+    <category>RevisionControl</category>
+  </categories>
+  <keywords>
+    <keyword>git</keyword>
+    <keyword>version control</keyword>
+  </keywords>
+
+  <url type="homepage">https://gilgil28.github.io/tylia/</url>
+  <url type="bugtracker">https://github.com/gilgil28/tylia/issues</url>
+  <url type="vcs-browser">https://github.com/gilgil28/tylia</url>
+  <url type="contribute">https://github.com/gilgil28/tylia/blob/main/CONTRIBUTING.md</url>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>History: the commit graph, a commit's details and its diff</caption>
+      <image>https://gilgil28.github.io/tylia/assets/history-light.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Changes: staged and unstaged files, a diff and the commit message</caption>
+      <image>https://gilgil28.github.io/tylia/assets/changes-light.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>History in the dark theme</caption>
+      <image>https://gilgil28.github.io/tylia/assets/history-dark.png</image>
+    </screenshot>
+  </screenshots>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#dde1e7</color>
+    <color type="primary" scheme_preference="dark">#0f1115</color>
+  </branding>
+
+  <content_rating type="oars-1.1" />
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+
+  <releases>
+    <release version="0.2.0" date="2026-10-22">
+      <url type="details">https://github.com/gilgil28/tylia/releases/tag/v0.2.0</url>
+      <description>
+        <p>
+          The first public release: the commit graph, staging down to single lines, fetch,
+          pull and push with sign-in dialogs, branching with per-block conflict resolution,
+          interactive rebase, blame, file history, git-flow helpers and a command palette.
+        </p>
+      </description>
+    </release>
+  </releases>
+</component>
