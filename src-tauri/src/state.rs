@@ -30,6 +30,9 @@ pub struct AppState {
     pub askpass: Askpass,
     /// Every path in each repository's history, for path search and its suggestions.
     pub path_indexes: PathIndexes,
+    /// Hosting-account tokens of this session, by account (see `hosting.rs`): the only copy
+    /// when no credential helper keeps them.
+    pub hosting_tokens: Mutex<HashMap<String, String>>,
 }
 
 impl AppState {
@@ -43,6 +46,7 @@ impl AppState {
             write_locks: Mutex::default(),
             askpass,
             path_indexes: PathIndexes::default(),
+            hosting_tokens: Mutex::default(),
         }
     }
 

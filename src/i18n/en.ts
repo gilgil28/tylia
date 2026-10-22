@@ -99,6 +99,16 @@ export const en = {
   "clone.title": "Clone repository",
   "clone.url": "Repository URL",
   "clone.urlPlaceholder": "https://github.com/owner/repo.git",
+  "clone.source": "Clone from",
+  "clone.sourceUrl": "URL",
+  "clone.yourRepos": "Your repositories",
+  "clone.account": "Account",
+  "clone.searchRepos": "Search your repositories",
+  "clone.loadingRepos": "Loading your repositories…",
+  "clone.noRepos": "This account has no repositories.",
+  "clone.noMatchingRepos": "No repository matches.",
+  "clone.private": "Private",
+  "clone.useSsh": "Clone over SSH",
   "clone.location": "Location",
   "clone.name": "Folder name",
   "clone.branch": "Branch",
@@ -553,6 +563,33 @@ export const en = {
   "banner.continueHint.revert": "Commits the revert",
   "banner.continueHint.am": "Commits this patch and goes on with the next one",
 
+  "accounts.intro":
+    "Sign in to list your repositories in the Clone dialog. Tylia only contacts the provider when you sign in or open that list. Tokens are kept by Git’s credential helper, like your other Git sign-ins, never in Tylia’s settings file.",
+  "accounts.empty": "No accounts yet.",
+  "accounts.add": "Add account",
+  "accounts.provider": "Provider",
+  "accounts.provider.github": "GitHub",
+  "accounts.provider.gitlab": "GitLab",
+  "accounts.provider.bitbucket": "Bitbucket",
+  "accounts.host": "Server (leave empty for the main site)",
+  "accounts.email": "Atlassian account email",
+  "accounts.token": "Personal access token",
+  "accounts.tokenHint.github":
+    "A classic token with the repo scope (read:org for organization repositories), or a fine-grained token that can read metadata.",
+  "accounts.tokenHint.gitlab": "A personal access token with the read_api scope.",
+  "accounts.tokenHint.bitbucket":
+    "An API token with the read:repository:bitbucket and read:user:bitbucket scopes.",
+  "accounts.createToken": "Create a token",
+  "accounts.signIn": "Sign in",
+  "accounts.added": "Signed in as {name} on {host}",
+  "accounts.notSaved":
+    "No Git credential helper is set up, so Tylia keeps the token only until it quits.",
+  "accounts.signOut": "Sign out",
+  "accounts.signOutTitle": "Sign out {name}?",
+  "accounts.signOutBody":
+    "Tylia forgets the token and removes the account. The token itself stays valid until you revoke it on the provider’s site.",
+  "accounts.signOutFailed": "Couldn’t remove the stored token",
+
   "customActions.intro":
     "Your own programs in Tylia’s menus and the command palette: run a script on a commit, open files in another tool, anything with a command line. They run in the repository folder, without a shell.",
   "customActions.variables": "Arguments can use",
@@ -804,6 +841,7 @@ export const en = {
   "settingsScreen.git": "Git",
   "settingsScreen.keyboard": "Keyboard",
   "settingsScreen.actions": "Actions",
+  "settingsScreen.accounts": "Accounts",
   "settingsScreen.density": "Row density",
   "settingsScreen.densityHint": "Height of rows in the history and file lists.",
   "settingsScreen.comfortable": "Comfortable",

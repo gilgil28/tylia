@@ -3,6 +3,7 @@ mod cli_link;
 mod commands;
 mod custom_action;
 mod error;
+mod hosting;
 pub mod launch;
 mod operation;
 mod path_index;
@@ -131,6 +132,9 @@ pub fn run(open: Vec<PathBuf>) {
             commands::export_archive,
             commands::custom_action_command,
             commands::run_custom_action,
+            commands::add_hosting_account,
+            commands::remove_hosting_account,
+            commands::list_hosted_repos,
             commands::revert,
             commands::reset,
             commands::continue_operation,

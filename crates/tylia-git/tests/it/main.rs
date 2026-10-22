@@ -7,6 +7,7 @@ mod common;
 mod archive;
 mod branching;
 mod conflict;
+mod credential;
 mod extras;
 mod file_view;
 mod flow;

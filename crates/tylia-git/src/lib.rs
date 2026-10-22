@@ -10,6 +10,7 @@ mod branch;
 mod clone;
 mod commit;
 mod conflict;
+mod credential;
 mod diff;
 mod error;
 mod extras;
@@ -41,6 +42,7 @@ pub use branch::{CheckoutOutcome, CheckoutRequest, CheckoutTarget};
 pub use clone::{CloneRequest, Progress};
 pub use commit::{ChangedFile, CommitDetails, Signature};
 pub use conflict::{BlockOutcome, BlockResolution, ConflictFile, ConflictSegment};
+pub use credential::CredentialKey;
 pub use diff::{
     DiffContent, DiffLine, DiffRequest, DiffTarget, FULL_CONTEXT, FileDiff, Hunk, ImagePair,
     LineKind,

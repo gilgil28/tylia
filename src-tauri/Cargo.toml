@@ -35,6 +35,9 @@ tauri-plugin-updater = "=2.14.0"
 getrandom = "=0.4.3"
 # One window: a second launch hands its arguments to the running app.
 tauri-plugin-single-instance = "=2.5.4"
+# Hosting accounts: the GitHub / GitLab / Bitbucket APIs (both already built for the updater).
+reqwest = { version = "=0.13.5", default-features = false, features = ["json"] }
+rustls = { version = "=0.23.46", default-features = false, features = ["ring"] }
 
 [dev-dependencies]
 tempfile.workspace = true

@@ -4559,6 +4559,8 @@ dependencies = [
  "getrandom 0.4.3",
  "notify",
  "notify-debouncer-full",
+ "reqwest",
+ "rustls",
  "serde",
  "serde_json",
  "tauri",

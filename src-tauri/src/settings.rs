@@ -10,6 +10,7 @@ use ts_rs::TS;
 use tylia_git::PullMode;
 
 use crate::custom_action::CustomAction;
+use crate::hosting::HostingAccount;
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, TS)]
 #[serde(rename_all = "lowercase")]
@@ -80,6 +81,8 @@ pub struct Settings {
     pub terminal: Option<String>,
     /// Settings → Actions, in the order shown.
     pub custom_actions: Vec<CustomAction>,
+    /// Settings → Accounts (their tokens are with Git's credential helpers, not here).
+    pub hosting_accounts: Vec<HostingAccount>,
 }
 
 impl Default for Settings {
@@ -101,6 +104,7 @@ impl Default for Settings {
             check_for_updates: false,
             terminal: None,
             custom_actions: Vec::new(),
+            hosting_accounts: Vec::new(),
         }
     }
 }
@@ -184,6 +188,12 @@ mod tests {
                 scope: ActionScope::File,
                 confirm: true,
                 show_output: true,
+            }],
+            hosting_accounts: vec![crate::hosting::HostingAccount {
+                provider: crate::hosting::HostingProvider::Gitlab,
+                host: "gitlab.example.com".to_owned(),
+                login: "ada".to_owned(),
+                name: "Ada".to_owned(),
             }],
         };
         store.save(&settings).unwrap();

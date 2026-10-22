@@ -2,6 +2,7 @@
 import type { CustomAction } from "./CustomAction";
 import type { DateFormat } from "./DateFormat";
 import type { Density } from "./Density";
+import type { HostingAccount } from "./HostingAccount";
 import type { PullMode } from "./PullMode";
 import type { ThemePreference } from "./ThemePreference";
 
@@ -68,4 +69,8 @@ terminal: string | null,
 /**
  * Settings → Actions, in the order shown.
  */
-customActions: Array<CustomAction>, };
+customActions: Array<CustomAction>, 
+/**
+ * Settings → Accounts (their tokens are with Git's credential helpers, not here).
+ */
+hostingAccounts: Array<HostingAccount>, };

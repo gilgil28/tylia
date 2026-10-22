@@ -1,7 +1,7 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Window controls for the custom title bar, app events, the open and save dialogs, reveal-in-file-manager and opening the releases page. App commands are defined in src/commands.",
+  "description": "Window controls for the custom title bar, app events, the open and save dialogs, reveal-in-file-manager and opening the releases page and the hosting providers' token pages. App commands are defined in src/commands.",
   "windows": ["main"],
   "permissions": [
     "core:event:default",
@@ -19,7 +19,12 @@
     "opener:allow-reveal-item-in-dir",
     {
       "identifier": "opener:allow-open-url",
-      "allow": [{ "url": "https://github.com/gilgil28/tylia/releases/latest" }]
+      "allow": [
+        { "url": "https://github.com/gilgil28/tylia/releases/latest" },
+        { "url": "https://github.com/settings/tokens/new?*" },
+        { "url": "https://gitlab.com/-/user_settings/personal_access_tokens?*" },
+        { "url": "https://id.atlassian.com/manage-profile/security/api-tokens" }
+      ]
     }
   ]
 }

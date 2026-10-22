@@ -217,6 +217,7 @@ export const backend: Backend = {
     };
   },
   openDownloadPage: async () => {},
+  openTokenPage: async () => {},
   // `?cli=installed|cancelled` simulates an existing link or a dismissed password prompt.
   installCli: async () => {
     const mode = new URLSearchParams(location.search).get("cli");
@@ -494,6 +495,53 @@ export const backend: Backend = {
     filters?.some((f) => f.extensions.includes("patch"))
       ? "C:/Users/ada/Downloads/0001-parser-handle-empty-input.patch"
       : "C:/Users/ada/.ssh/id_ed25519",
+  // `?token=bad` simulates a refused token, `?token=unsaved` no credential helper;
+  // `?repos=fail` a provider that can't be reached.
+  addHostingAccount: async (provider, host, login, token) => {
+    await delay(150);
+    const mode = new URLSearchParams(location.search).get("token");
+    if (mode === "bad" || !token.trim()) {
+      throw {
+        kind: "invalidInput",
+        message: `${host || "github.com"} refused the token (401 Unauthorized). Check that it hasn't expired and can read repositories.`,
+        command: null,
+        stderr: null,
+      } satisfies IpcError;
+    }
+    const defaultHost = { github: "github.com", gitlab: "gitlab.com", bitbucket: "bitbucket.org" };
+    return {
+      account: {
+        provider,
+        host: provider === "bitbucket" ? "bitbucket.org" : host || defaultHost[provider],
+        login: provider === "bitbucket" ? login : "ada",
+        name: "Ada Moreno",
+      },
+      saved: mode !== "unsaved",
+    };
+  },
+  removeHostingAccount: async () => {},
+  listHostedRepos: async (account) => {
+    const w = window as Window & { __tyliaHostingCalls?: number };
+    w.__tyliaHostingCalls = (w.__tyliaHostingCalls ?? 0) + 1;
+    await delay(150);
+    if (new URLSearchParams(location.search).get("repos") === "fail") {
+      throw {
+        kind: "invalidInput",
+        message: `Couldn't reach ${account.host}: connection refused`,
+        command: null,
+        stderr: null,
+      } satisfies IpcError;
+    }
+    const base = account.provider === "gitlab" ? `https://${account.host}` : "https://github.com";
+    return ["tylia", "engine", "dotfiles", "graph-lab", "website"].map((name, i) => ({
+      fullName: `${i === 1 ? "acme" : "ada"}/${name}`,
+      description: i === 0 ? "A calm, fast desktop Git client" : null,
+      private: i === 2,
+      httpsUrl: `${base}/${i === 1 ? "acme" : "ada"}/${name}.git`,
+      sshUrl: `git@${account.host}:${i === 1 ? "acme" : "ada"}/${name}.git`,
+      updated: `2026-10-${20 - i}T10:00:00Z`,
+    }));
+  },
   // `?save=cancel` simulates closing the save dialog.
   pickSaveFile: async (_title, defaultPath) =>
     new URLSearchParams(location.search).get("save") === "cancel" ? null : defaultPath,

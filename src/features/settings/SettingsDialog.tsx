@@ -1,7 +1,9 @@
 // Settings (Mod+,): General (appearance, density, font size, title bar), Git (pull, fetch,
-// push), Keyboard (every action's shortcut, rebindable), Actions (custom programs in menus).
+// push), Keyboard (every action's shortcut, rebindable), Actions (custom programs in menus),
+// Accounts (hosting accounts for cloning).
 
 import {
+  CircleUser,
   Keyboard,
   RefreshCw,
   RotateCcw,
@@ -34,6 +36,7 @@ import { Kbd } from "@/ui/Kbd";
 import { SegmentedControl } from "@/ui/SegmentedControl";
 import { Select } from "@/ui/Select";
 
+import { AccountsSettings } from "./AccountsSettings";
 import { ActionsSettings } from "./ActionsSettings";
 
 const SECTIONS: { id: SettingsSection; label: string; icon: typeof Keyboard }[] = [
@@ -41,6 +44,7 @@ const SECTIONS: { id: SettingsSection; label: string; icon: typeof Keyboard }[] 
   { id: "git", label: t("settingsScreen.git"), icon: Settings2 },
   { id: "keyboard", label: t("settingsScreen.keyboard"), icon: Keyboard },
   { id: "actions", label: t("settingsScreen.actions"), icon: SquareChevronRight },
+  { id: "accounts", label: t("settingsScreen.accounts"), icon: CircleUser },
 ];
 
 function Row({ label, hint, children }: { label: string; hint?: ReactNode; children?: ReactNode }) {
@@ -568,6 +572,7 @@ export function SettingsDialog() {
               {section === "git" && <Git />}
               {section === "keyboard" && <KeyboardSettings />}
               {section === "actions" && <ActionsSettings />}
+              {section === "accounts" && <AccountsSettings />}
             </div>
           </div>
         </D.Content>

@@ -33,6 +33,7 @@ export const backend: Backend = {
   installUpdate: (onProgress) =>
     invoke("install_update", { onProgress: channel<DownloadProgress>(onProgress) }),
   openDownloadPage: () => openUrl(RELEASES_URL),
+  openTokenPage: (url) => openUrl(url),
   installCli: () => invoke("install_cli"),
 
   openRepo: (path) => invoke("open_repo", { path }),
@@ -171,6 +172,10 @@ export const backend: Backend = {
   setSshKey: (repo, key) => invoke("set_ssh_key", { repo, key }),
   forgetCredentials: (repo, url) => invoke("forget_credentials", { repo, url }),
 
+  addHostingAccount: (provider, host, login, token) =>
+    invoke("add_hosting_account", { provider, host, login, token }),
+  removeHostingAccount: (account) => invoke("remove_hosting_account", { account }),
+  listHostedRepos: (account) => invoke("list_hosted_repos", { account }),
   pickFile: async (title, defaultPath, filters) => {
     const picked = await open({ directory: false, multiple: false, title, defaultPath, filters });
     return typeof picked === "string" ? picked : null;

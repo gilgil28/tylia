@@ -848,7 +848,7 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
 
 #### C. Hosting accounts
 
-- [ ] **Sign in to GitHub, GitLab and Bitbucket** to list your repositories in the Clone
+- [x] **Sign in to GitHub, GitLab and Bitbucket** to list your repositories in the Clone
       dialog (search, owner / organization filter) and clone with one click. This is the
       "⏳ accounts" item of the feature inventory.
   - **Decide how to sign in:** **an OAuth device flow** (recommended: no password or token
@@ -862,6 +862,15 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
     avatars unless the existing Gravatar opt-in is on.
   - **Tests:** the API clients against recorded responses (no network in tests); e2e with
     the mock.
+  - _Done 2026-10-22 with personal access tokens (ARCHITECTURE §5.21). Decided with the
+    user: tokens only for now (a device flow needs OAuth apps registered by the user; add
+    later), stored with Git's credential helpers rather than a keychain crate (keyring 4
+    splits into a store crate per OS, with D-Bus on Linux). No new crates: `reqwest` and
+    `rustls` were already built for the updater. Not done: an owner / organization filter
+    (the search matches `owner/name`); showing each token's scopes. Untested against the
+    real APIs, which needs the user's tokens._
+- [ ] **OAuth device flow** for GitHub and GitLab, once the user has registered the OAuth
+      apps (client IDs only; no secret ships).
 
 #### D. Git LFS
 

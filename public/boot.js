@@ -34,6 +34,7 @@
           checkForUpdates: false,
           terminal: null,
           customActions: [],
+          hostingAccounts: [],
         },
         stored,
       ),

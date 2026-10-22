@@ -498,3 +498,9 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   All selected rows get the selection colour. The details pane says how many, by whom,
   over which dates and which files they touch; right-clicking inside the selection offers
   only what works on all of them.
+- **2026-10-22 — Hosting accounts.** Settings → Accounts lists the signed-in accounts
+  (name; provider · login · host) with Sign out (confirmed: the token stays valid on the
+  provider's site). Adding one is an inline form: provider, server (GitHub / GitLab),
+  email (Bitbucket), token, and a link to the provider's token page with the scopes
+  filled in. The Clone dialog gets "URL | Your repositories" only when an account exists;
+  the list (search, private lock, last activity, "Clone over SSH") is fetched when chosen.

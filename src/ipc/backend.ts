@@ -1,5 +1,6 @@
 import type { ActionContext } from "./bindings/ActionContext";
 import type { ActionRun } from "./bindings/ActionRun";
+import type { AddedAccount } from "./bindings/AddedAccount";
 import type { ArchiveFormat } from "./bindings/ArchiveFormat";
 import type { AskpassPrompt } from "./bindings/AskpassPrompt";
 import type { Blame } from "./bindings/Blame";
@@ -26,6 +27,9 @@ import type { FlowKind } from "./bindings/FlowKind";
 import type { FlowState } from "./bindings/FlowState";
 import type { GitInfo } from "./bindings/GitInfo";
 import type { HistoryEvent } from "./bindings/HistoryEvent";
+import type { HostedRepo } from "./bindings/HostedRepo";
+import type { HostingAccount } from "./bindings/HostingAccount";
+import type { HostingProvider } from "./bindings/HostingProvider";
 import type { IntegrateOutcome } from "./bindings/IntegrateOutcome";
 import type { IpcError } from "./bindings/IpcError";
 import type { LfsStatus } from "./bindings/LfsStatus";
@@ -86,6 +90,8 @@ export interface Backend {
   checkUpdate(): Promise<UpdateInfo | null>;
   /** Downloads, verifies and installs the update the last check found, then restarts. */
   installUpdate(onProgress: (progress: DownloadProgress) => void): Promise<void>;
+  /** Opens a hosting provider's "new token" page (only those in the opener allow-list). */
+  openTokenPage(url: string): Promise<void>;
   /** Opens Tylia's releases page in the browser. */
   openDownloadPage(): Promise<void>;
   /** macOS: links /usr/local/bin/tylia to the app (asks for a password if needed). */
@@ -317,6 +323,19 @@ export interface Backend {
   setSshKey(repo: string, key: string | null): Promise<void>;
   /** Asks the credential helper to forget the sign-in saved for an HTTPS remote URL. */
   forgetCredentials(repo: string, url: string): Promise<void>;
+
+  /** Checks a personal access token with the provider and stores it with Git's credential
+   * helpers; `host` is empty for the provider's main site, `login` the Bitbucket email. */
+  addHostingAccount(
+    provider: HostingProvider,
+    host: string,
+    login: string,
+    token: string,
+  ): Promise<AddedAccount>;
+  /** Forgets the account's token (remove it from settings separately). */
+  removeHostingAccount(account: HostingAccount): Promise<void>;
+  /** The account's repositories, most recently active first. */
+  listHostedRepos(account: HostingAccount): Promise<HostedRepo[]>;
 
   /** Native file picker; `null` if cancelled. */
   pickFile(title: string, defaultPath?: string, filters?: FileFilter[]): Promise<string | null>;

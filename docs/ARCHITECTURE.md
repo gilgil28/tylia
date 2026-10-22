@@ -811,3 +811,19 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   (`save_commit_patches`: format-patch into a staging folder inside the chosen one, then
   moved, refusing if a name is taken, so nothing is overwritten) and copy hashes. The
   details pane shows `SeveralCommits` (authors, dates, files, from the first 100).
+- **Hosting accounts** (`src-tauri/src/hosting.rs`, `commands/hosting.rs`, Settings →
+  Accounts, `settings.hostingAccounts`): GitHub (and Enterprise Server), GitLab (any host)
+  and Bitbucket Cloud, signed in with a personal access token (an OAuth device flow needs
+  registered apps; later).
+  - **Tokens** never reach settings.json: `tylia_git::credential` stores them with
+    `git credential approve` under `https://<API host>` and the username `tylia:<login>`,
+    apart from the user's own Git sign-in for that host, and reads them with a `fill` that
+    can't prompt (no askpass, `GIT_TERMINAL_PROMPT=0`, `GCM_INTERACTIVE=never`,
+    `credential.interactive=never`). Without a helper nothing is stored, and a
+    per-session copy in `AppState` keeps the account usable until Tylia quits (the UI
+    says so). Sign out runs `git credential reject`.
+  - **Network:** `reqwest` (with rustls / ring, the same build as the updater's), only when
+    the user signs in (`GET /user` checks the token) or chooses "Your repositories" in the
+    Clone dialog (up to 10 pages of 100, most recently active first). Bitbucket uses Basic
+    auth with the account email; the others a bearer token.
+  - **Parsing** of each provider's answers is pure and tested with recorded JSON.

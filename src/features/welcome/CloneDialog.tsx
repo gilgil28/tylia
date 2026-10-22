@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+import { useSettings } from "@/app/settings";
 import { useWorkspace } from "@/app/workspace";
 import { nextOperationId } from "@/features/remote/operations";
 import { t } from "@/i18n";
@@ -10,9 +11,11 @@ import { Dialog } from "@/ui/Dialog";
 import { ErrorPanel } from "@/ui/ErrorPanel";
 import { Field } from "@/ui/Field";
 import { Input } from "@/ui/Input";
+import { SegmentedControl } from "@/ui/SegmentedControl";
 import { toast } from "@/ui/Toast";
 
 import { FolderField } from "./CreateDialog";
+import { HostedRepoPicker } from "./HostedRepoPicker";
 import { joinPath, repoNameFromUrl } from "./paths";
 import { useParentFolder } from "./useParentFolder";
 
@@ -24,6 +27,9 @@ export function CloneDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const [url, setUrl] = useState("");
+  const accounts = useSettings((s) => s.settings.hostingAccounts);
+  // "Your repositories" asks the provider, so only when chosen.
+  const [source, setSource] = useState<"url" | "accounts">("url");
   const [parent, setParent] = useParentFolder();
   const [name, setName] = useState("");
   const [nameEdited, setNameEdited] = useState(false);
@@ -100,6 +106,20 @@ export function CloneDialog({
       }
     >
       <div className="flex flex-col gap-4">
+        {accounts.length > 0 && (
+          <SegmentedControl
+            aria-label={t("clone.source")}
+            value={source}
+            onValueChange={(s) => setSource(s as "url" | "accounts")}
+            segments={[
+              { value: "url", label: t("clone.sourceUrl") },
+              { value: "accounts", label: t("clone.yourRepos") },
+            ]}
+          />
+        )}
+        {source === "accounts" && accounts.length > 0 && (
+          <HostedRepoPicker accounts={accounts} picked={url} onPick={setUrl} disabled={running} />
+        )}
         <Field label={t("clone.url")} htmlFor="clone-url">
           <Input
             id="clone-url"
