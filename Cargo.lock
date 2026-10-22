@@ -4554,7 +4554,7 @@ dependencies = [
 
 [[package]]
 name = "tylia"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "getrandom 0.4.3",
  "notify",
@@ -4575,7 +4575,7 @@ dependencies = [
 
 [[package]]
 name = "tylia-git"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "base64 0.23.1",
  "serde",

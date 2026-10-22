@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 7 — Distribution, OS integration and polish** (planned 2026-10-21; not started). Phases 0–6 delivered; v0.1.0 is tagged locally (not pushed). The GitHub acceptance run from Phase 3 is still open.
+Current phase: **Phase 7 — Distribution, OS integration and polish** (in progress since 2026-10-21). Phases 0–6 delivered. The repository is public at https://github.com/gilgil28/tylia; **v0.2.0**, the first public release, was cut mid-phase on 2026-10-22 at the user's request (v0.1.0 stayed a local tag). The GitHub acceptance run from Phase 3 is still open.
 
 ## Product vision
 
@@ -287,7 +287,8 @@ managers people use:
 - **Linux:** AppImage / deb / rpm, AUR (`tylia-bin` and `tylia`), Flathub.
 
 It also opens from the file manager and the command line, builds and tests faster with a
-small `target/`, and adds three long-requested power features. It ends with **v0.2.0**.
+small `target/`, and adds three long-requested power features. It ends with **v0.3.0**
+(v0.2.0 shipped mid-phase, see "Release").
 
 **How to run this phase (clean session):**
 
@@ -591,8 +592,11 @@ run`).
 
 #### Release
 
-- [ ] CHANGELOG `[0.2.0]`, version bump in `package.json` and `Cargo.toml`, tag
-      `v0.2.0`, release through every channel in C. Then update the ROADMAP status and
+- [x] **v0.2.0, the first public release** (2026-10-22, asked for mid-phase): workstreams
+      A and B, the Windows installer integration and the command line / single instance.
+      GitHub release assets only; the other channels in C come with v0.3.0.
+- [ ] CHANGELOG `[0.3.0]`, version bump in `package.json` and `Cargo.toml`, tag
+      `v0.3.0`, release through every channel in C. Then update the ROADMAP status and
       stop for review.
 
 ## Feature inventory (Sourcetree parity reference)

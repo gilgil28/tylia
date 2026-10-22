@@ -7,8 +7,27 @@ can change behaviour.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-22
+
+The first public release of Tylia, a calm, fast desktop Git client: a commit graph that
+stays fast on large repositories, staging down to single lines, fetch / pull / push with
+sign-in dialogs, branching with per-block conflict resolution, interactive rebase, blame,
+file history, git-flow helpers and a command palette. It includes everything listed under
+0.1.0 below (which was never published), plus the changes in this section.
+
+**This is an early release.** It is used daily on Windows; read "Known limitations" below
+before installing.
+
 ### Added
 
+- **Open folders from the command line:** `tylia <path>` opens a repository, or any
+  folder or file inside one, as a tab; `tylia --help` and `tylia --version` work too.
+  Opening Tylia again, with or without a path, brings the running window forward instead
+  of starting a second copy. On macOS, folders opened from Finder or dropped on the Dock
+  icon open as tabs.
+- **Windows installer options:** "Add the tylia command to PATH" and "Open in Tylia" in
+  Explorer's menu for folders and folder backgrounds, both on by default. Uninstalling
+  removes them; updates keep your choice. The MSI adds both for all users.
 - **Open in terminal** (toolbar, palette, Ctrl/Cmd+Shift+T) opens your terminal in the
   repository folder. It uses Windows Terminal (else PowerShell) on Windows, Terminal on
   macOS, and `$TERMINAL` or your desktop's terminal on Linux. Settings → General →
@@ -35,6 +54,9 @@ can change behaviour.
 
 ### Changed
 
+- **Windows:** the installer installs for your user account without administrator rights,
+  and shows Tylia's own artwork. The desktop shortcut is now unticked by default, and
+  silent installs (winget, for example) don't add one.
 - The history search and the All / Current branch switch moved from the toolbar to their
   own row above the history.
 - **Dark theme:** panels (sidebar, toolbar, headers) and menus are lighter, so they stand
@@ -54,9 +76,18 @@ can change behaviour.
   elsewhere.
 - Dialogs no longer slide in from the left; they fade in where they open.
 
-## [0.1.0] - 2026-10-21
+### Known limitations
 
-The first release.
+- **Not code-signed yet.** Windows SmartScreen asks first (choose **More info → Run
+  anyway**); on macOS, right-click the app and choose **Open** the first time.
+- **macOS** builds pass the test suite on GitHub's runners but haven't been tried on a Mac
+  yet. Please report what you find.
+- **Linux** packages were tested in containers, not yet on a desktop.
+- Tylia needs **Git 2.40 or newer** on your `PATH`.
+
+## 0.1.0 - 2026-10-21 (not published)
+
+The first version, built and tested locally; its contents shipped in 0.2.0.
 
 ### Added
 
@@ -101,5 +132,5 @@ The first release.
 - **Packages:** Windows installer (NSIS) and MSI, macOS universal dmg, Linux AppImage,
   deb and rpm, and an AUR package (`tylia-bin`).
 
-[Unreleased]: https://github.com/gilgil28/tylia/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/gilgil28/tylia/releases/tag/v0.1.0
+[Unreleased]: https://github.com/gilgil28/tylia/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/gilgil28/tylia/releases/tag/v0.2.0
