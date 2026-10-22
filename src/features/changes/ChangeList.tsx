@@ -2,6 +2,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { useEffect, useRef, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 
 import { StatusGlyph } from "@/features/commit-details/StatusGlyph";
+import { LfsMark } from "@/features/lfs/lfs";
 import { t } from "@/i18n";
 import { Button } from "@/ui/Button";
 import { Checkbox } from "@/ui/Checkbox";
@@ -31,6 +32,8 @@ interface ChangeListProps {
   /** Extra header control (e.g. "Discard all"). */
   extra?: ReactNode;
   empty: ReactNode;
+  /** Paths Git LFS stores (marked on their rows). */
+  lfs?: ReadonlySet<string>;
 }
 
 /** One of the two lists of the Changes view: unstaged or staged files. */
@@ -47,6 +50,7 @@ export function ChangeList({
   action,
   extra,
   empty,
+  lfs,
 }: ChangeListProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const virtualizer = useVirtualizer({
@@ -138,6 +142,7 @@ export function ChangeList({
                       </span>
                       <StatusGlyph status={entry.status} />
                       <span className="truncate text-fg">{entry.path.slice(slash + 1)}</span>
+                      {lfs?.has(entry.path) && <LfsMark />}
                       {slash > 0 && (
                         <span className="min-w-0 truncate text-small text-fg-muted">
                           {entry.path.slice(0, slash)}

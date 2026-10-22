@@ -45,6 +45,20 @@ export const backend: Backend = {
   hasCommitGraph: (repo) => invoke("has_commit_graph", { repo }),
   getWorktrees: (repo) => invoke("get_worktrees", { repo }),
   lfsStatus: (repo) => invoke("lfs_status", { repo }),
+  lfsFiles: (repo, paths) => invoke("lfs_files", { repo, paths }),
+  lfsTrack: (repo, pattern) => invoke("lfs_track", { repo, pattern }),
+  lfsPull: (repo, operationId, onProgress) =>
+    invoke("lfs_pull", { repo, operationId, onProgress: channel<Progress>(onProgress) }),
+  lfsLocks: (repo, operationId, onProgress) =>
+    invoke("lfs_locks", { repo, operationId, onProgress: channel<Progress>(onProgress) }),
+  lfsSetLock: (repo, path, lock, operationId, onProgress) =>
+    invoke("lfs_set_lock", {
+      repo,
+      path,
+      lock,
+      operationId,
+      onProgress: channel<Progress>(onProgress),
+    }),
   submoduleUpdate: (repo, paths, operationId, onProgress) =>
     invoke("submodule_update", {
       repo,

@@ -7,10 +7,13 @@ import {
   FileUp,
   FileUser,
   FolderOpen,
+  HardDriveUpload,
+  Lock,
   SquareArrowOutUpRight,
   SquareSplitHorizontal,
   SquareCheck,
   SquareMinus,
+  Unlock,
   Trash2,
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -20,7 +23,9 @@ import { revealLabel, trashLabel } from "@/app/labels";
 import { isMod } from "@/app/keyboard";
 import { useWorkspace, type RepoLayout } from "@/app/workspace";
 import { CustomActionItems } from "@/features/custom-actions/CustomActionItems";
+import { extensionPattern, trackWithLfs, useLfsFiles, useLfsStatus } from "@/features/lfs/lfs";
 import { saveChangesPatch } from "@/features/patch/patch";
+import { setLfsLock } from "@/features/remote/operations";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { joinPath } from "@/features/welcome/paths";
 import { plural, t } from "@/i18n";
@@ -85,6 +90,9 @@ export function ChangesView({
   const openFile = useRepoUi((s) => s.openFile);
   const run = useRepoAction(repo);
   const groups = useMemo(() => groupChanges(status), [status]);
+  const allPaths = useMemo(() => (status?.entries ?? []).map((e) => e.path), [status]);
+  const lfsFiles = useLfsFiles(repo, allPaths);
+  const lfs = useLfsStatus(repo).data;
   const conflicts = useMemo(() => conflictedPaths(status), [status]);
 
   const [explicitSelection, setSelection] = useState<{
@@ -426,6 +434,46 @@ export function ChangesView({
             </ContextMenu.Sub>
           </>
         )}
+        {single && lfs?.installed && (
+          <>
+            <ContextMenu.Separator />
+            <ContextMenu.Sub>
+              <ContextMenu.SubTrigger icon={HardDriveUpload}>
+                {t("lfs.submenu")}
+              </ContextMenu.SubTrigger>
+              <ContextMenu.SubContent>
+                {!lfsFiles.has(entry.path) && (
+                  <ContextMenu.Item onSelect={() => void trackWithLfs(repo, entry.path)}>
+                    {t("lfs.trackFile", { name: entry.path.split("/").pop() ?? entry.path })}
+                  </ContextMenu.Item>
+                )}
+                {extensionPattern(entry.path) && !lfsFiles.has(entry.path) && (
+                  <ContextMenu.Item
+                    onSelect={() => void trackWithLfs(repo, extensionPattern(entry.path)!)}
+                  >
+                    {t("lfs.trackPattern", { pattern: extensionPattern(entry.path)! })}
+                  </ContextMenu.Item>
+                )}
+                {lfsFiles.has(entry.path) && entry.status !== "untracked" && (
+                  <>
+                    <ContextMenu.Item
+                      icon={Lock}
+                      onSelect={() => void setLfsLock(repo, entry.path, true)}
+                    >
+                      {t("lfs.lock")}
+                    </ContextMenu.Item>
+                    <ContextMenu.Item
+                      icon={Unlock}
+                      onSelect={() => void setLfsLock(repo, entry.path, false)}
+                    >
+                      {t("lfs.unlock")}
+                    </ContextMenu.Item>
+                  </>
+                )}
+              </ContextMenu.SubContent>
+            </ContextMenu.Sub>
+          </>
+        )}
         <CustomActionItems
           M={ContextMenu}
           scope="file"
@@ -465,6 +513,7 @@ export function ChangesView({
             {conflicts.length > 0 && <ConflictList repo={repo} paths={conflicts} status={status} />}
             <ChangeList
               area="staged"
+              lfs={lfsFiles}
               entries={groups.staged}
               selected={selection.area === "staged" ? selection.keys : new Set()}
               focusKey={focusKey}
@@ -496,6 +545,7 @@ export function ChangesView({
             <div className="h-px shrink-0 bg-line-subtle" />
             <ChangeList
               area="unstaged"
+              lfs={lfsFiles}
               entries={groups.unstaged}
               selected={selection.area === "unstaged" ? selection.keys : new Set()}
               focusKey={focusKey}

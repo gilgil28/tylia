@@ -11,6 +11,7 @@ import {
   isIpcError,
   type Branch,
   type IpcError,
+  type LfsLocks,
   type Progress,
   type PullMode,
   type PushRequest,
@@ -18,7 +19,7 @@ import {
 } from "@/ipc";
 import { toast, type ToastInput } from "@/ui/Toast";
 
-export type OperationKind = "fetch" | "pull" | "push" | "submodules";
+export type OperationKind = "fetch" | "pull" | "push" | "submodules" | "lfs";
 
 export interface RunningOperation {
   id: number;
@@ -145,7 +146,7 @@ async function run<T>(
   } finally {
     finished.delete(id);
     if (useOperations.getState().byRepo[repo]?.id === id) setRunning(repo, null);
-    refresh(repo, kind === "pull");
+    refresh(repo, kind === "pull" || kind === "lfs");
   }
 }
 
@@ -428,4 +429,58 @@ export async function updateSubmodules(repo: string, paths: string[]) {
   }
   if (outcome.ok) toast({ kind: "success", title: t("ops.submodulesUpdated") });
   else failed(repo, t("ops.submodulesFailed"), outcome.error);
+}
+
+/** `git lfs pull` (the checked-out commit's LFS files), with a progress toast. */
+export async function pullLfs(repo: string) {
+  const title = t("lfs.pulling");
+  const progressToast = toast({ kind: "progress", title });
+  const outcome = await run(repo, "lfs", title, false, (id, onProgress) =>
+    ipc.lfsPull(repo, id, (p) => {
+      onProgress(p);
+      toast.update(progressToast, {
+        kind: "progress",
+        title,
+        description: p.phase,
+        progress: p.percent / 100,
+      });
+    }),
+  );
+  toast.dismiss(progressToast);
+  if (!outcome) return;
+  if (outcome.ok) toast({ kind: "success", title: t("lfs.pulled") });
+  else failed(repo, t("lfs.pullFailed"), outcome.error);
+}
+
+/** The server's LFS locks; `null` when another operation was running or it failed (toasted). */
+export async function readLfsLocks(repo: string): Promise<LfsLocks | null> {
+  const outcome = await run(repo, "lfs", t("lfs.readingLocks"), false, (id, onProgress) =>
+    ipc.lfsLocks(repo, id, onProgress),
+  );
+  if (!outcome) return null;
+  if (outcome.ok) return outcome.value;
+  failed(repo, t("lfs.locksFailed"), outcome.error);
+  return null;
+}
+
+/** Locks or unlocks `path` on the server; true when it worked. */
+export async function setLfsLock(repo: string, path: string, lock: boolean): Promise<boolean> {
+  const name = path.split("/").pop() ?? path;
+  const outcome = await run(
+    repo,
+    "lfs",
+    lock ? t("lfs.locking", { name }) : t("lfs.unlocking", { name }),
+    false,
+    (id, onProgress) => ipc.lfsSetLock(repo, path, lock, id, onProgress),
+  );
+  if (!outcome) return false;
+  if (outcome.ok) {
+    toast({
+      kind: "success",
+      title: lock ? t("lfs.locked", { name }) : t("lfs.unlocked", { name }),
+    });
+    return true;
+  }
+  failed(repo, lock ? t("lfs.lockFailed") : t("lfs.unlockFailed"), outcome.error);
+  return false;
 }

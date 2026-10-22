@@ -3,6 +3,7 @@ import { Copy, FileClock, FileUser, FolderTree, List, SquareSplitHorizontal } fr
 import { forwardRef, useState, type ReactNode } from "react";
 
 import { openInDiffTool } from "@/features/diff/externalDiff";
+import { LfsMark } from "@/features/lfs/lfs";
 import { useRepoUi, type FileTarget, type SelectedFile } from "@/features/repo/repo-store";
 import { t } from "@/i18n";
 import type { CommitDetails, FileStatus } from "@/ipc";
@@ -59,8 +60,15 @@ const isSelected = (sel: SelectedFile | null, f: ListedFile) =>
 /** Changed files of a commit or of one working-copy area, as a flat list or a folder tree. */
 export const FileList = forwardRef<
   HTMLDivElement,
-  { files: ListedFile[]; view: "flat" | "tree"; label: string; className?: string }
->(function FileList({ files, view, label, className }, ref) {
+  {
+    files: ListedFile[];
+    view: "flat" | "tree";
+    label: string;
+    className?: string;
+    /** Paths Git LFS stores (marked on their rows). */
+    lfs?: ReadonlySet<string>;
+  }
+>(function FileList({ files, view, label, className, lfs }, ref) {
   const selected = useRepoUi((s) => s.selectedFile);
   const selectFile = useRepoUi((s) => s.selectFile);
   const [expanded, setExpanded] = useState<Set<string> | null>(null);
@@ -85,6 +93,7 @@ export const FileList = forwardRef<
               <span data-file-path={leaf.data.path} className="contents">
                 <StatusGlyph status={leaf.data.status} />
                 <FileName file={leaf.data} showDir={false} />
+                {lfs?.has(leaf.data.path) && <LfsMark />}
                 <Counts file={leaf.data} />
               </span>
             )}
@@ -111,6 +120,7 @@ export const FileList = forwardRef<
             >
               <StatusGlyph status={f.status} />
               <FileName file={f} showDir />
+              {lfs?.has(f.path) && <LfsMark />}
               <Counts file={f} />
             </span>
           )}

@@ -1,6 +1,7 @@
 import {
   Archive,
   ArrowDown,
+  ArrowDownToLine,
   ArrowUp,
   FolderOpen,
   GitBranchPlus,
@@ -8,9 +9,9 @@ import {
   Search,
   FolderCog,
   GitCommitHorizontal,
+  Lock,
   SquareTerminal,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
 
 import { revealLabel } from "@/app/labels";
 import { useRegisterActions } from "@/app/actions";
@@ -18,7 +19,10 @@ import { useWorkspace, type RepoLayout } from "@/app/workspace";
 import { BranchSwitcher } from "@/features/branching/BranchSwitcher";
 import { useBranchDialog } from "@/features/branching/dialog-store";
 import { FlowMenu } from "@/features/flow/FlowMenu";
+import { useLfsLocksDialog, useLfsStatus } from "@/features/lfs/lfs";
+import { LfsLocksDialog } from "@/features/lfs/LfsLocksDialog";
 import { RemoteButtons } from "@/features/remote/RemoteButtons";
+import { pullLfs } from "@/features/remote/operations";
 import { RemoteDialogs } from "@/features/remote/RemoteDialogs";
 import { useAutoFetch } from "@/features/remote/useAutoFetch";
 import { openTerminal } from "@/features/repo/openTerminal";
@@ -30,6 +34,7 @@ import { Badge } from "@/ui/Badge";
 import { Button } from "@/ui/Button";
 import { CountBadge } from "@/ui/CountBadge";
 import { IconButton } from "@/ui/IconButton";
+import { Menu } from "@/ui/Menu";
 import { Tooltip } from "@/ui/Tooltip";
 
 function BranchIndicator({
@@ -95,11 +100,7 @@ export function RepoToolbar({
   const updateLayout = useWorkspace((s) => s.updateLayout);
   const requestFocus = useRepoUi((s) => s.requestFocus);
   useAutoFetch(repo, (refs?.remotes.length ?? 0) > 0);
-  const lfs = useQuery({
-    queryKey: ["lfs", repo],
-    queryFn: () => ipc.lfsStatus(repo),
-    staleTime: Infinity,
-  });
+  const lfs = useLfsStatus(repo);
 
   useRegisterActions(
     `toolbar:${repo}`,
@@ -216,12 +217,34 @@ export function RepoToolbar({
       </span>
       <span className="flex-1" />
       {lfs.data?.used && (
-        <Tooltip content={lfs.data.installed ? t("toolbar.lfs") : t("toolbar.lfsMissing")}>
-          <span tabIndex={0} className="rounded-badge focus-ring">
-            <Badge tone={lfs.data.installed ? "neutral" : "warning"}>LFS</Badge>
-          </span>
-        </Tooltip>
+        <Menu.Root>
+          <Tooltip content={lfs.data.installed ? t("toolbar.lfs") : t("toolbar.lfsMissing")}>
+            <Menu.Trigger asChild>
+              <button type="button" className="rounded-badge focus-ring" aria-label={t("lfs.menu")}>
+                <Badge tone={lfs.data.installed ? "neutral" : "warning"}>{t("lfs.badge")}</Badge>
+              </button>
+            </Menu.Trigger>
+          </Tooltip>
+          <Menu.Content align="end">
+            {!lfs.data.installed && <Menu.Label>{t("toolbar.lfsMissing")}</Menu.Label>}
+            <Menu.Item
+              icon={ArrowDownToLine}
+              disabled={!lfs.data.installed}
+              onSelect={() => void pullLfs(repo)}
+            >
+              {t("lfs.pull")}
+            </Menu.Item>
+            <Menu.Item
+              icon={Lock}
+              disabled={!lfs.data.installed}
+              onSelect={() => useLfsLocksDialog.getState().open(repo)}
+            >
+              {t("lfs.locksAction")}
+            </Menu.Item>
+          </Menu.Content>
+        </Menu.Root>
       )}
+      <LfsLocksDialog repo={repo} />
       <IconButton
         icon={FolderCog}
         label={t("toolbar.repoSettings")}

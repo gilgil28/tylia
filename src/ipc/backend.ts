@@ -32,6 +32,7 @@ import type { HostingAccount } from "./bindings/HostingAccount";
 import type { HostingProvider } from "./bindings/HostingProvider";
 import type { IntegrateOutcome } from "./bindings/IntegrateOutcome";
 import type { IpcError } from "./bindings/IpcError";
+import type { LfsLocks } from "./bindings/LfsLocks";
 import type { LfsStatus } from "./bindings/LfsStatus";
 import type { LinesRequest } from "./bindings/LinesRequest";
 import type { LogOptions } from "./bindings/LogOptions";
@@ -109,6 +110,22 @@ export interface Backend {
   hasCommitGraph(repo: string): Promise<boolean>;
   getWorktrees(repo: string): Promise<Worktree[]>;
   lfsStatus(repo: string): Promise<LfsStatus>;
+  /** The paths among `paths` that Git LFS stores (from the attributes). */
+  lfsFiles(repo: string, paths: string[]): Promise<string[]>;
+  /** `git lfs track <pattern>` (writes .gitattributes). */
+  lfsTrack(repo: string, pattern: string): Promise<void>;
+  /** `git lfs pull`; network operation. */
+  lfsPull(repo: string, operationId: number, onProgress: (p: Progress) => void): Promise<void>;
+  /** The server's locks; network operation. */
+  lfsLocks(repo: string, operationId: number, onProgress: (p: Progress) => void): Promise<LfsLocks>;
+  /** Locks or unlocks `path` on the server; network operation. */
+  lfsSetLock(
+    repo: string,
+    path: string,
+    lock: boolean,
+    operationId: number,
+    onProgress: (p: Progress) => void,
+  ): Promise<void>;
   /** Initializes and updates submodules (`paths` empty: all); network operation. */
   submoduleUpdate(
     repo: string,

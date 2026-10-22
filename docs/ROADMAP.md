@@ -874,7 +874,7 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
 
 #### D. Git LFS
 
-- [ ] **LFS beyond indicators:** detect `git lfs` and say when a repository needs it but it
+- [x] **LFS beyond indicators:** detect `git lfs` and say when a repository needs it but it
       isn't installed; mark LFS files in Changes and the history; "Track with LFS…" for a
       file or extension (writes `.gitattributes`); pull / fetch LFS objects; file locks
       where the server supports them (lock, unlock, who holds a lock).
@@ -882,6 +882,11 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
     lock / unlock on the selected file; no lock management screens).
   - **Tests:** integration tests on a temp repository with a local LFS remote
     (`git lfs` installed in CI), skipped with a message where it isn't.
+  - _Done 2026-10-22 (ARCHITECTURE §5.21). Decided with the user: locks shown, with lock /
+    unlock (a dialog lists them; only your own can be released). Integration tests cover
+    marking and tracking (tracking skips without git-lfs); pull and locks need an LFS
+    server, so their output parsing is unit-tested and the UI e2e-tested with the mock.
+    Untested against a real LFS server._
 
 #### E. Fixes found in Phase 8
 

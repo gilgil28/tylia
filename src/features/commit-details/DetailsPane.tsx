@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { shortHash, timeLabel } from "@/app/format";
 import { useSettings } from "@/app/settings";
 import { useWorkspace, type RepoLayout } from "@/app/workspace";
+import { useLfsFiles } from "@/features/lfs/lfs";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { plural, t } from "@/i18n";
 import { ipc, isIpcError, type CommitDetails } from "@/ipc";
@@ -160,6 +161,12 @@ function CommitSide({
     [commit.data],
   );
 
+  // Today's attributes, not the commit's: close enough to mark LFS files.
+  const lfs = useLfsFiles(
+    repo,
+    useMemo(() => files.map((f) => f.path), [files]),
+  );
+
   // Show the first file's diff by default.
   useEffect(() => {
     const first = files[0];
@@ -221,6 +228,7 @@ function CommitSide({
           files={files}
           view={layout.fileView}
           label={t("details.files")}
+          lfs={lfs}
           className="flex-1"
         />
       )}

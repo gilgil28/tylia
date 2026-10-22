@@ -827,3 +827,11 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
     Clone dialog (up to 10 pages of 100, most recently active first). Bitbucket uses Basic
     auth with the account email; the others a bearer token.
   - **Parsing** of each provider's answers is pure and tested with recorded JSON.
+- **Git LFS** (`crates/tylia-git/src/lfs.rs`, `commands/lfs.rs`, `features/lfs/`): LFS
+  files come from `git check-attr -z --stdin filter` (no Git LFS needed; history rows use
+  today's attributes, close enough for a mark). "Track with LFS" runs `git lfs track
+<pattern>` (refused for option-like patterns) for a file or its extension. Pull
+  (`git lfs pull`) and locks (`git lfs locks --verify --json`, `lock` / `unlock -- <path>`)
+  are network operations through the usual runner: progress, cancel, askpass, the
+  toolbar's operation state. The toolbar's LFS badge is their menu; the locks dialog reads
+  the server each time it opens and lets you release only your own locks.

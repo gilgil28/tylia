@@ -19,6 +19,7 @@ mod flow;
 mod graph;
 mod history;
 mod integrate;
+mod lfs;
 mod log;
 mod ops;
 mod patch;
@@ -54,6 +55,7 @@ pub use flow::{FlowConfig, FlowFinishRequest, FlowFinished, FlowKind, FlowState}
 pub use graph::{Edge, EdgeKind, GraphBuilder, GraphRow};
 pub use history::{GraphCell, HistoryBatch, HistoryRow, Segment, SegmentTracker};
 pub use integrate::{ConflictSide, FastForward, IntegrateOutcome, ResetMode};
+pub use lfs::{LfsLock, LfsLocks};
 pub use log::{LogCommit, LogOptions, LogOrder, LogScope, SearchField};
 pub use patch::{LineAction, LinesRequest};
 pub use patch_file::{PatchApplyMode, PatchCheck, PatchFileChange, PatchFormat, PatchPreview};

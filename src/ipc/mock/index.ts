@@ -266,7 +266,32 @@ export const backend: Backend = {
       prunable: false,
     },
   ],
-  lfsStatus: async () => ({ used: false, installed: false }),
+  // `?lfs=1`: the demo uses Git LFS for *.md and *.ts files; `?lfs=missing` without Git LFS.
+  lfsStatus: async () => {
+    const mode = new URLSearchParams(location.search).get("lfs");
+    return { used: mode !== null, installed: mode === "1" };
+  },
+  lfsFiles: async (_repo, paths) =>
+    new URLSearchParams(location.search).has("lfs")
+      ? paths.filter((p) => /\.(md|ts)$/.test(p))
+      : [],
+  lfsTrack: async () => {},
+  lfsPull: async (_repo, _id, onProgress) => {
+    for (const percent of [0, 50, 100]) {
+      onProgress({ phase: "Downloading LFS objects", percent, current: null, total: null });
+      await delay(60);
+    }
+  },
+  lfsLocks: async () => {
+    await delay(100);
+    return {
+      ours: [{ id: "1", path: "notes.md", owner: "Ada Moreno", lockedAt: "2026-10-22T09:00:00Z" }],
+      theirs: [
+        { id: "2", path: "assets/logo.psd", owner: "Sam Okafor", lockedAt: "2026-10-21T15:30:00Z" },
+      ],
+    };
+  },
+  lfsSetLock: async () => {},
   submoduleUpdate: async (_repo, _paths, id, onProgress) =>
     transfer(id, onProgress, cancelled, ["Cloning into", "Receiving objects"]),
   writeCommitGraph: async () => {

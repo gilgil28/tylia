@@ -56,6 +56,8 @@ export type { HostingAccount } from "./bindings/HostingAccount";
 export type { HostingProvider } from "./bindings/HostingProvider";
 export type { IntegrateOutcome } from "./bindings/IntegrateOutcome";
 export type { IpcError } from "./bindings/IpcError";
+export type { LfsLock } from "./bindings/LfsLock";
+export type { LfsLocks } from "./bindings/LfsLocks";
 export type { LfsStatus } from "./bindings/LfsStatus";
 export type { LineAction } from "./bindings/LineAction";
 export type { LinesRequest } from "./bindings/LinesRequest";

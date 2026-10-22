@@ -504,3 +504,8 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   email (Bitbucket), token, and a link to the provider's token page with the scopes
   filled in. The Clone dialog gets "URL | Your repositories" only when an account exists;
   the list (search, private lock, last activity, "Clone over SSH") is fetched when chosen.
+- **2026-10-22 — Git LFS.** LFS files get a small neutral "LFS" badge after their name in
+  Changes and a commit's files. The toolbar's LFS badge (warning-toned when Git LFS is
+  missing) opens a menu: Pull LFS files, Locks…. The file menu in Changes has a "Git LFS"
+  submenu: track the file or its extension, lock, unlock. The locks dialog has two lists,
+  yours (with Unlock) and others' (read-only).
