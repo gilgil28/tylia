@@ -57,7 +57,10 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
    - **macOS:** universal `.dmg` for Apple silicon and Intel.
 
    It also uploads the updater bundles with their `.sig` signatures, and `latest.json`,
-   the manifest the update check reads.
+   the manifest the update check reads. Its `notes` are the CHANGELOG section (shown in
+   the update dialog). Because the release is a draft while the jobs run, its bundle URLs
+   are GitHub API asset URLs (`api.github.com/.../releases/assets/<id>`); they serve the
+   file to requests with `Accept: application/octet-stream`, which the updater sends.
 
 5. Check the draft: every asset is there, and `latest.json` lists `linux-x86_64`,
    `windows-x86_64` and `darwin-*` entries. Install at least one build. Then **publish**

@@ -21,6 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      # The build jobs put these notes in latest.json, which the update dialog shows.
+      notes: ${{ steps.notes.outputs.notes }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -35,6 +38,7 @@ jobs:
           fi
 
       - name: Extract release notes from CHANGELOG.md
+        id: notes
         run: |
           version="${GITHUB_REF_NAME#v}"
           # The section between "## [version]" and the next "## [".
@@ -48,6 +52,11 @@ jobs:
             exit 1
           fi
           cat notes.md
+          {
+            echo "notes<<EOF_RELEASE_NOTES"
+            cat notes.md
+            echo "EOF_RELEASE_NOTES"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create the draft release
         env:
@@ -122,4 +131,7 @@ jobs:
           releaseDraft: true
           # latest.json lists the NSIS installer for Windows updates.
           updaterJsonPreferNsis: true
+          # tauri-action writes this into latest.json as the notes (the release itself
+          # already has them from the draft job).
+          releaseBody: ${{ needs.draft.outputs.notes }}
           args: --config src-tauri/tauri.release.conf.json ${{ matrix.args }}
