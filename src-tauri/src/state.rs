@@ -84,6 +84,21 @@ pub fn host_git() -> bool {
     HOST_GIT.load(Ordering::Relaxed)
 }
 
+/// Whether this Flatpak may run host programs (`flatpak-spawn --host`): asked once, since
+/// the permission only changes with a restart.
+pub fn flatpak_host_allowed() -> bool {
+    static ALLOWED: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    *ALLOWED.get_or_init(|| {
+        std::process::Command::new("flatpak-spawn")
+            .args(["--host", "true"])
+            .stdin(std::process::Stdio::null())
+            .stdout(std::process::Stdio::null())
+            .stderr(std::process::Stdio::null())
+            .status()
+            .is_ok_and(|s| s.success())
+    })
+}
+
 /// What to run once so the Flatpak may run host programs.
 pub fn flatpak_override_command() -> String {
     let app = std::env::var("FLATPAK_ID").unwrap_or_else(|_| "io.github.gilgil28.tylia".into());
@@ -95,6 +110,12 @@ pub fn flatpak_override_command() -> String {
 /// without restarting).
 pub fn git() -> Result<Git, IpcError> {
     if host_git() {
+        if !flatpak_host_allowed() {
+            return Err(IpcError::invalid(format!(
+                "Tylia may not run the system's Git yet: that needs permission to run programs outside its sandbox. Allow it once in a terminal, then restart Tylia: {} (or turn off Settings → Git → “Use the system's Git”).",
+                flatpak_override_command()
+            )));
+        }
         return Ok(Git::flatpak_host());
     }
     if let Some(path) = GIT_PATH.read().unwrap_or_else(|e| e.into_inner()).clone() {
