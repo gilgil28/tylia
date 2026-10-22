@@ -9,6 +9,8 @@ import {
   ArrowUpFromLine,
   CircleCheck,
   CircleX,
+  FileDown,
+  FileUp,
   Cloud,
   FolderCog,
   FolderOpen,
@@ -35,6 +37,7 @@ import {
   pushRepo,
   useOperations,
 } from "@/features/remote/operations";
+import { pickPatch, saveChangesPatch, saveCommitPatch } from "@/features/patch/patch";
 import { useRemoteDialog } from "@/features/remote/RemoteDialogs";
 import { t } from "@/i18n";
 import { workingDiffRequest } from "@/features/changes/StagingDiffPane";
@@ -141,6 +144,46 @@ export function useRepoActions(
         "identity",
       ],
       run: () => useRepoSettings.getState().open(repo),
+    },
+    {
+      id: "repo.applyPatch",
+      title: t("patch.applyAction"),
+      group: "repository",
+      icon: FileUp,
+      keywords: ["patch", "diff", "am", "mbox", "import"],
+      disabled: busy,
+      run: () => void pickPatch(repo),
+    },
+    {
+      id: "changes.saveStagedPatch",
+      title: t("patch.saveStagedAction"),
+      group: "changes",
+      icon: FileDown,
+      keywords: ["patch", "diff", "export"],
+      disabled: !status?.entries.some((e) => e.staged),
+      run: () => void saveChangesPatch(repo, true),
+    },
+    {
+      id: "changes.saveUnstagedPatch",
+      title: t("patch.saveUnstagedAction"),
+      group: "changes",
+      icon: FileDown,
+      keywords: ["patch", "diff", "export"],
+      disabled: !status?.entries.some((e) => e.unstaged),
+      run: () => void saveChangesPatch(repo, false),
+    },
+    {
+      id: "history.savePatch",
+      title: t("patch.saveCommitAction"),
+      group: "history",
+      icon: FileDown,
+      keywords: ["patch", "format-patch", "export"],
+      disabled: selection?.kind !== "commit",
+      run: () => {
+        if (selection?.kind !== "commit") return;
+        const commit = client.getQueryData<CommitDetails>(["commit", repo, selection.oid]);
+        void saveCommitPatch(repo, selection.oid, commit?.subject ?? selection.oid);
+      },
     },
     {
       id: "repo.terminal",
@@ -264,7 +307,7 @@ export function useRepoActions(
             ? [
                 {
                   id: "operation.skip",
-                  title: t("banner.skip"),
+                  title: op.kind === "am" ? t("banner.skipPatch") : t("banner.skip"),
                   group: "branch",
                   icon: SkipForward,
                   run: () => void b.skipOperation(),

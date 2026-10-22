@@ -15,6 +15,7 @@ import { useRebaseActions } from "@/features/rebase/rebaseActions";
 import { HistoryFilterBar } from "@/features/history/HistoryFilterBar";
 import { RepoSettingsDialog } from "@/features/repo-settings/RepoSettingsDialog";
 import { HistoryView } from "@/features/history/HistoryView";
+import { ApplyPatchDialog } from "@/features/patch/ApplyPatchDialog";
 import { Sidebar } from "@/features/sidebar/Sidebar";
 import { RepoToolbar } from "@/features/toolbar/RepoToolbar";
 import { t } from "@/i18n";
@@ -113,6 +114,7 @@ function RepoLoaded({ path, active }: { path: string; active: boolean }) {
       />
       <OperationBanner repo={path} refs={refs.data} status={status.data} />
       <BranchDialogs repo={path} refs={refs.data} status={status.data} />
+      <ApplyPatchDialog repo={path} />
       <RepoSettingsDialog repo={path} name={path.split(/[\\/]/).pop() ?? path} />
       <SplitPane
         className="flex-1"

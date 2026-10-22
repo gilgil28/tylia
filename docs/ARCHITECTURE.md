@@ -751,3 +751,26 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   `$XDG_DATA_HOME/tylia-askpass`, a script (written on first use; the host sees the same
   path) that runs `flatpak run --command=tylia <app id>`; that helper reaches the askpass
   server over the shared loopback.
+
+## 5.20 Patches, archives and custom actions (Phase 8)
+
+- **Patch files** (`crates/tylia-git/src/patch_file.rs`; `patch.rs` is line staging):
+  - **Save:** a commit with `format-patch -1 --stdout` (a mailbox with author, date and
+    message); staged or unstaged changes with `diff [--cached] --binary -M` (untracked files
+    aren't in either). The frontend asks for the file with the save dialog
+    (`dialog:allow-save`); Rust writes it.
+  - **Preview** (`preview_patch`): mailbox subjects from the `From <oid>` / `Subject:`
+    headers; files and line counts from `apply --numstat -z`, renames from the patch's own
+    `rename from` / `rename to` headers (numstat names only the new path); then
+    `apply --check`, else `apply --check --3way`: `clean`, `threeWay` or `fails`, with Git's
+    message.
+  - **Apply** (`apply_patch_file`, write-locked): to the working tree with `apply`, falling
+    back to `apply --3way` (conflicted files, no operation to continue); or a mailbox's
+    commits with `am --3way --keep-cr` (`--keep-cr` keeps CRLF files' patches intact; it is
+    left out when the mailbox's own lines end in CRLF, i.e. it came from a mail client).
+  - **`git am` in progress** is `OperationKind::Am` (`rebase-apply/applying`): subject from
+    `final-commit`, step / total from `next` / `last`; Continue / Skip / Abort run
+    `am --continue / --skip / --abort`, and the banner says "Applying … · patch n of m".
+  - **UI:** "Save as patch…" in the commit menu, a button on each Changes list header, the
+    palette ("Apply patch…", "Save … as a patch…"); `ApplyPatchDialog` shows the check, the
+    commits and the files before anything changes.

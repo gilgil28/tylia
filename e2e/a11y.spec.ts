@@ -78,6 +78,20 @@ for (const theme of ["light", "dark"]) {
       expect(await violations(page, { overlay: true })).toEqual([]);
     });
 
+    test("apply patch", async ({ page }) => {
+      await open(page, theme, "&repo=demo&patch=threeWay");
+      await expect(page.getByText("Make edge width configurable").first()).toBeVisible();
+      await page.keyboard.press("Control+K");
+      await page
+        .getByRole("dialog", { name: "Command palette" })
+        .getByRole("combobox")
+        .fill("apply patch");
+      await page.keyboard.press("Enter");
+      const dialog = page.getByRole("dialog", { name: "Apply patch" });
+      await expect(dialog.getByText("parser: test empty input")).toBeVisible();
+      expect(await violations(page, { overlay: true })).toEqual([]);
+    });
+
     test("a dialog and a context menu", async ({ page }) => {
       await open(page, theme);
       const row = page.getByRole("row").filter({ hasText: "Make edge width configurable" }).first();

@@ -32,6 +32,8 @@ import type { PullMode } from "./bindings/PullMode";
 import type { PullOutcome } from "./bindings/PullOutcome";
 import type { PushOutcome } from "./bindings/PushOutcome";
 import type { PushRequest } from "./bindings/PushRequest";
+import type { PatchApplyMode } from "./bindings/PatchApplyMode";
+import type { PatchPreview } from "./bindings/PatchPreview";
 import type { PathSuggestions } from "./bindings/PathSuggestions";
 import type { RebaseTodo } from "./bindings/RebaseTodo";
 import type { RefsSnapshot } from "./bindings/RefsSnapshot";
@@ -61,6 +63,12 @@ export interface WindowControls {
 }
 
 export type Unlisten = () => void;
+
+/** A file-type choice in the native open / save dialogs. */
+export interface FileFilter {
+  name: string;
+  extensions: string[];
+}
 
 /** Everything the frontend can ask of the backend. Implemented by `tauri.ts` and `mock/`. */
 export interface Backend {
@@ -222,6 +230,14 @@ export interface Backend {
   merge(repo: string, rev: string, ff: FastForward): Promise<IntegrateOutcome>;
   rebase(repo: string, onto: string): Promise<IntegrateOutcome>;
   cherryPick(repo: string, oid: string): Promise<IntegrateOutcome>;
+  /** Writes commit `oid` as a mailbox patch (`git format-patch`) to `file`. */
+  saveCommitPatch(repo: string, oid: string, file: string): Promise<void>;
+  /** Writes the staged or unstaged changes (`git diff --binary`) to `file`. */
+  saveChangesPatch(repo: string, staged: boolean, file: string): Promise<void>;
+  /** What applying the patch `file` would do, and whether it applies. */
+  previewPatch(repo: string, file: string): Promise<PatchPreview>;
+  /** Applies `file` to the working tree, or as commits (`git am`, may stop on conflicts). */
+  applyPatchFile(repo: string, file: string, mode: PatchApplyMode): Promise<IntegrateOutcome>;
   revert(repo: string, oid: string): Promise<IntegrateOutcome>;
   reset(repo: string, oid: string, mode: ResetMode): Promise<void>;
   continueOperation(repo: string): Promise<IntegrateOutcome>;
@@ -277,7 +293,9 @@ export interface Backend {
   forgetCredentials(repo: string, url: string): Promise<void>;
 
   /** Native file picker; `null` if cancelled. */
-  pickFile(title: string, defaultPath?: string): Promise<string | null>;
+  pickFile(title: string, defaultPath?: string, filters?: FileFilter[]): Promise<string | null>;
+  /** Native "save as" dialog; `null` if cancelled. */
+  pickSaveFile(title: string, defaultPath: string, filters?: FileFilter[]): Promise<string | null>;
   /** Native folder picker; `null` if cancelled. */
   pickFolder(title: string, defaultPath?: string): Promise<string | null>;
   revealInFileManager(path: string): Promise<void>;

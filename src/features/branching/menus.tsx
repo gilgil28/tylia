@@ -7,6 +7,7 @@ import {
   ArrowUpFromLine,
   Cloud,
   Copy,
+  FileDown,
   Flag,
   GitBranch,
   GitBranchPlus,
@@ -25,6 +26,7 @@ import {
 
 import { shortHash } from "@/app/format";
 import { classifyFlowBranch, useFlowState } from "@/features/flow/useFlow";
+import { saveCommitPatch } from "@/features/patch/patch";
 import { useRebaseBase } from "@/features/rebase/useRebaseBase";
 import { pushRepo, pushTag } from "@/features/remote/operations";
 import { useRepoUi } from "@/features/repo/repo-store";
@@ -458,6 +460,9 @@ export function CommitItems({
       </M.Item>
       <M.Item icon={Copy} onSelect={() => copy(subject)}>
         {t("menu.copyMessage")}
+      </M.Item>
+      <M.Item icon={FileDown} onSelect={() => void saveCommitPatch(repo, oid, subject)}>
+        {t("patch.saveCommit")}
       </M.Item>
       {(locals.length > 0 || remotes.length > 0 || tags.length > 0) && <M.Separator />}
       {locals.map((x) => (

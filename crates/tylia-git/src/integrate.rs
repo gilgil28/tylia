@@ -165,6 +165,7 @@ impl Git {
                     .await?
             }
             OperationKind::Revert => self.attempt(repo, ["revert", "--continue"], &env).await?,
+            OperationKind::Am => self.attempt(repo, ["am", "--continue"], &env).await?,
         };
         if attempt.ok() {
             return self.after_step(repo, op.kind).await;
@@ -173,11 +174,13 @@ impl Git {
             return Ok(IntegrateOutcome::Conflicts);
         }
         // The resolution left nothing to commit: drop this pick, as a rebase does.
-        if matches!(op.kind, OperationKind::CherryPick | OperationKind::Revert)
-            && self
-                .operation(repo)
-                .await?
-                .is_some_and(|o| o.kind == op.kind)
+        if matches!(
+            op.kind,
+            OperationKind::CherryPick | OperationKind::Revert | OperationKind::Am
+        ) && self
+            .operation(repo)
+            .await?
+            .is_some_and(|o| o.kind == op.kind)
             && self.index_matches_head(repo).await?
         {
             return self.skip_operation(repo).await;
@@ -185,7 +188,7 @@ impl Git {
         Err(self.failure(repo, attempt).await)
     }
 
-    /// Skips the current commit of a rebase, cherry-pick or revert.
+    /// Skips the current commit of a rebase, cherry-pick, revert or `git am`.
     pub async fn skip_operation(&self, repo: &Path) -> Result<IntegrateOutcome, GitError> {
         let op = self.current_operation(repo, "skip").await?;
         let command = match op.kind {
@@ -197,6 +200,7 @@ impl Git {
             OperationKind::Rebase => "rebase",
             OperationKind::CherryPick => "cherry-pick",
             OperationKind::Revert => "revert",
+            OperationKind::Am => "am",
         };
         let attempt = self
             .attempt(repo, [command, "--skip"], &no_editor_env())
@@ -218,6 +222,7 @@ impl Git {
             OperationKind::Rebase => "rebase",
             OperationKind::CherryPick => "cherry-pick",
             OperationKind::Revert => "revert",
+            OperationKind::Am => "am",
         };
         let attempt = self
             .attempt(repo, [command, "--abort"], &no_editor_env())
@@ -509,7 +514,7 @@ impl Git {
     async fn current_operation(&self, repo: &Path, verb: &str) -> Result<RepoOperation, GitError> {
         self.operation(repo).await?.ok_or_else(|| {
             GitError::InvalidInput(format!(
-                "There's no merge, rebase, cherry-pick or revert to {verb}."
+                "There's no merge, rebase, cherry-pick, revert or patch to {verb}."
             ))
         })
     }

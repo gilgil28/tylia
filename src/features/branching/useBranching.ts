@@ -8,7 +8,7 @@ import { queryClient } from "@/app/query-client";
 import { shortHash } from "@/app/format";
 import { useRepoAction } from "@/features/changes/useRepoAction";
 import { useRepoUi } from "@/features/repo/repo-store";
-import { t } from "@/i18n";
+import { plural, t } from "@/i18n";
 import {
   ipc,
   type CheckoutTarget,
@@ -16,6 +16,7 @@ import {
   type FastForward,
   type IpcError,
   type IntegrateOutcome,
+  type PatchApplyMode,
   type RefsSnapshot,
   type ResetMode,
   type StashRequest,
@@ -295,6 +296,23 @@ export function useBranching(repo: string) {
           t("branching.picked", { hash: shortHash(oid), branch: current() }),
           t("branching.pickConflicts"),
         );
+      },
+
+      /** Applies a patch file; resolves true unless it failed (conflicts count as applied). */
+      applyPatch: async (file: string, mode: PatchApplyMode, commits: number) => {
+        const outcome = await run(
+          () => ipc.applyPatchFile(repo, file, mode),
+          t("patch.applyFailed"),
+          { refs: mode === "commits", onError: dirtyRefusal },
+        );
+        reportOutcome(
+          outcome,
+          mode === "commits"
+            ? t("patch.committed", { commits: plural("count.commits", commits), branch: current() })
+            : t("patch.applied"),
+          mode === "commits" ? t("patch.amConflicts") : t("patch.applyConflicts"),
+        );
+        return outcome !== undefined;
       },
 
       revert: async (oid: string) => {

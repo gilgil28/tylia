@@ -440,7 +440,34 @@ export const backend: Backend = {
   ...fileViewMock(fixture),
 
   pickFolder: async () => fixture.repo.path,
-  pickFile: async () => "C:/Users/ada/.ssh/id_ed25519",
+  pickFile: async (_title, _defaultPath, filters) =>
+    filters?.some((f) => f.extensions.includes("patch"))
+      ? "C:/Users/ada/Downloads/0001-parser-handle-empty-input.patch"
+      : "C:/Users/ada/.ssh/id_ed25519",
+  // `?save=cancel` simulates closing the save dialog.
+  pickSaveFile: async (_title, defaultPath) =>
+    new URLSearchParams(location.search).get("save") === "cancel" ? null : defaultPath,
+  saveCommitPatch: async () => {},
+  saveChangesPatch: async () => {},
+  // `?patch=threeWay|fails|diff` simulates other patch files and repository states.
+  previewPatch: async () => {
+    const mode = new URLSearchParams(location.search).get("patch");
+    const diff = mode === "diff";
+    return {
+      format: diff ? "diff" : "mailbox",
+      commits: diff ? [] : ["parser: handle empty input", "parser: test empty input"],
+      files: [
+        { path: "src/parser.rs", oldPath: null, added: 12, removed: 3 },
+        { path: "tests/parser.rs", oldPath: "tests/parse.rs", added: 20, removed: 0 },
+        { path: "assets/logo.png", oldPath: null, added: null, removed: null },
+      ],
+      check: mode === "threeWay" ? "threeWay" : mode === "fails" ? "fails" : "clean",
+      checkMessage:
+        mode === "threeWay" || mode === "fails"
+          ? "error: patch failed: src/parser.rs:14\nerror: src/parser.rs: patch does not apply"
+          : null,
+    };
+  },
   repoConfig: async () => {
     const remotes = refs.remotes.map((r) => {
       const url = r.url ?? "";

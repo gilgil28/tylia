@@ -11,6 +11,7 @@ mod file_view;
 mod flow;
 mod integrate;
 mod patch;
+mod patch_file;
 mod paths;
 mod rebase;
 mod remote;

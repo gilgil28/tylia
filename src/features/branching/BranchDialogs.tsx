@@ -435,6 +435,7 @@ const OPERATION_NAMES = {
   rebase: "branchDialog.op.rebase",
   cherryPick: "branchDialog.op.cherryPick",
   revert: "branchDialog.op.revert",
+  am: "branchDialog.op.am",
 } as const;
 
 /** The open branching dialog for `repo`, if any. Rendered once per repository view. */

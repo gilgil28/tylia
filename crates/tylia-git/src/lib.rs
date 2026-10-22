@@ -20,6 +20,7 @@ mod integrate;
 mod log;
 mod ops;
 mod patch;
+mod patch_file;
 mod paths;
 mod rebase;
 mod refs;
@@ -51,6 +52,7 @@ pub use history::{GraphCell, HistoryBatch, HistoryRow, Segment, SegmentTracker};
 pub use integrate::{ConflictSide, FastForward, IntegrateOutcome, ResetMode};
 pub use log::{LogCommit, LogOptions, LogOrder, LogScope, SearchField};
 pub use patch::{LineAction, LinesRequest};
+pub use patch_file::{PatchApplyMode, PatchCheck, PatchFileChange, PatchFormat, PatchPreview};
 pub use paths::{PathIndex, PathKind, PathQuery, PathSuggestion};
 pub use rebase::{RebaseTodo, TodoAction, TodoCommit, TodoItem};
 pub use refs::{

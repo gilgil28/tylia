@@ -63,10 +63,12 @@ pub enum OperationKind {
     Rebase,
     CherryPick,
     Revert,
+    /// `git am`: applying a patch file's commits.
+    Am,
 }
 
-/// A merge, rebase, cherry-pick or revert in progress (stopped on conflicts, or waiting to
-/// be continued). Read from the files Git keeps in the git dir (`MERGE_HEAD`,
+/// A merge, rebase, cherry-pick, revert or `git am` in progress (stopped on conflicts, or
+/// waiting to be continued). Read from the files Git keeps in the git dir (`MERGE_HEAD`,
 /// `rebase-merge/`, `rebase-apply/`, `CHERRY_PICK_HEAD`, `REVERT_HEAD`, `sequencer/`).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, TS)]
 #[serde(rename_all = "camelCase")]
@@ -74,13 +76,14 @@ pub enum OperationKind {
 pub struct RepoOperation {
     pub kind: OperationKind,
     /// What is coming in: the merged branch (from `MERGE_MSG`, else a short oid), the
-    /// commit being picked / reverted (short oid).
+    /// commit being picked / reverted (short oid), the subject of the patch `git am` stopped
+    /// at.
     pub incoming: Option<String>,
     /// Rebase: the branch being rebased (`head-name`, without `refs/heads/`).
     pub branch: Option<String>,
     /// Rebase: short oid of the commit being rebased onto.
     pub onto: Option<String>,
-    /// Rebase: current step and total (`msgnum` / `end`).
+    /// Rebase / `git am`: current step and total (`msgnum` / `end`, `next` / `last`).
     pub step: Option<u32>,
     pub total: Option<u32>,
     /// Interactive rebase: stopped at an `edit` step (`rebase-merge/amend`), not on
@@ -159,8 +162,8 @@ fn short(oid: &str) -> String {
     oid.chars().take(7).collect()
 }
 
-/// The merge, rebase, cherry-pick or revert in progress in `git_dir`, from the files Git
-/// keeps while one is stopped. `git am` (also `rebase-apply/`) is not reported.
+/// The merge, rebase, cherry-pick, revert or `git am` in progress in `git_dir`, from the
+/// files Git keeps while one is stopped.
 pub(crate) fn read_operation(git_dir: &Path) -> Option<RepoOperation> {
     let read = |path: &Path| {
         std::fs::read_to_string(path)
@@ -187,8 +190,17 @@ pub(crate) fn read_operation(git_dir: &Path) -> Option<RepoOperation> {
         if !dir.is_dir() {
             continue;
         }
+        // `git am` shares rebase-apply/ with the old rebase backend.
         if dir.join("applying").exists() {
-            return None;
+            let subject = read(&dir.join("final-commit"))
+                .or_else(|| read(&dir.join("msg")))
+                .and_then(|msg| msg.lines().next().map(str::to_owned));
+            return Some(RepoOperation {
+                incoming: subject,
+                step: number(&dir.join(step)),
+                total: number(&dir.join(total)),
+                ..empty(OperationKind::Am)
+            });
         }
         return Some(RepoOperation {
             incoming: read(&git_dir.join("REBASE_HEAD")).map(|oid| short(&oid)),

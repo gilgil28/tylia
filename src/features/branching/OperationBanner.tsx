@@ -28,11 +28,20 @@ function describe(op: RepoOperation, current: string): string {
       return t("banner.picking", { hash: op.incoming ?? "" });
     case "revert":
       return t("banner.reverting", { hash: op.incoming ?? "" });
+    case "am": {
+      const base = op.incoming
+        ? t("banner.applying", { subject: op.incoming, branch: current })
+        : t("banner.applyingPlain", { branch: current });
+      return op.step && op.total && op.total > 1
+        ? `${base} · ${t("banner.patchStep", { step: op.step, total: op.total })}`
+        : base;
+    }
   }
 }
 
 /**
- * Shown while a merge, rebase, cherry-pick or revert is in progress: what is happening, how
+ * Shown while a merge, rebase, cherry-pick, revert or `git am` (applying a patch file's
+ * commits) is in progress: what is happening, how
  * many conflicts remain, and Continue / Skip / Abort. Continue waits until conflicts are
  * resolved.
  */
@@ -97,7 +106,7 @@ export function OperationBanner({
           loading={busy === "skip"}
           disabled={!!busy}
         >
-          {t("banner.skip")}
+          {op.kind === "am" ? t("banner.skipPatch") : t("banner.skip")}
         </Button>
       )}
       <Tooltip

@@ -1,7 +1,7 @@
 import type { Backend } from "./backend";
 
 export { isIpcError } from "./backend";
-export type { Unlisten } from "./backend";
+export type { FileFilter, Unlisten } from "./backend";
 export type { AskpassKind } from "./bindings/AskpassKind";
 export type { AskpassPrompt } from "./bindings/AskpassPrompt";
 export type { Blame } from "./bindings/Blame";
@@ -54,6 +54,11 @@ export type { Hunk } from "./bindings/Hunk";
 export type { LogOptions } from "./bindings/LogOptions";
 export type { LogScope } from "./bindings/LogScope";
 export type { OperationKind } from "./bindings/OperationKind";
+export type { PatchApplyMode } from "./bindings/PatchApplyMode";
+export type { PatchCheck } from "./bindings/PatchCheck";
+export type { PatchFileChange } from "./bindings/PatchFileChange";
+export type { PatchFormat } from "./bindings/PatchFormat";
+export type { PatchPreview } from "./bindings/PatchPreview";
 export type { PathKind } from "./bindings/PathKind";
 export type { PathSuggestion } from "./bindings/PathSuggestion";
 export type { PathSuggestions } from "./bindings/PathSuggestions";

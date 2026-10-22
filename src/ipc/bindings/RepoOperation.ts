@@ -2,14 +2,15 @@
 import type { OperationKind } from "./OperationKind";
 
 /**
- * A merge, rebase, cherry-pick or revert in progress (stopped on conflicts, or waiting to
- * be continued). Read from the files Git keeps in the git dir (`MERGE_HEAD`,
+ * A merge, rebase, cherry-pick, revert or `git am` in progress (stopped on conflicts, or
+ * waiting to be continued). Read from the files Git keeps in the git dir (`MERGE_HEAD`,
  * `rebase-merge/`, `rebase-apply/`, `CHERRY_PICK_HEAD`, `REVERT_HEAD`, `sequencer/`).
  */
 export type RepoOperation = { kind: OperationKind, 
 /**
  * What is coming in: the merged branch (from `MERGE_MSG`, else a short oid), the
- * commit being picked / reverted (short oid).
+ * commit being picked / reverted (short oid), the subject of the patch `git am` stopped
+ * at.
  */
 incoming: string | null, 
 /**
@@ -21,7 +22,7 @@ branch: string | null,
  */
 onto: string | null, 
 /**
- * Rebase: current step and total (`msgnum` / `end`).
+ * Rebase / `git am`: current step and total (`msgnum` / `end`, `next` / `last`).
  */
 step: number | null, total: number | null, 
 /**

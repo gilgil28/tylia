@@ -19,6 +19,8 @@ export interface MockBranchingScript {
   rebase?: "ok" | "conflicts";
   cherryPick?: "ok" | "conflicts";
   revert?: "ok" | "conflicts";
+  /** Creating a patch file's commits (`git am`). */
+  applyPatch?: "ok" | "conflicts";
   stashApply?: "ok" | "conflicts";
   /** `continueOperation` stops on the next conflict instead of finishing. */
   continue?: "ok" | "conflicts";
@@ -87,6 +89,7 @@ type Methods = Pick<
   | "merge"
   | "rebase"
   | "cherryPick"
+  | "applyPatchFile"
   | "revert"
   | "reset"
   | "continueOperation"
@@ -182,8 +185,8 @@ export function branchingMock(
         incoming,
         branch: kind === "rebase" ? r.head.branch : null,
         onto: kind === "rebase" ? incoming.slice(0, 7) : null,
-        step: kind === "rebase" ? 1 : null,
-        total: kind === "rebase" ? 3 : null,
+        step: kind === "rebase" || kind === "am" ? 1 : null,
+        total: kind === "rebase" ? 3 : kind === "am" ? 2 : null,
         editing: false,
       },
       entries: [
@@ -441,6 +444,10 @@ export function branchingMock(
       script().rebase === "conflicts" ? stopOnConflict("rebase", resolve(onto)) : "done",
     cherryPick: async (_repo, oid) =>
       script().cherryPick === "conflicts" ? stopOnConflict("cherryPick", oid.slice(0, 7)) : "done",
+    applyPatchFile: async (_repo, _file, mode) =>
+      mode === "commits" && script().applyPatch === "conflicts"
+        ? stopOnConflict("am", "parser: handle empty input")
+        : "done",
     revert: async (_repo, oid) =>
       script().revert === "conflicts" ? stopOnConflict("revert", oid.slice(0, 7)) : "done",
     reset: async (_repo, oid, mode) => {

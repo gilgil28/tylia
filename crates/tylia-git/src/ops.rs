@@ -150,7 +150,7 @@ impl Git {
         Ok(PathBuf::from(lossy(&out.stdout).trim()))
     }
 
-    /// The merge / rebase / cherry-pick / revert in progress, if any.
+    /// The merge / rebase / cherry-pick / revert / `git am` in progress, if any.
     pub(crate) async fn operation(&self, repo: &Path) -> Result<Option<RepoOperation>, GitError> {
         Ok(read_operation(&self.git_dir(repo).await?))
     }
@@ -166,6 +166,7 @@ impl Git {
                     OperationKind::Rebase => "A rebase",
                     OperationKind::CherryPick => "A cherry-pick",
                     OperationKind::Revert => "A revert",
+                    OperationKind::Am => "Applying a patch",
                 }
             )));
         }

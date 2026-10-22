@@ -3,6 +3,7 @@ import {
   Copy,
   EyeOff,
   FileClock,
+  FileDown,
   FileUp,
   FileUser,
   FolderOpen,
@@ -18,6 +19,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerE
 import { revealLabel, trashLabel } from "@/app/labels";
 import { isMod } from "@/app/keyboard";
 import { useWorkspace, type RepoLayout } from "@/app/workspace";
+import { saveChangesPatch } from "@/features/patch/patch";
 import { useRepoUi } from "@/features/repo/repo-store";
 import { joinPath } from "@/features/welcome/paths";
 import { plural, t } from "@/i18n";
@@ -456,12 +458,21 @@ export function ChangesView({
                 onClick: () => void stageAll(),
               }}
               extra={
-                <IconButton
-                  icon={Trash2}
-                  label={t("changes.discardAll")}
-                  compact
-                  onClick={() => setDiscarding(groups.unstaged)}
-                />
+                <>
+                  <IconButton
+                    icon={FileDown}
+                    label={t("patch.saveUnstaged")}
+                    compact
+                    disabled={groups.unstaged.length === 0}
+                    onClick={() => void saveChangesPatch(repo, false)}
+                  />
+                  <IconButton
+                    icon={Trash2}
+                    label={t("changes.discardAll")}
+                    compact
+                    onClick={() => setDiscarding(groups.unstaged)}
+                  />
+                </>
               }
               empty={t("changes.nothingUnstaged")}
             />
@@ -480,6 +491,15 @@ export function ChangesView({
                 label: t("changes.unstageAll"),
                 onClick: () => void unstageAll(),
               }}
+              extra={
+                <IconButton
+                  icon={FileDown}
+                  label={t("patch.saveStaged")}
+                  compact
+                  disabled={groups.staged.length === 0}
+                  onClick={() => void saveChangesPatch(repo, true)}
+                />
+              }
               empty={
                 <span className="flex flex-col gap-1">
                   <span className="text-fg-secondary">{t("changes.nothingStaged")}</span>

@@ -3,7 +3,7 @@ import { listen } from "@tauri-apps/api/event";
 import { homeDir } from "@tauri-apps/api/path";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { open } from "@tauri-apps/plugin-dialog";
+import { open, save } from "@tauri-apps/plugin-dialog";
 import { openUrl, revealItemInDir } from "@tauri-apps/plugin-opener";
 
 import type { Backend } from "./backend";
@@ -129,6 +129,10 @@ export const backend: Backend = {
   merge: (repo, rev, ff) => invoke("merge", { repo, rev, ff }),
   rebase: (repo, onto) => invoke("rebase", { repo, onto }),
   cherryPick: (repo, oid) => invoke("cherry_pick", { repo, oid }),
+  saveCommitPatch: (repo, oid, file) => invoke("save_commit_patch", { repo, oid, file }),
+  saveChangesPatch: (repo, staged, file) => invoke("save_changes_patch", { repo, staged, file }),
+  previewPatch: (repo, file) => invoke("preview_patch", { repo, file }),
+  applyPatchFile: (repo, file, mode) => invoke("apply_patch_file", { repo, file, mode }),
   revert: (repo, oid) => invoke("revert", { repo, oid }),
   reset: (repo, oid, mode) => invoke("reset", { repo, oid, mode }),
   continueOperation: (repo) => invoke("continue_operation", { repo }),
@@ -159,10 +163,12 @@ export const backend: Backend = {
   setSshKey: (repo, key) => invoke("set_ssh_key", { repo, key }),
   forgetCredentials: (repo, url) => invoke("forget_credentials", { repo, url }),
 
-  pickFile: async (title, defaultPath) => {
-    const picked = await open({ directory: false, multiple: false, title, defaultPath });
+  pickFile: async (title, defaultPath, filters) => {
+    const picked = await open({ directory: false, multiple: false, title, defaultPath, filters });
     return typeof picked === "string" ? picked : null;
   },
+  pickSaveFile: async (title, defaultPath, filters) =>
+    (await save({ title, defaultPath, filters })) ?? null,
   pickFolder: async (title, defaultPath) => {
     const picked = await open({ directory: true, multiple: false, title, defaultPath });
     return typeof picked === "string" ? picked : null;
