@@ -84,6 +84,12 @@ pub fn host_git() -> bool {
     HOST_GIT.load(Ordering::Relaxed)
 }
 
+/// What to run once so the Flatpak may run host programs.
+pub fn flatpak_override_command() -> String {
+    let app = std::env::var("FLATPAK_ID").unwrap_or_else(|_| "io.github.gilgil28.tylia".into());
+    format!("flatpak override --user --talk-name=org.freedesktop.Flatpak {app}")
+}
+
 /// The Git executable: the host's when chosen in the Flatpak, else the one chosen in
 /// Settings, else discovered per call (cheap, and picks up an install or PATH change
 /// without restarting).

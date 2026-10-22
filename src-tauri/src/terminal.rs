@@ -182,6 +182,58 @@ pub fn open(env: &Env, dir: &Path) -> io::Result<Option<String>> {
     Ok(None)
 }
 
+/// In the Flatpak the sandbox has no terminals: the same choice is looked up and started on
+/// the host through `flatpak-spawn --host`, which needs the permission "Use the system's Git"
+/// also needs. Without it: `PermissionDenied`.
+pub fn open_on_flatpak_host(env: &Env, dir: &Path) -> io::Result<Option<String>> {
+    let quiet = |cmd: &mut Command| {
+        cmd.stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null());
+    };
+    let mut probe = Command::new("flatpak-spawn");
+    probe.args(["--host", "true"]);
+    quiet(&mut probe);
+    if !probe.status()?.success() {
+        return Err(io::Error::new(
+            io::ErrorKind::PermissionDenied,
+            "flatpak-spawn --host was refused",
+        ));
+    }
+    let custom = env.custom.map(str::trim).filter(|c| !c.is_empty());
+    for (i, launch) in candidates(env, dir).into_iter().enumerate() {
+        // The name is an argument of the fixed script, never part of it.
+        let mut lookup = Command::new("flatpak-spawn");
+        lookup
+            .args(["--host", "sh", "-c", "command -v -- \"$1\"", "sh"])
+            .arg(&launch.program);
+        quiet(&mut lookup);
+        if !lookup.status()?.success() {
+            if i == 0 && custom == Some(launch.program.as_str()) {
+                return Err(io::Error::new(
+                    io::ErrorKind::NotFound,
+                    format!("{} wasn't found", launch.program),
+                ));
+            }
+            continue;
+        }
+        let mut directory = std::ffi::OsString::from("--directory=");
+        directory.push(dir);
+        let mut cmd = Command::new("flatpak-spawn");
+        cmd.arg("--host")
+            .arg(directory)
+            .arg(&launch.program)
+            .args(&launch.args);
+        quiet(&mut cmd);
+        let mut child = cmd.spawn()?;
+        std::thread::spawn(move || {
+            let _ = child.wait();
+        });
+        return Ok(Some(launch.program));
+    }
+    Ok(None)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

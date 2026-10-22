@@ -112,7 +112,20 @@ pub fn open_terminal(repo: String, state: State<'_, AppState>) -> Result<String,
         terminal_var: terminal_var.as_deref(),
         desktop: desktop.as_deref(),
     };
-    let opened = terminal::open(&env, dir).map_err(|err| match &settings.terminal {
+    // The Flatpak's sandbox has no terminals: the host's, through flatpak-spawn.
+    let flatpak = crate::commands::distribution() == crate::commands::Distribution::Flatpak;
+    let result = if flatpak {
+        terminal::open_on_flatpak_host(&env, dir)
+    } else {
+        terminal::open(&env, dir)
+    };
+    let opened = result.map_err(|err| match &settings.terminal {
+        _ if err.kind() == std::io::ErrorKind::PermissionDenied && flatpak => {
+            IpcError::invalid(format!(
+                "Opening a terminal from Tylia's Flatpak needs permission to run programs outside its sandbox (the same as “Use the system's Git”). Allow it once in a terminal, then restart Tylia: {}",
+                crate::state::flatpak_override_command()
+            ))
+        }
         Some(custom) if err.kind() == std::io::ErrorKind::NotFound => IpcError::invalid(format!(
             "The terminal set in Settings ({custom}) wasn't found. Change it in Settings → General → Terminal, or clear it to use the automatic choice."
         )),
