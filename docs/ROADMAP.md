@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 8 — Packages, power features and v0.3.0** (2026-10-22: built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox; waiting for review before v0.3.0). Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
+Current phase: **Phase 8 — Packages, power features and v0.3.0** (2026-10-22: built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox; waiting for review before v0.3.0). Phase 9 is planned below. Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
 
 ## Product vision
 
@@ -782,34 +782,142 @@ Details and tests: Phase 7 E.
       (the user publishes the draft with Release label "None"), then the channels above.
       Check `latest.json` now carries the notes. Update this ROADMAP and stop for review.
 
+### Phase 9 — Workflow polish, hosting accounts and v0.4.0
+
+**Goal:** the everyday workflow feels right to people coming from Sourcetree: changes flow
+upwards from Unstaged to Staged to the commit, and the history can act on several commits
+at once. Signing in to a hosting account lists your repositories to clone. Git LFS gets a
+UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It ends with
+**v0.4.0**.
+
+**How to run this phase (clean session):**
+
+- **Before starting:** read `CLAUDE.md`, this section, `docs/DESIGN.md` (the Changes view,
+  §4.x), `docs/ARCHITECTURE.md` §5.19–5.20 and `CONTRIBUTING.md` → "Commits and branches".
+  The items marked **Decide** have a recommendation; confirm them with the user before
+  building that part.
+- **While working:** the Phase 8 rules apply: one commit per feature, bug or fix on its own
+  `<kind>/<topic>` branch, fast-forwarded into `main`; push only when the user asks; verify
+  every pinned version and justify each new dependency (what, why, license); run the CI
+  checks before every push; screenshots in both themes for every visual change.
+- **Phase 8 leftovers** that wait for the user's accounts, a Mac or Windows Sandbox stay in
+  Phase 8 (A, B and D); do them whenever they become possible.
+
+#### A. Changes flow upwards (first)
+
+- [ ] **Staged above Unstaged**, as in Sourcetree: unstaged and untracked files at the
+      bottom, staged files above them, so staging moves a file up towards the commit.
+  - **Order of the lists:** Conflicts (when there are any) on top, then Staged, then
+    Unstaged. **Decide** whether conflicts stay first (recommendation: yes, they block the
+    commit) or go just above Unstaged.
+  - **The commit message box:** today it sits under both lists. **Decide** (recommendation:
+    keep it at the bottom of the left column, under Unstaged, as Sourcetree does, so the
+    window layout stays put; the alternative is directly under Staged, which makes the
+    upward flow literal but moves the box as the lists grow).
+  - **Everything that knows the order follows it:** keyboard navigation between the lists
+    (↑/↓ across the boundary, Tab order), drag and drop between them, "Stage all" /
+    "Unstage all" and the new "Save … as a patch" buttons, the split between the lists and
+    its saved size (migrate a saved layout instead of resetting it), empty states, and the
+    toolbar Commit button's focus target.
+  - **Docs and tests:** DESIGN.md's Changes wireframe and text, the e2e tests that rely on
+    the order, `pnpm shots` and the published README / website screenshots
+    (`pnpm shots:publish`).
+
+#### B. Several commits at once
+
+- [ ] **Multi-select in the history:** Ctrl/Cmd+click toggles a commit, Shift+click and
+      Shift+↑/↓ extend a range, Esc goes back to one. The selection model in
+      `repo-store.ts` becomes a set with an anchor (today it is one commit).
+  - **Details pane:** for several commits, a summary (how many, authors, date span) and the
+    combined list of changed files; one commit shows as today.
+  - **Menus act on the whole selection where that means something:** save as patches (a
+    numbered `format-patch` series), cherry-pick (oldest first, one operation, the existing
+    conflict banner), revert, copy hashes; single-commit items are disabled with a tooltip
+    saying why.
+  - **Tests:** unit tests for the selection model, e2e for the keyboard and mouse
+    gestures, integration tests for the multi-commit patch series and cherry-pick.
+
+#### C. Hosting accounts
+
+- [ ] **Sign in to GitHub, GitLab and Bitbucket** to list your repositories in the Clone
+      dialog (search, owner / organization filter) and clone with one click. This is the
+      "⏳ accounts" item of the feature inventory.
+  - **Decide how to sign in:** **an OAuth device flow** (recommended: no password or token
+    to paste, revocable from the provider's settings; needs a registered OAuth app per
+    provider) or a personal access token pasted by the user.
+  - **Decide where tokens live:** **the OS keychain** (recommended: Windows Credential
+    Manager, macOS Keychain, Secret Service; a new dependency such as `keyring`, license to
+    check) or Git's credential helper.
+  - **Privacy:** nothing is sent unless the user signs in or opens the list; Settings →
+    Accounts shows each account, its scopes and "Sign out", which deletes the token. No
+    avatars unless the existing Gravatar opt-in is on.
+  - **Tests:** the API clients against recorded responses (no network in tests); e2e with
+    the mock.
+
+#### D. Git LFS
+
+- [ ] **LFS beyond indicators:** detect `git lfs` and say when a repository needs it but it
+      isn't installed; mark LFS files in Changes and the history; "Track with LFS…" for a
+      file or extension (writes `.gitattributes`); pull / fetch LFS objects; file locks
+      where the server supports them (lock, unlock, who holds a lock).
+  - **Decide** whether locks are in scope (recommendation: yes for read-only display and
+    lock / unlock on the selected file; no lock management screens).
+  - **Tests:** integration tests on a temp repository with a local LFS remote
+    (`git lfs` installed in CI), skipped with a message where it isn't.
+
+#### E. Fixes found in Phase 8
+
+- [ ] **Flatpak: "Open in terminal"** runs the host's terminal through
+      `flatpak-spawn --host` when the user granted the same permission as "Use the
+      system's Git"; without it, the error explains how to grant it instead of "No
+      terminal was found".
+- [ ] **Flatpak: the system's Git without the permission:** opening a repository says that
+      Tylia may not run the system's Git yet, with the `flatpak override` command and a
+      link to Settings → Git, instead of "Couldn't open repository".
+- [ ] **Linux icons:** Tauri installs the 256-px icon as `256x256@2` (a 512-px slot), so it
+      looks soft on HiDPI desktops. Install it as `hicolor/256x256` in the deb, rpm and
+      AppImage (and check what `tauri icon` should generate), like the AUR and Flatpak
+      packages already do.
+- [ ] **Faster review builds:** a `review` Cargo profile (release with `lto = "thin"` and
+      `codegen-units = 16`) for local builds, documented in CONTRIBUTING.md; measure a
+      rebuild after a one-line change against today's 238 s. Release builds keep full LTO.
+- **Acceptance:** each fix is checked where it applies (the Flatpak and Linux packages in
+  the containers used in Phase 8), with tests where the code allows.
+
+#### Release
+
+- [ ] CHANGELOG `[0.4.0]`, version bump, tag `v0.4.0` (the user publishes the draft), then
+      every channel that exists by then (RELEASING.md). Update this ROADMAP and stop for
+      review.
+
 ## Feature inventory (Sourcetree parity reference)
 
 Long-standing Sourcetree capabilities, used to judge completeness. ✅ = planned in the
 phases above, ⏳ = later / backlog, ✗ = intentionally out of scope for v1.
 
-| Area         | Capability                                                                          | Plan                                                       |
-| ------------ | ----------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| Repos        | Repository browser/bookmarks, recent list, tabs                                     | ✅ P1                                                      |
-| Repos        | Clone, create, add existing; hosting-account browsing (GitHub/Bitbucket/GitLab)     | ✅ P3 / ⏳ accounts                                        |
-| History      | Graph with branch lines, ref labels, all/current branch filter, date/ancestor order | ✅ P1                                                      |
-| History      | Search by message/author/hash/file; jump to ref                                     | ✅ P1                                                      |
-| History      | Commit details, file list, diff; copy hash; parents navigation                      | ✅ P1                                                      |
-| Diff         | Unified/side-by-side, whitespace ignore, context lines, image diff                  | ✅ P1                                                      |
-| Diff         | External diff tool                                                                  | ✅ P5                                                      |
-| Working copy | File status with staged/unstaged lists, stage file/hunk/line, discard hunk/line     | ✅ P2                                                      |
-| Working copy | Ignore file/pattern, stop tracking, open in file manager/terminal                   | ✅ P2                                                      |
-| Commit       | Message box, amend, push immediately, commit message history, sign-off/sign         | ✅ P2                                                      |
-| Remotes      | Fetch, pull (rebase option), push (tags, force), remotes management, ahead/behind   | ✅ P3                                                      |
-| Branches     | Create/checkout/rename/delete/track, merge, rebase, cherry-pick, revert, reset      | ✅ P4                                                      |
-| Tags         | Create/delete/push                                                                  | ✅ P4                                                      |
-| Stash        | Save/apply/pop/drop/view                                                            | ✅ P4                                                      |
-| Conflicts    | Banner, external merge tool, mark resolved, continue/abort                          | ✅ P4                                                      |
-| Advanced     | Interactive rebase, blame ("Annotate"), log selected file                           | ✅ P5                                                      |
-| Advanced     | Submodules, Git LFS, git-flow, hg-flow                                              | ✅ P5 (submodules) / ⏳ LFS / ✅ P6 git-flow / ✗ Mercurial |
-| Advanced     | Custom actions (user scripts in context menu)                                       | ⏳ P8                                                      |
-| Advanced     | Patch create/apply, archive export                                                  | ⏳ P8                                                      |
-| Advanced     | Pull request creation on hosting providers                                          | ✗ v1                                                       |
-| UX           | Terminal button, Explorer/Finder button, settings, themes                           | ✅                                                         |
+| Area         | Capability                                                                          | Plan                                                          |
+| ------------ | ----------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Repos        | Repository browser/bookmarks, recent list, tabs                                     | ✅ P1                                                         |
+| Repos        | Clone, create, add existing; hosting-account browsing (GitHub/Bitbucket/GitLab)     | ✅ P3 / ✅ P9 accounts                                        |
+| History      | Graph with branch lines, ref labels, all/current branch filter, date/ancestor order | ✅ P1                                                         |
+| History      | Search by message/author/hash/file; jump to ref                                     | ✅ P1                                                         |
+| History      | Commit details, file list, diff; copy hash; parents navigation                      | ✅ P1                                                         |
+| Diff         | Unified/side-by-side, whitespace ignore, context lines, image diff                  | ✅ P1                                                         |
+| Diff         | External diff tool                                                                  | ✅ P5                                                         |
+| Working copy | File status with staged/unstaged lists, stage file/hunk/line, discard hunk/line     | ✅ P2                                                         |
+| Working copy | Ignore file/pattern, stop tracking, open in file manager/terminal                   | ✅ P2                                                         |
+| Commit       | Message box, amend, push immediately, commit message history, sign-off/sign         | ✅ P2                                                         |
+| Remotes      | Fetch, pull (rebase option), push (tags, force), remotes management, ahead/behind   | ✅ P3                                                         |
+| Branches     | Create/checkout/rename/delete/track, merge, rebase, cherry-pick, revert, reset      | ✅ P4                                                         |
+| Tags         | Create/delete/push                                                                  | ✅ P4                                                         |
+| Stash        | Save/apply/pop/drop/view                                                            | ✅ P4                                                         |
+| Conflicts    | Banner, external merge tool, mark resolved, continue/abort                          | ✅ P4                                                         |
+| Advanced     | Interactive rebase, blame ("Annotate"), log selected file                           | ✅ P5                                                         |
+| Advanced     | Submodules, Git LFS, git-flow, hg-flow                                              | ✅ P5 (submodules) / ✅ P9 LFS / ✅ P6 git-flow / ✗ Mercurial |
+| Advanced     | Custom actions (user scripts in context menu)                                       | ✅ P8                                                         |
+| Advanced     | Patch create/apply, archive export                                                  | ✅ P8                                                         |
+| Advanced     | Pull request creation on hosting providers                                          | ✗ v1                                                          |
+| UX           | Terminal button, Explorer/Finder button, settings, themes                           | ✅                                                            |
 
 If the user wants a stricter checklist, cross-check against Sourcetree's public release
 notes (sourcetreeapp.com → release notes for Windows 3.x and macOS 4.x) and add rows.
