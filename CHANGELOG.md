@@ -7,6 +7,49 @@ can change behaviour.
 
 ## [Unreleased]
 
+### Added
+
+- **Patches:**
+  - **Save:** "Save as patch…" in a commit's menu writes it as a patch file
+    (`git format-patch`, with author, date and message). A button on each Changes list
+    saves the staged or unstaged changes.
+  - **Apply:** "Apply patch…" (palette) shows what a patch file would change first: its
+    commits, the files with line counts, and whether it applies cleanly, only with a
+    merge, or not at all.
+  - **Two ways to apply:** apply to the working copy, or create the patch's commits. When
+    creating them stops on conflicts, the banner continues, skips or aborts, as for a
+    rebase.
+- **Export archive…** of any commit, branch or tag as a zip or tar.gz, from their menus or
+  the palette (the current branch).
+- **Custom actions** (Settings → Actions): your own programs in commit, branch and file
+  menus and the palette.
+  - **Arguments** can use the repository, commit, branch and selected files
+    (`{repo}`, `{sha}`, `{shortSha}`, `{branch}`, `{file}`, `{files}`).
+  - **Running:** they run without a shell, so a file name can never become a command.
+    Optionally Tylia asks first (showing the exact command line), or shows the output,
+    exit code and errors, with Stop.
+- **Linux:** the deb, rpm and AppImage register Tylia for folders, so file managers offer
+  "Open With Tylia", and carry AppStream metadata for software centres.
+- **macOS:** "Install the tylia command" in the palette links `/usr/local/bin/tylia`
+  (it asks for your password when needed). Folders open in Tylia from Finder's "Open
+  With" and when dropped on the Dock icon.
+- **Flatpak** (for Flathub): Tylia brings its own Git and keeps HTTPS sign-ins in your
+  keyring. Settings → Git → "Use the system's Git" switches to the Git installed on your
+  computer, with its credential helpers and tools, after a one-time permission. Updates
+  come from Flathub.
+- **Packages:** a portable zip on each release (for Scoop), and the manifests for Scoop,
+  Homebrew, winget and the AUR (`tylia-bin` and `tylia`, built from source).
+
+### Changed
+
+- The update dialog says how to update copies installed with pacman (the AUR) or Scoop,
+  instead of offering an installer that would leave a second copy.
+
+### Fixed
+
+- On Windows, cancelling a clone could leave the half-cloned folder behind.
+- Remote URLs and key paths in Repository settings now use the code font.
+
 ## [0.2.0] - 2026-10-22
 
 The first public release of Tylia, a calm, fast desktop Git client: a commit graph that

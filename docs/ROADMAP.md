@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 8 — Packages, power features and v0.3.0** (planned 2026-10-22; not started). Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
+Current phase: **Phase 8 — Packages, power features and v0.3.0** (2026-10-22: built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox; waiting for review before v0.3.0). Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
 
 ## Product vision
 
@@ -688,30 +688,57 @@ real on Linux and macOS. It ends with **v0.3.0**.
       the desktop file, metainfo, icons and licenses; `makepkg -si` in the Arch container,
       then start the app under Xvfb. Publish with the user's AUR account. Then list the
       AUR packages again in the README and on the website (removed until they exist).
+      _Built and checked 2026-10-22, not published (no AUR account yet; new registrations
+      are paused, see docs/RELEASING.md). `packaging/aur/tylia` builds from the tag
+      tarball; both packages built with makepkg in the Arch container, installed with
+      `pacman -U`, opened a repository under Xvfb, and `pacman -R` left no files.
+      `update.sh` bumps both. Left: the first push of each, then the README / website._
 - [ ] **Flathub:**
-  - **Decide the app ID with the user:** Flathub wants one the developer controls, e.g.
-    `io.github.gilgil28.tylia`. The bundle identifier `dev.tylia.app` names the settings
-    folder of installed copies, so the Flatpak may differ from it.
+  - [x] **Decide the app ID with the user:** `io.github.gilgil28.tylia` (2026-10-22). It
+        is also the AppStream ID of every Linux package.
   - The rest as in Phase 7 C (bundled Git, permissions, credential helpers, updates off,
     manifest in `packaging/flatpak/`, `flatpak-builder` check).
+    _Done 2026-10-22, not submitted (ARCHITECTURE §5.19, RELEASING → Flatpak). GNOME 51;
+    Git 2.56 built in, `credential.helper=libsecret`; offline cargo / pnpm sources from
+    `update-sources.sh`. Built and run with flatpak-builder in a privileged container: the
+    bundled Git opens a repository, Settings says Flathub updates it. Opt-in "Use the
+    system's Git" (flatpak-spawn, needs a `flatpak override`) verified there: 212 Git calls
+    reached the host, and an HTTPS 401 brought up Tylia's sign-in dialog through the host
+    helper script. flatpak-builder-lint wants exceptions for `--filesystem=home`,
+    `ssh-auth` and `gpg-agent` (justification in RELEASING). **Blocked:** Flathub's
+    rust-stable is 1.98, Tylia needs 1.99 (the test build used `--ignore-rust-version`).
+    Known gap: "Open in terminal" finds no terminal inside the sandbox._
 
 #### B. Windows and macOS channels
 
 - [ ] **winget** `Tylia.Tylia` (installer type `nullsoft`, user scope; silent installs
       already add PATH and the Explorer menu and no desktop shortcut). Verify the update
       action and its license before using it (e.g. `vedantmgoyal9/winget-releaser`).
+      _Manifests for 0.2.0 in `packaging/winget` (`winget validate` passes). winget-releaser
+      is AGPL-3.0, so the **winget** workflow uses Microsoft's wingetcreate (MIT, pinned
+      and checksummed) instead. Waiting for the fork and the first pull request by hand._
 - [ ] **Scoop:** add a `Tylia_<v>_x64_portable.zip` (`tylia.exe` + `bin/tylia.cmd`) to the
       release workflow, then `tylia.json` in `gilgil28/scoop-bucket` with `checkver` and
       `autoupdate`.
+      _The release workflow uploads the zip (with `portable.txt`, so Tylia never runs the
+      installer from it; the update dialog says `scoop update tylia`); dry-run locally.
+      `packaging/scoop/tylia.json` is ready; waiting for the bucket repository._
 - [ ] **Homebrew cask** `tylia` in `gilgil28/homebrew-tap` (url, sha256,
       `auto_updates true`, `zap` for `~/Library/Application Support/dev.tylia.app`, the
       Gatekeeper note
       for unsigned apps).
+      _`packaging/homebrew/tylia.rb` written (also links the `tylia` command);
+      `packaging/release-manifests.sh` fills in Scoop, Homebrew and winget after a release.
+      Not checked with `brew audit` (needs a Mac); waiting for the tap repository._
 - [ ] **Windows installer, still to check** (Windows Sandbox if the user enables it): the
       interactive install with both options unticked, an update over 0.2.0 (choices kept),
       and the MSI install / uninstall.
-- [ ] **macOS command line:** "Install the `tylia` command" in the palette, linking
+      _Not done: Windows Sandbox isn't enabled on the dev machine._
+- [x] **macOS command line:** "Install the `tylia` command" in the palette, linking
       `/usr/local/bin/tylia` (asks for permission).
+      _Done 2026-10-22, unverified on a Mac (the macOS code only compiles there; its logic
+      is unit-tested everywhere). Found on the way: the bundle declared no document types,
+      so Finder / Dock folder opening couldn't work; `src-tauri/Info.plist` fixes that._
 - **Acceptance:** each channel installs v0.3.0 on a clean machine or container (Windows
   Sandbox, the Arch container, `flatpak-builder`, a GitHub macOS runner); uninstall
   leaves only the user's settings; in-app updates are offered only where they can
@@ -721,11 +748,21 @@ real on Linux and macOS. It ends with **v0.3.0**.
 
 Details and tests: Phase 7 E.
 
-- [ ] **Create and apply patches** (`git format-patch` / `git diff --binary`;
+- [x] **Create and apply patches** (`git format-patch` / `git diff --binary`;
       `git apply --check` / `git am --3way`).
-- [ ] **Export an archive** of any commit, branch or tag (`git archive`).
-- [ ] **Custom actions:** user-defined programs with variables in context menus and the
+      _Done 2026-10-22 (ARCHITECTURE §5.20): commit menu, Changes list buttons, palette,
+      an apply dialog with the check, commits and files; `git am` is a new operation kind
+      in the banner. Integration tests: binary, renames, CRLF, conflicts (continue /
+      abort), a patch that doesn't apply. Commits from several selected commits wait for
+      multi-selection in the history._
+- [x] **Export an archive** of any commit, branch or tag (`git archive`).
+      _Done 2026-10-22: commit, branch and tag menus, palette (current branch); zip or
+      tar.gz by extension; integration tests read both archives' file lists._
+- [x] **Custom actions:** user-defined programs with variables in context menus and the
       palette, run without a shell, output in a panel.
+      _Done 2026-10-22: Settings → Actions; Rust splits and substitutes (unit tests incl. a
+      `; rm -rf ~` file name), Stop kills a running action; real-app check with a `sh`
+      script on Linux (confirm, output, exit code)._
 - **Acceptance:** each is in its context menus and the palette, with integration / unit
   and e2e tests, and passes axe in both themes.
 
