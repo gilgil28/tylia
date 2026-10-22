@@ -6,7 +6,7 @@ command line: beautiful commit graph, effortless line-level staging, zero clutte
 Tylia is pronounced **TEE-lee-a**. The name is a respelling of _Tilia_, botanical Latin
 for the linden tree.
 
-Website: https://tylia.dev · Repository: https://github.com/tylia-dev/tylia
+Website: https://tylia.dev · Repository: https://github.com/gilgil28/tylia
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/history-dark.png">
@@ -29,7 +29,7 @@ rebindable shortcuts. See [`CHANGELOG.md`](CHANGELOG.md) for what's in each rele
 ## Download
 
 Get the latest version from [tylia.dev](https://tylia.dev) or the
-[releases page](https://github.com/tylia-dev/tylia/releases/latest):
+[releases page](https://github.com/gilgil28/tylia/releases/latest):
 
 - **Windows 10 and 11:** `Tylia_<version>_x64-setup.exe` (or the `.msi`).
 - **macOS 12+:** `Tylia_<version>_universal.dmg` (Apple silicon and Intel).
@@ -82,7 +82,7 @@ You need Rust stable (via rustup), Node.js 24 LTS, pnpm 12 and Git 2.40 or newer
 Exact install commands are in [CONTRIBUTING.md](CONTRIBUTING.md#prerequisites).
 
 ```sh
-git clone https://github.com/tylia-dev/tylia.git
+git clone https://github.com/gilgil28/tylia.git
 cd tylia
 pnpm install
 pnpm tauri dev

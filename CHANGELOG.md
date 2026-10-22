@@ -101,5 +101,5 @@ The first release.
 - **Packages:** Windows installer (NSIS) and MSI, macOS universal dmg, Linux AppImage,
   deb and rpm, and an AUR package (`tylia-bin`).
 
-[Unreleased]: https://github.com/tylia-dev/tylia/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/tylia-dev/tylia/releases/tag/v0.1.0
+[Unreleased]: https://github.com/gilgil28/tylia/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/gilgil28/tylia/releases/tag/v0.1.0

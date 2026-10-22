@@ -8,10 +8,10 @@
   "homepage": "https://tylia.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tylia-dev/tylia.git"
+    "url": "git+https://github.com/gilgil28/tylia.git"
   },
   "bugs": {
-    "url": "https://github.com/tylia-dev/tylia/issues"
+    "url": "https://github.com/gilgil28/tylia/issues"
   },
   "type": "module",
   "packageManager": "pnpm@12.14.0",

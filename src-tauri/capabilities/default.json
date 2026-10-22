@@ -18,7 +18,7 @@
     "opener:allow-reveal-item-in-dir",
     {
       "identifier": "opener:allow-open-url",
-      "allow": [{ "url": "https://github.com/tylia-dev/tylia/releases/latest" }]
+      "allow": [{ "url": "https://github.com/gilgil28/tylia/releases/latest" }]
     }
   ]
 }

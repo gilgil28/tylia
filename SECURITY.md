@@ -16,7 +16,7 @@ newest version to get them.
 Please do not open a public issue for a security problem. Report it privately instead:
 
 - **GitHub private vulnerability reporting (preferred):**
-  https://github.com/tylia-dev/tylia/security/advisories/new
+  https://github.com/gilgil28/tylia/security/advisories/new
 - **Email:** `security@tylia.dev` (to be set up; use GitHub until this mailbox exists)
 
 Include what you can:

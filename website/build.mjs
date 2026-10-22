@@ -15,7 +15,7 @@ import { cpSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:f
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const RELEASES_URL = "https://github.com/tylia-dev/tylia/releases";
+const RELEASES_URL = "https://github.com/gilgil28/tylia/releases";
 const PLACEHOLDER = "__VERSION__";
 const SELF = "build.mjs";
 

@@ -25,8 +25,8 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
    apex domain: `A` records to 185.199.108.153, 185.199.109.153, 185.199.110.153 and
    185.199.111.153 (and `AAAA` to 2606:50c0:8000::153, 2606:50c0:8001::153,
    2606:50c0:8002::153 and 2606:50c0:8003::153). `.dev` is on the HSTS preload list, so
-   the site only works over HTTPS. Verify the domain for the organization (Settings →
-   Pages → Verified domains) so nobody else can claim it.
+   the site only works over HTTPS. Verify the domain for your account (your profile's
+   Settings → Pages → Verified domains) so nobody else can claim it.
 3. **AUR.** Create the `tylia-bin` package on aur.archlinux.org with a maintainer SSH key.
    The package sources are in `packaging/aur/tylia-bin`.
 
@@ -66,7 +66,7 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
 
 Installed copies with "Check for updates" on find the new version at their next start.
 Anyone can check from Settings → General → "Check now". The check fetches
-`https://github.com/tylia-dev/tylia/releases/latest/download/latest.json`; the URL carries
+`https://github.com/gilgil28/tylia/releases/latest/download/latest.json`; the URL carries
 no version or machine details. The bundle it points to is installed only if its signature
 matches the public key built into the app.
 

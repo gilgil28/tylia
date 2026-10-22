@@ -44,7 +44,7 @@ sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev
 ## Getting started
 
 ```sh
-git clone https://github.com/tylia-dev/tylia.git
+git clone https://github.com/gilgil28/tylia.git
 cd tylia
 pnpm install
 pnpm tauri dev

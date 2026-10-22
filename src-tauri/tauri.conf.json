@@ -90,7 +90,7 @@
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDc5NzQ0Q0Y5OEM2MUNFREQKUldUZHptR00rVXgwZVJrWFd2VTMySTRlQ2kzZDYxS3V2NDdYSmdkNW95WjNpcjV5ejdXdHFkRlMK",
-      "endpoints": ["https://github.com/tylia-dev/tylia/releases/latest/download/latest.json"],
+      "endpoints": ["https://github.com/gilgil28/tylia/releases/latest/download/latest.json"],
       "windows": {
         "installMode": "passive"
       }

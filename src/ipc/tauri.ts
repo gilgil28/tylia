@@ -16,7 +16,7 @@ import type { RepoChanged } from "./bindings/RepoChanged";
 const appWindow = getCurrentWindow();
 
 /** The only URL the app opens (capabilities/default.json allows just this one). */
-const RELEASES_URL = "https://github.com/tylia-dev/tylia/releases/latest";
+const RELEASES_URL = "https://github.com/gilgil28/tylia/releases/latest";
 
 function channel<T>(handler: (message: T) => void): Channel<T> {
   const ch = new Channel<T>();

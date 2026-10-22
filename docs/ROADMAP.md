@@ -306,12 +306,12 @@ small `target/`, and adds three long-requested power features. It ends with **v0
     runs release builds from `target\release\tylia.exe`. Use scratch repositories in
     `C:\Dev\tylia-test-repos` for anything that writes.
 - **The user provides** (ask at the start; nothing is published without them):
-  - the GitHub repository `tylia-dev/tylia` pushed, with the `TAURI_SIGNING_*` secrets;
+  - the GitHub repository `gilgil28/tylia` pushed, with the `TAURI_SIGNING_*` secrets;
   - an AUR account with an SSH key;
   - a Flathub submission (GitHub account);
   - a fork for winget-pkgs PRs (or a token for an automation);
-  - a Homebrew tap repository (`tylia-dev/homebrew-tap`);
-  - a Scoop bucket repository (`tylia-dev/scoop-bucket`).
+  - a Homebrew tap repository (`gilgil28/homebrew-tap`);
+  - a Scoop bucket repository (`gilgil28/scoop-bucket`).
 
 #### A. Build hygiene (first)
 
@@ -426,11 +426,11 @@ Windows:
   - **Hooks:** `installerHooks` (`src-tauri/windows/hooks.nsh`) for OS integration (D).
 - [ ] **MSI:** the same branding and the same registry entries, via a WiX
       `fragmentPaths` fragment.
-- [ ] **winget:** manifest `tylia-dev.Tylia` (installer type `nullsoft`, user scope).
+- [ ] **winget:** manifest `Tylia.Tylia` (installer type `nullsoft`, user scope).
       Submitted to microsoft/winget-pkgs. The release workflow opens the update PR on
       each release (e.g. `vedantmgoyal9/winget-releaser`; verify the current action and
       its license first).
-- [ ] **Scoop:** a bucket `tylia-dev/scoop-bucket` with `tylia.json`, `checkver` and
+- [ ] **Scoop:** a bucket `gilgil28/scoop-bucket` with `tylia.json`, `checkver` and
       `autoupdate` against GitHub releases. The NSIS installer can't be "portable", so
       the manifest uses the release's plain zipped binary. **Decide**: add
       `uploadPlainBinary` and a zip to the release (recommendation: yes, a
@@ -439,7 +439,7 @@ Windows:
 macOS:
 
 - [ ] **dmg** branding (B).
-- [ ] **Homebrew cask** `tylia` in `tylia-dev/homebrew-tap`, with url, sha256,
+- [ ] **Homebrew cask** `tylia` in `gilgil28/homebrew-tap`, with url, sha256,
       `auto_updates true`, and a `zap` stanza for
       `~/Library/Application Support/dev.tylia.app`. Move it to homebrew-cask once the
       project meets its notability rules.

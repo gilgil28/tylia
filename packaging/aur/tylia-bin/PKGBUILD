@@ -1,4 +1,4 @@
-# Maintainer: The Tylia contributors <https://github.com/tylia-dev/tylia>
+# Maintainer: The Tylia contributors <https://github.com/gilgil28/tylia>
 # Repackages the .deb from the GitHub release. Bump with ../update.sh <version>.
 
 pkgname=tylia-bin
@@ -12,9 +12,9 @@ depends=('webkit2gtk-4.1' 'gtk3' 'glib2' 'cairo' 'gdk-pixbuf2' 'libsoup3' 'dbus'
 provides=('tylia')
 conflicts=('tylia')
 options=('!strip' '!debug')
-source=("LICENSE-MIT-${pkgver}::https://raw.githubusercontent.com/tylia-dev/tylia/v${pkgver}/LICENSE-MIT"
-        "LICENSE-APACHE-${pkgver}::https://raw.githubusercontent.com/tylia-dev/tylia/v${pkgver}/LICENSE-APACHE")
-source_x86_64=("https://github.com/tylia-dev/tylia/releases/download/v${pkgver}/Tylia_${pkgver}_amd64.deb")
+source=("LICENSE-MIT-${pkgver}::https://raw.githubusercontent.com/gilgil28/tylia/v${pkgver}/LICENSE-MIT"
+        "LICENSE-APACHE-${pkgver}::https://raw.githubusercontent.com/gilgil28/tylia/v${pkgver}/LICENSE-APACHE")
+source_x86_64=("https://github.com/gilgil28/tylia/releases/download/v${pkgver}/Tylia_${pkgver}_amd64.deb")
 sha256sums=('SKIP'
             'SKIP')
 sha256sums_x86_64=('SKIP')

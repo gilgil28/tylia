@@ -15,9 +15,10 @@ near the top of the README.
   crates.io `tylia` and `tylia-git` free; npm `tylia` free; domain `tylia.dev` unregistered
   (`tylia.com`, `.net`, `.org`, `.io` are taken by others); no developer tools on GitHub
   use the name. Trademarks were not checked.
-- GitHub: org **`tylia-dev`**, repository **`github.com/tylia-dev/tylia`** — use this URL
-  in README, `Cargo.toml` (`repository`), `package.json` (`repository`, `bugs`), issue
-  templates and SECURITY.md.
+- GitHub: repository **`github.com/gilgil28/tylia`** (the maintainer's account; chosen
+  2026-10-22 instead of a `tylia-dev` organization) — use this URL in README, `Cargo.toml`
+  (`repository`), `package.json` (`repository`, `bugs`), issue templates, SECURITY.md, the
+  website, packaging, the updater endpoint and the releases link the app may open.
 - Website: **https://tylia.dev** — use it as `homepage` in `Cargo.toml`/`package.json`,
   in README and the About dialog. `.dev` is HTTPS-only (HSTS preload); the site will be
   served by GitHub Pages from the repo (Phase 6). Security contact placeholder in
