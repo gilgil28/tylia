@@ -17,6 +17,7 @@ export type { ChangedFile } from "./bindings/ChangedFile";
 export type { CheckoutOutcome } from "./bindings/CheckoutOutcome";
 export type { CheckoutRequest } from "./bindings/CheckoutRequest";
 export type { CheckoutTarget } from "./bindings/CheckoutTarget";
+export type { CliLinkOutcome } from "./bindings/CliLinkOutcome";
 export type { CloneRequest } from "./bindings/CloneRequest";
 export type { CommitDetails } from "./bindings/CommitDetails";
 export type { ConflictFile } from "./bindings/ConflictFile";

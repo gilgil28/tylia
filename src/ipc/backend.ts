@@ -3,6 +3,7 @@ import type { Blame } from "./bindings/Blame";
 import type { BlockOutcome } from "./bindings/BlockOutcome";
 import type { BlockResolution } from "./bindings/BlockResolution";
 import type { CheckoutOutcome } from "./bindings/CheckoutOutcome";
+import type { CliLinkOutcome } from "./bindings/CliLinkOutcome";
 import type { CheckoutRequest } from "./bindings/CheckoutRequest";
 import type { CloneRequest } from "./bindings/CloneRequest";
 import type { ConflictFile } from "./bindings/ConflictFile";
@@ -75,6 +76,8 @@ export interface Backend {
   installUpdate(onProgress: (progress: DownloadProgress) => void): Promise<void>;
   /** Opens Tylia's releases page in the browser. */
   openDownloadPage(): Promise<void>;
+  /** macOS: links /usr/local/bin/tylia to the app (asks for a password if needed). */
+  installCli(): Promise<CliLinkOutcome>;
 
   openRepo(path: string): Promise<RepoInfo>;
   initRepo(path: string): Promise<RepoInfo>;

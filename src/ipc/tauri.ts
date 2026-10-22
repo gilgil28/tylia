@@ -33,6 +33,7 @@ export const backend: Backend = {
   installUpdate: (onProgress) =>
     invoke("install_update", { onProgress: channel<DownloadProgress>(onProgress) }),
   openDownloadPage: () => openUrl(RELEASES_URL),
+  installCli: () => invoke("install_cli"),
 
   openRepo: (path) => invoke("open_repo", { path }),
   initRepo: (path) => invoke("init_repo", { path }),

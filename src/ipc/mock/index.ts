@@ -204,6 +204,15 @@ export const backend: Backend = {
     };
   },
   openDownloadPage: async () => {},
+  // `?cli=installed|cancelled` simulates an existing link or a dismissed password prompt.
+  installCli: async () => {
+    const mode = new URLSearchParams(location.search).get("cli");
+    return mode === "installed"
+      ? "alreadyInstalled"
+      : mode === "cancelled"
+        ? "cancelled"
+        : "installed";
+  },
   installUpdate: async (onProgress) => {
     const total = 12_000_000;
     for (let downloaded = 0; downloaded <= total; downloaded += 3_000_000) {

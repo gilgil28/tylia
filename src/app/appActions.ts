@@ -12,6 +12,7 @@ import {
   RefreshCw,
   Rows3,
   Settings as SettingsIcon,
+  SquareTerminal,
   Sun,
   X,
 } from "lucide-react";
@@ -22,6 +23,7 @@ import { t } from "@/i18n";
 
 import { useRegisterActions, type Action } from "./actions";
 import { distribution, platform } from "./boot";
+import { installCli } from "./installCli";
 import { useOverlays } from "./overlays";
 import { useSettings } from "./settings";
 import { useWorkspace } from "./workspace";
@@ -84,6 +86,19 @@ export function useAppActions() {
       hidden: distribution === "flatpak",
       run: () => void useUpdate.getState().check("palette"),
     },
+    // Elsewhere the installer or the package puts the command on PATH.
+    ...(platform === "macos"
+      ? [
+          {
+            id: "app.installCli",
+            title: t("actions.installCli"),
+            group: "app",
+            icon: SquareTerminal,
+            keywords: ["command line", "cli", "shell", "path", "terminal"],
+            run: installCli,
+          } satisfies Action,
+        ]
+      : []),
     {
       id: "app.openRepo",
       title: t("actions.openRepo"),

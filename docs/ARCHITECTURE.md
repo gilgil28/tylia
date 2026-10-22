@@ -688,6 +688,12 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   shows the "not a repository" toast.
 - **macOS** sends folders opened from Finder or dropped on the Dock icon as
   `RunEvent::Opened`; they join the same queue.
+- **The `tylia` command on macOS** (`cli_link.rs`, palette: "Install the tylia command"): a
+  symbolic link `/usr/local/bin/tylia` → the binary inside Tylia.app. Without write access
+  to `/usr/local/bin`, `osascript … with administrator privileges` asks for a password; the
+  path is passed as `argv` and reaches the shell through `quoted form of`. It refuses a
+  translocated copy (run from Downloads), a non-bundle build and an existing file that isn't
+  a link; an older link is replaced. The Homebrew cask links the command itself.
 - **Windows installers** (`src-tauri/tauri.windows.conf.json`, merged by Tauri on Windows):
   - **NSIS** installs for the current user (no admin), Start Menu folder `Tylia`, English.
     `windows/hooks.nsh` adds two welcome-page options, both on by default and in passive

@@ -1,4 +1,5 @@
 pub mod askpass;
+mod cli_link;
 mod commands;
 mod error;
 pub mod launch;
@@ -100,6 +101,7 @@ pub fn run(open: Vec<PathBuf>) {
             commands::ignore_pattern,
             commands::open_file,
             commands::open_terminal,
+            commands::install_cli,
             commands::create_branch,
             commands::checkout,
             commands::rename_branch,

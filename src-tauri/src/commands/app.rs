@@ -2,6 +2,7 @@ use serde_json::Value;
 use tauri::{State, WebviewWindow};
 use tylia_git::GitInfo;
 
+use crate::cli_link::CliLinkOutcome;
 use crate::error::IpcError;
 use crate::settings::Settings;
 use crate::state::{AppState, git};
@@ -32,4 +33,20 @@ pub fn load_ui_state(state: State<'_, AppState>) -> Value {
 #[tauri::command]
 pub fn save_ui_state(value: Value, state: State<'_, AppState>) -> Result<(), IpcError> {
     Ok(state.ui_state.save(&value)?)
+}
+
+/// "Install the tylia command": macOS only (`cli_link.rs`); elsewhere the installer or the
+/// package puts it on `PATH`.
+#[tauri::command]
+pub fn install_cli() -> Result<CliLinkOutcome, IpcError> {
+    #[cfg(target_os = "macos")]
+    {
+        crate::cli_link::install()
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        Err(IpcError::invalid(
+            "The installer or package already puts the tylia command on PATH.".to_owned(),
+        ))
+    }
 }

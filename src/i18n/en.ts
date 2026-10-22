@@ -642,6 +642,12 @@ export const en = {
   "actions.settings": "Settings…",
   "actions.keyboard": "Keyboard shortcuts…",
   "actions.checkUpdates": "Check for updates",
+  "actions.installCli": "Install the tylia command",
+  "cli.installed": "The tylia command is installed",
+  "cli.alreadyInstalled": "The tylia command is already installed",
+  "cli.usage":
+    "In a new terminal, tylia <folder> opens a repository here (tylia . for the current one).",
+  "cli.failed": "Couldn’t install the tylia command",
   "actions.openTerminal": "Open in terminal",
   "actions.openTerminalFailed": "Couldn’t open a terminal",
   "actions.openRepo": "Open repository…",
