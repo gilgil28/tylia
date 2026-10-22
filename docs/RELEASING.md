@@ -42,6 +42,12 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
    installs the release's `Tylia_<v>_x64_portable.zip` (the release workflow builds it),
    because its apps can't run installers.
 
+5. **Homebrew.** A public repository `gilgil28/homebrew-tap` with `Casks/tylia.rb` (from
+   `packaging/homebrew/tylia.rb`). Users install with
+   `brew install --cask gilgil28/tap/tylia`. Check it on a Mac with
+   `brew audit --cask --online gilgil28/tap/tylia` and `brew style`. Moving it to
+   homebrew-cask needs the project to meet Homebrew's notability rules.
+
 ## Making a release
 
 1. Update `CHANGELOG.md`: move the entries from "Unreleased" into a new
