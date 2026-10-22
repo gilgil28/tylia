@@ -15,6 +15,18 @@ pub async fn save_commit_patch(repo: String, oid: String, file: String) -> Resul
         .await?)
 }
 
+/// Writes `oids` (oldest first) as a numbered series into `dir`; returns the files.
+#[tauri::command]
+pub async fn save_commit_patches(
+    repo: String,
+    oids: Vec<String>,
+    dir: String,
+) -> Result<Vec<String>, IpcError> {
+    Ok(git()?
+        .save_commit_patches(Path::new(&repo), &oids, Path::new(&dir))
+        .await?)
+}
+
 #[tauri::command]
 pub async fn save_changes_patch(repo: String, staged: bool, file: String) -> Result<(), IpcError> {
     Ok(git()?

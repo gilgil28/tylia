@@ -42,7 +42,12 @@ import {
   useOperations,
 } from "@/features/remote/operations";
 import { exportArchive } from "@/features/archive/archive";
-import { pickPatch, saveChangesPatch, saveCommitPatch } from "@/features/patch/patch";
+import {
+  pickPatch,
+  saveChangesPatch,
+  saveCommitPatch,
+  saveCommitPatches,
+} from "@/features/patch/patch";
 import { useRemoteDialog } from "@/features/remote/RemoteDialogs";
 import { t } from "@/i18n";
 import { workingDiffRequest } from "@/features/changes/StagingDiffPane";
@@ -83,6 +88,7 @@ export function useRepoActions(
   const tracked = new Set(refs?.branches.map((x) => x.upstream));
   const selectedFile = useRepoUi((s) => s.selectedFile);
   const selection = useRepoUi((s) => s.selection);
+  const selectedOids = useRepoUi((s) => s.selectedOids);
   const customActions = useSettings((s) => s.settings.customActions);
 
   // The selected file's diff, for the external diff tool.
@@ -187,6 +193,9 @@ export function useRepoActions(
       disabled: selection?.kind !== "commit",
       run: () => {
         if (selection?.kind !== "commit") return;
+        // Several selected: a numbered series, oldest first.
+        if (selectedOids.length > 1)
+          return void saveCommitPatches(repo, [...selectedOids].reverse());
         const commit = client.getQueryData<CommitDetails>(["commit", repo, selection.oid]);
         void saveCommitPatch(repo, selection.oid, commit?.subject ?? selection.oid);
       },

@@ -17,6 +17,7 @@ import { SplitPane } from "@/ui/SplitPane";
 
 import { commitDiffRequest, DiffPane } from "./DiffPane";
 import { FileList, FileViewToggle, type ListedFile } from "./FileList";
+import { SeveralCommits } from "./SeveralCommits";
 
 function CopyHash({ oid }: { oid: string }) {
   const [copied, setCopied] = useState(false);
@@ -239,6 +240,7 @@ export function DetailsPane({
   focusToken: number;
 }) {
   const selection = useRepoUi((s) => s.selection);
+  const selectedOids = useRepoUi((s) => s.selectedOids);
   const updateLayout = useWorkspace((s) => s.updateLayout);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -257,6 +259,8 @@ export function DetailsPane({
     return () => cancelAnimationFrame(frame);
   }, [focusToken]);
 
+  const several = selectedOids.length >= 2;
+  if (several) return <SeveralCommits repo={repo} oids={selectedOids} />;
   if (!selection) {
     return <EmptyState icon={Info} title={t("details.selectCommit")} className="h-full bg-app" />;
   }

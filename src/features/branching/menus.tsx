@@ -29,11 +29,11 @@ import { shortHash } from "@/app/format";
 import { exportArchive } from "@/features/archive/archive";
 import { CustomActionItems } from "@/features/custom-actions/CustomActionItems";
 import { classifyFlowBranch, useFlowState } from "@/features/flow/useFlow";
-import { saveCommitPatch } from "@/features/patch/patch";
+import { saveCommitPatch, saveCommitPatches } from "@/features/patch/patch";
 import { useRebaseBase } from "@/features/rebase/useRebaseBase";
 import { pushRepo, pushTag } from "@/features/remote/operations";
 import { useRepoUi } from "@/features/repo/repo-store";
-import { t } from "@/i18n";
+import { plural, t } from "@/i18n";
 import type { Branch, RefsSnapshot, RemoteBranch, Stash, Tag, WorkingStatus } from "@/ipc";
 import type { ContextMenu, Menu } from "@/ui/Menu";
 
@@ -373,6 +373,38 @@ export function StashItems({
         onSelect={() => open(repo, { mode: "dropStash", index, message: stash.message })}
       >
         {t("menu.dropStash")}
+      </M.Item>
+    </>
+  );
+}
+
+/**
+ * Several history rows selected together (`oids` newest first, as in the history): what can
+ * act on all of them. Cherry-picks go oldest first, reverts newest first.
+ */
+export function CommitsItems({ ctx, M, oids }: { ctx: MenuContext; M: M; oids: string[] }) {
+  const { repo, refs, b, busy, current } = ctx;
+  const oldestFirst = [...oids].reverse();
+  const commits = plural("count.commits", oids.length);
+  return (
+    <>
+      <M.Label>{t("menu.selected", { commits })}</M.Label>
+      <M.Item
+        icon={GitCommitHorizontal}
+        disabled={busy || oids.includes(refs.head.oid ?? "")}
+        onSelect={() => void b.cherryPickMany(oldestFirst)}
+      >
+        {t("menu.cherryPickMany", { commits, branch: current })}
+      </M.Item>
+      <M.Item icon={Undo2} disabled={busy} onSelect={() => void b.revertMany(oids)}>
+        {t("menu.revertMany", { commits })}
+      </M.Item>
+      <M.Separator />
+      <M.Item icon={FileDown} onSelect={() => void saveCommitPatches(repo, oldestFirst)}>
+        {t("patch.saveCommits")}
+      </M.Item>
+      <M.Item icon={Copy} onSelect={() => copy(oids.join("\n"))}>
+        {t("menu.copyHashes")}
       </M.Item>
     </>
   );

@@ -798,3 +798,16 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   - **UI:** commit and branch menus, the Changes file menu (the selected files), and the
     palette as `custom.<id>` (rebindable; each for the selected commit, current branch or
     selected file). The output panel shows the command line, exit code, output and errors.
+
+## 5.21 Workflow polish (Phase 9)
+
+- **Several commits in the history** (`repo-store.ts`, `history/multiSelect.ts`):
+  `selection` stays the focused commit, so everything single-commit is unchanged;
+  `selectedOids` holds the commits selected with it (newest first, empty for one). Clicks
+  and keys go through `nextSelection` (plain replaces, Ctrl/Cmd toggles, Shift ranges from
+  the anchor; only commit rows), which is unit-tested. A right-click inside the selection
+  opens `CommitsItems`: cherry-pick (`cherry_pick_many`, oldest first, one sequencer
+  operation with the usual banner), revert (`revert_many`, newest first), a patch series
+  (`save_commit_patches`: format-patch into a staging folder inside the chosen one, then
+  moved, refusing if a name is taken, so nothing is overwritten) and copy hashes. The
+  details pane shows `SeveralCommits` (authors, dates, files, from the first 100).

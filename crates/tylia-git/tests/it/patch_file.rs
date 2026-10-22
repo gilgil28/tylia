@@ -245,3 +245,57 @@ async fn nothing_to_save_and_files_that_arent_patches_are_refused() {
             .await,
     );
 }
+
+#[tokio::test]
+async fn several_commits_become_a_numbered_series_without_overwriting() {
+    let mut repo = repo();
+    repo.commit_file("f.txt", "1\n", "base");
+    repo.branch("feature");
+    let a = repo.commit_file("f.txt", "1\n2\n", "add two");
+    let b = repo.commit_file("f.txt", "1\n2\n3\n", "add three");
+    let dir = tempfile::tempdir().unwrap();
+    let written = git()
+        .save_commit_patches(repo.path(), &[a.clone(), b.clone()], dir.path())
+        .await
+        .unwrap();
+    let names: Vec<_> = written
+        .iter()
+        .map(|p| {
+            std::path::Path::new(p)
+                .file_name()
+                .unwrap()
+                .to_string_lossy()
+                .into_owned()
+        })
+        .collect();
+    assert_eq!(names, ["0001-add-two.patch", "0002-add-three.patch"]);
+    // No staging folder is left behind.
+    assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 2);
+
+    // The series applies in order on another branch.
+    repo.checkout("main");
+    for file in &written {
+        let outcome = git()
+            .apply_patch_file(
+                repo.path(),
+                std::path::Path::new(file),
+                PatchApplyMode::Commits,
+            )
+            .await
+            .unwrap();
+        assert_eq!(outcome, IntegrateOutcome::Done);
+    }
+    assert_eq!(repo.read("f.txt"), "1\n2\n3\n");
+
+    // Saving again into the same folder refuses and changes nothing there.
+    let before = std::fs::read(&written[0]).unwrap();
+    std::fs::write(&written[0], "mine").unwrap();
+    assert_invalid(
+        git()
+            .save_commit_patches(repo.path(), &[a, b], dir.path())
+            .await,
+    );
+    assert_eq!(std::fs::read(&written[0]).unwrap(), b"mine");
+    assert_ne!(before, b"mine");
+    assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 2);
+}

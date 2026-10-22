@@ -2,6 +2,7 @@
 //! with `git diff --binary`, and previewing / applying one (`git apply`, `git am --3way`).
 //! Not to be confused with `patch.rs`, which builds the patches of line staging.
 
+use std::ffi::OsString;
 use std::path::Path;
 
 use serde::{Deserialize, Serialize};
@@ -91,6 +92,67 @@ impl Git {
             )
             .await?;
         Ok(std::fs::write(file, out.stdout)?)
+    }
+
+    /// Saves `oids` (oldest first) as a numbered patch series in `dir` (`0001-….patch`,
+    /// `0002-…`), the files `git format-patch` writes for that range. Refuses before writing
+    /// anything if a file of the same name is already there; returns the files written.
+    pub async fn save_commit_patches(
+        &self,
+        repo: &Path,
+        oids: &[String],
+        dir: &Path,
+    ) -> Result<Vec<String>, GitError> {
+        if oids.is_empty() {
+            return Err(invalid("No commits were given."));
+        }
+        let mut targets = Vec::with_capacity(oids.len());
+        for oid in oids {
+            targets.push(self.resolve_commit(repo, oid).await?);
+        }
+        if !dir.is_dir() {
+            return Err(invalid(format!("{} isn't a folder.", dir.display())));
+        }
+        // Written to a fresh folder first: format-patch overwrites files of the same name.
+        let staging = dir.join(format!(".tylia-patches-{}", std::process::id()));
+        std::fs::create_dir(&staging)?;
+        let result = async {
+            let mut names = Vec::new();
+            for (i, oid) in targets.iter().enumerate() {
+                let args: Vec<OsString> = vec![
+                    "format-patch".into(),
+                    "-1".into(),
+                    "--no-signature".into(),
+                    "--start-number".into(),
+                    (i + 1).to_string().into(),
+                    "-o".into(),
+                    staging.clone().into(),
+                    oid.into(),
+                ];
+                let out = self.run(Some(repo), args).await?;
+                for line in lossy(&out.stdout).lines() {
+                    if let Some(name) = Path::new(line.trim()).file_name() {
+                        names.push(name.to_owned());
+                    }
+                }
+            }
+            if let Some(taken) = names.iter().find(|n| dir.join(n).exists()) {
+                return Err(invalid(format!(
+                    "{} already has a file named {}. Choose another folder.",
+                    dir.display(),
+                    taken.to_string_lossy()
+                )));
+            }
+            let mut written = Vec::new();
+            for name in &names {
+                std::fs::rename(staging.join(name), dir.join(name))?;
+                written.push(dir.join(name).to_string_lossy().into_owned());
+            }
+            Ok(written)
+        }
+        .await;
+        let _ = std::fs::remove_dir_all(&staging);
+        result
     }
 
     /// Saves the staged (`staged`) or unstaged changes of tracked files as a diff with

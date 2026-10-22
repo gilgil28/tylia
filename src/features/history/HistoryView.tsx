@@ -16,9 +16,10 @@ import { shortHash, timeLabel } from "@/app/format";
 import { useRegisterActions } from "@/app/actions";
 import { useSettings } from "@/app/settings";
 import { useDebounced } from "@/app/useDebounced";
+import { isMod } from "@/app/keyboard";
 import { useWorkspace, type ColumnId, type RepoLayout } from "@/app/workspace";
 import { useBranchDialog } from "@/features/branching/dialog-store";
-import { CommitItems, useMenuContext } from "@/features/branching/menus";
+import { CommitItems, CommitsItems, useMenuContext } from "@/features/branching/menus";
 import { DropMenu, useRefDrag, type Dropped } from "@/features/branching/RefDrag";
 import { COMFORTABLE, COMPACT, graphWidth, MAX_LANES } from "@/features/graph/geometry";
 import { GraphCanvas } from "@/features/graph/GraphCanvas";
@@ -38,6 +39,7 @@ import { toast } from "@/ui/Toast";
 
 import { CommitGraphOffer } from "./CommitGraphOffer";
 import type { HistoryStream } from "./history-stream";
+import { nextSelection, type SelectHow } from "./multiSelect";
 import { refsByCommit } from "./ref-badges";
 
 const COLUMN_LABELS: Record<ColumnId, string> = {
@@ -89,6 +91,8 @@ export function HistoryView({
   const rowHeight = metrics.rowHeight;
   const selection = useRepoUi((s) => s.selection);
   const select = useRepoUi((s) => s.select);
+  const selectedOids = useRepoUi((s) => s.selectedOids);
+  const selectMany = useRepoUi((s) => s.selectMany);
   const search = useRepoUi((s) => s.search);
   const setSearch = useRepoUi((s) => s.setSearch);
   const setView = useRepoUi((s) => s.setView);
@@ -103,9 +107,9 @@ export function HistoryView({
   const menuCtx = useMenuContext(repo, refs, status);
   const openDialog = useBranchDialog((s) => s.open);
   // The row the context menu is for: a commit, or the uncommitted-changes row.
-  const [menuRow, setMenuRow] = useState<{ oid: string; subject: string } | "uncommitted" | null>(
-    null,
-  );
+  const [menuRow, setMenuRow] = useState<
+    { oid: string; subject: string } | "uncommitted" | "several" | null
+  >(null);
   const [dropped, setDropped] = useState<Dropped | null>(null);
 
   // Search: matching commit ids from the backend (hash prefixes also match loaded rows).
@@ -182,6 +186,38 @@ export function HistoryView({
     },
     [itemAt, select, setView, virtualizer],
   );
+
+  // Several commits: Ctrl/Cmd+click toggles, Shift+click / Shift+↑↓ extend from the anchor.
+  const several = new Set(selectedOids);
+  const rowOf = (oid: string) =>
+    filtered
+      ? filtered.findIndex((r) => r.oid === oid)
+      : (stream.index.get(oid) ?? -1 - offset) + offset;
+  const anchor = useRef<string | null>(null);
+  const pick = (index: number, how: SelectHow) => {
+    const it = itemAt(index);
+    if (how === "replace" || it?.kind !== "commit" || selectedIndex < 0) {
+      if (it?.kind === "commit") anchor.current = it.row.oid;
+      selectIndex(index);
+      return;
+    }
+    const rows = selectedOids.length > 1 ? selectedOids.map(rowOf) : [selectedIndex];
+    const anchorRow = anchor.current ? rowOf(anchor.current) : selectedIndex;
+    const next = nextSelection(
+      { rows: rows.filter((r) => r >= 0), anchor: anchorRow >= 0 ? anchorRow : null },
+      index,
+      how,
+      (row) => itemAt(row)?.kind === "commit",
+    );
+    const oidAt = (row: number) => {
+      const at = itemAt(row);
+      return at?.kind === "commit" ? at.row.oid : null;
+    };
+    anchor.current = oidAt(next.anchor);
+    const oids = next.rows.map(oidAt).filter((o): o is string => o !== null);
+    selectMany(oids, oidAt(next.primary) ?? oids[0]!);
+    virtualizer.scrollToIndex(index);
+  };
 
   // Hover: underline the hovered commit's first-parent path in the graph.
   const [hovered, setHovered] = useState<string | null>(null);
@@ -337,7 +373,10 @@ export function HistoryView({
     };
     if (e.key in next) {
       e.preventDefault();
-      selectIndex(next[e.key]!);
+      pick(next[e.key]!, e.shiftKey ? "range" : "replace");
+    } else if (e.key === "Escape" && selectedOids.length > 1 && selectedIndex >= 0) {
+      e.preventDefault();
+      selectIndex(selectedIndex);
     } else if (e.key === "Enter") {
       e.preventDefault();
       onActivate();
@@ -552,6 +591,11 @@ export function HistoryView({
                   const it = el ? itemAt(Number(el.dataset.index)) : undefined;
                   // Not on a row: no menu (and no browser menu either).
                   if (!it || !menuCtx) return e.preventDefault();
+                  // Inside a multi-selection: a menu for all of them.
+                  if (it.kind === "commit" && several.has(it.row.oid)) {
+                    setMenuRow("several");
+                    return;
+                  }
                   selectIndex(Number(el!.dataset.index));
                   setMenuRow(
                     it.kind === "commit"
@@ -562,14 +606,20 @@ export function HistoryView({
               >
                 {range.map((v) => {
                   const it = itemAt(v.index)!;
-                  const selected = v.index === selectedIndex;
+                  const selected =
+                    v.index === selectedIndex || (it.kind === "commit" && several.has(it.row.oid));
                   return (
                     <div
                       key={it.kind === "commit" ? it.row.oid : "uncommitted"}
                       role="row"
                       aria-selected={selected}
                       data-index={v.index}
-                      onMouseDown={(e) => e.button === 0 && selectIndex(v.index)}
+                      onMouseDown={(e) => {
+                        if (e.button !== 0) return;
+                        // Shift+click would also select text.
+                        if (e.shiftKey) e.preventDefault();
+                        pick(v.index, e.shiftKey ? "range" : isMod(e) ? "toggle" : "replace");
+                      }}
                       onMouseEnter={() => setHovered(it.kind === "commit" ? it.row.oid : null)}
                       onDoubleClick={onActivate}
                       style={{
@@ -615,7 +665,10 @@ export function HistoryView({
                   </ContextMenu.Item>
                 </>
               )}
-              {menuCtx && menuRow && menuRow !== "uncommitted" && (
+              {menuCtx && menuRow === "several" && (
+                <CommitsItems ctx={menuCtx} M={ContextMenu} oids={selectedOids} />
+              )}
+              {menuCtx && menuRow && menuRow !== "uncommitted" && menuRow !== "several" && (
                 <CommitItems
                   ctx={menuCtx}
                   M={ContextMenu}

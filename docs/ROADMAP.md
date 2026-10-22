@@ -829,7 +829,7 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
 
 #### B. Several commits at once
 
-- [ ] **Multi-select in the history:** Ctrl/Cmd+click toggles a commit, Shift+click and
+- [x] **Multi-select in the history:** Ctrl/Cmd+click toggles a commit, Shift+click and
       Shift+↑/↓ extend a range, Esc goes back to one. The selection model in
       `repo-store.ts` becomes a set with an anchor (today it is one commit).
   - **Details pane:** for several commits, a summary (how many, authors, date span) and the
@@ -840,6 +840,11 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
     saying why.
   - **Tests:** unit tests for the selection model, e2e for the keyboard and mouse
     gestures, integration tests for the multi-commit patch series and cherry-pick.
+  - _Done 2026-10-22 (ARCHITECTURE §5.21). Changed from the plan: the menu of a
+    selection lists only what works on all of it (cherry-pick, revert, save as patches,
+    copy hashes) instead of greying out single-commit items; a right-click outside the
+    selection is that commit's own menu. Found on the way: muted text in a focused
+    selection was under 4.5:1 in the light theme (fixed in its own commit)._
 
 #### C. Hosting accounts
 

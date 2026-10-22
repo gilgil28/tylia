@@ -244,6 +244,12 @@ export interface Backend {
   cherryPick(repo: string, oid: string): Promise<IntegrateOutcome>;
   /** Writes commit `oid` as a mailbox patch (`git format-patch`) to `file`. */
   saveCommitPatch(repo: string, oid: string, file: string): Promise<void>;
+  /** Writes `oids` (oldest first) as `0001-….patch`, `0002-…` into `dir`; never overwrites. */
+  saveCommitPatches(repo: string, oids: string[], dir: string): Promise<string[]>;
+  /** Cherry-picks `oids`, oldest first, as one operation. */
+  cherryPickMany(repo: string, oids: string[]): Promise<IntegrateOutcome>;
+  /** Reverts `oids`, newest first, as one operation. */
+  revertMany(repo: string, oids: string[]): Promise<IntegrateOutcome>;
   /** Writes the staged or unstaged changes (`git diff --binary`) to `file`. */
   saveChangesPatch(repo: string, staged: boolean, file: string): Promise<void>;
   /** What applying the patch `file` would do, and whether it applies. */

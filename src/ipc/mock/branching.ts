@@ -90,6 +90,8 @@ type Methods = Pick<
   | "rebase"
   | "cherryPick"
   | "applyPatchFile"
+  | "cherryPickMany"
+  | "revertMany"
   | "revert"
   | "reset"
   | "continueOperation"
@@ -444,6 +446,12 @@ export function branchingMock(
       script().rebase === "conflicts" ? stopOnConflict("rebase", resolve(onto)) : "done",
     cherryPick: async (_repo, oid) =>
       script().cherryPick === "conflicts" ? stopOnConflict("cherryPick", oid.slice(0, 7)) : "done",
+    cherryPickMany: async (_repo, oids) =>
+      script().cherryPick === "conflicts"
+        ? stopOnConflict("cherryPick", oids[0]!.slice(0, 7))
+        : "done",
+    revertMany: async (_repo, oids) =>
+      script().revert === "conflicts" ? stopOnConflict("revert", oids[0]!.slice(0, 7)) : "done",
     applyPatchFile: async (_repo, _file, mode) =>
       mode === "commits" && script().applyPatch === "conflicts"
         ? stopOnConflict("am", "parser: handle empty input")

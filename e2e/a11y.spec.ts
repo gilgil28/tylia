@@ -78,6 +78,16 @@ for (const theme of ["light", "dark"]) {
       expect(await violations(page, { overlay: true })).toEqual([]);
     });
 
+    test("several commits selected", async ({ page }) => {
+      await open(page, theme);
+      const row = (s: string) => page.getByRole("row").filter({ hasText: s }).first();
+      await row("Make edge width configurable").click();
+      await row("Build partial patches").click({ modifiers: ["Shift"] });
+      await expect(page.getByRole("heading", { name: "4 commits selected" })).toBeVisible();
+      await page.waitForTimeout(300);
+      expect(await violations(page)).toEqual([]);
+    });
+
     test("apply patch", async ({ page }) => {
       await open(page, theme, "&repo=demo&patch=threeWay");
       await expect(page.getByText("Make edge width configurable").first()).toBeVisible();

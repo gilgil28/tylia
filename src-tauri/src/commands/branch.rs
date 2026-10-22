@@ -209,6 +209,28 @@ pub async fn revert(
     Ok(git()?.revert(Path::new(&repo), &oid).await?)
 }
 
+/// Cherry-picks `oids` (oldest first) as one operation.
+#[tauri::command]
+pub async fn cherry_pick_many(
+    repo: String,
+    oids: Vec<String>,
+    state: State<'_, AppState>,
+) -> Result<IntegrateOutcome, IpcError> {
+    let _guard = state.write_lock(&repo).await;
+    Ok(git()?.cherry_pick_many(Path::new(&repo), &oids).await?)
+}
+
+/// Reverts `oids` (newest first) as one operation.
+#[tauri::command]
+pub async fn revert_many(
+    repo: String,
+    oids: Vec<String>,
+    state: State<'_, AppState>,
+) -> Result<IntegrateOutcome, IpcError> {
+    let _guard = state.write_lock(&repo).await;
+    Ok(git()?.revert_many(Path::new(&repo), &oids).await?)
+}
+
 #[tauri::command]
 pub async fn reset(
     repo: String,

@@ -493,3 +493,8 @@ menus.tsx`); a commit's menu also has a submenu per ref on it, and "Merge option
   there are any: they block the commit), Staged, Unstaged. Staging moves a file up towards
   the commit; the commit message box stays at the bottom of the view. ↑ / ↓ past the end
   of one list continue in the next (Shift+↑ / ↓ still extend within one list).
+- **2026-10-22 — Several commits at once.** Ctrl/Cmd+click toggles a history row,
+  Shift+click and Shift+↑ / ↓ select a range, a plain click or ↑ / ↓ and Esc go back to one.
+  All selected rows get the selection colour. The details pane says how many, by whom,
+  over which dates and which files they touch; right-clicking inside the selection offers
+  only what works on all of them.

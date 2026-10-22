@@ -7,7 +7,7 @@ import { platform } from "./boot";
 import { useSettings } from "./settings";
 
 /** True for Cmd on macOS, Ctrl elsewhere (and not both). */
-export function isMod(e: KeyboardEvent | React.KeyboardEvent): boolean {
+export function isMod(e: { metaKey: boolean; ctrlKey: boolean }): boolean {
   return platform === "macos" ? e.metaKey && !e.ctrlKey : e.ctrlKey && !e.metaKey;
 }
 

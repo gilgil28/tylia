@@ -458,6 +458,26 @@ impl Git {
         }
     }
 
+    /// Cherry-picks several commits in the given order (oldest first, so each applies on top of
+    /// the one before), as one operation: conflicts stop it like a single pick.
+    pub async fn cherry_pick_many(
+        &self,
+        repo: &Path,
+        oids: &[String],
+    ) -> Result<IntegrateOutcome, GitError> {
+        self.pick_all(repo, oids, OperationKind::CherryPick).await
+    }
+
+    /// Reverts several commits in the given order (newest first, so later changes are undone
+    /// before the ones they build on), one reverting commit each.
+    pub async fn revert_many(
+        &self,
+        repo: &Path,
+        oids: &[String],
+    ) -> Result<IntegrateOutcome, GitError> {
+        self.pick_all(repo, oids, OperationKind::Revert).await
+    }
+
     /// Cherry-pick or revert of one commit.
     async fn pick(
         &self,
@@ -465,8 +485,28 @@ impl Git {
         oid: &str,
         kind: OperationKind,
     ) -> Result<IntegrateOutcome, GitError> {
+        self.pick_all(repo, &[oid.to_owned()], kind).await
+    }
+
+    /// Cherry-pick or revert of `oids`, in order. Merge commits are picked against their first
+    /// parent (`-m 1`, which Git 2.21+ also accepts for the other commits of the list).
+    async fn pick_all(
+        &self,
+        repo: &Path,
+        oids: &[String],
+        kind: OperationKind,
+    ) -> Result<IntegrateOutcome, GitError> {
+        if oids.is_empty() {
+            return Err(GitError::InvalidInput("No commits were given.".to_owned()));
+        }
         self.ensure_idle(repo).await?;
-        let target = self.resolve_commit(repo, oid).await?;
+        let mut targets = Vec::with_capacity(oids.len());
+        let mut merges = false;
+        for oid in oids {
+            let target = self.resolve_commit(repo, oid).await?;
+            merges |= self.parent_count(repo, &target).await? > 1;
+            targets.push(target);
+        }
         let mut args = vec![match kind {
             OperationKind::Revert => "revert",
             _ => "cherry-pick",
@@ -474,10 +514,10 @@ impl Git {
         if kind == OperationKind::Revert {
             args.push("--no-edit");
         }
-        if self.parent_count(repo, &target).await? > 1 {
+        if merges {
             args.extend(["-m", "1"]);
         }
-        args.push(&target);
+        args.extend(targets.iter().map(String::as_str));
         let before = self.head_oid(repo).await?;
         let attempt = self.attempt(repo, &args, &no_editor_env()).await?;
         if attempt.ok() || self.has_conflicts(repo).await? {

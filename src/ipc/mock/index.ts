@@ -498,6 +498,8 @@ export const backend: Backend = {
   pickSaveFile: async (_title, defaultPath) =>
     new URLSearchParams(location.search).get("save") === "cancel" ? null : defaultPath,
   saveCommitPatch: async () => {},
+  saveCommitPatches: async (_repo, oids, dir) =>
+    oids.map((_, i) => `${dir}/${String(i + 1).padStart(4, "0")}-patch.patch`),
   saveChangesPatch: async () => {},
   exportArchive: async () => {},
   // `?patch=threeWay|fails|diff` simulates other patch files and repository states.

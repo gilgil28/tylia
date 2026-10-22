@@ -728,3 +728,55 @@ async fn merge_of_a_commit_reports_its_short_oid() {
     let op = operation(&repo).await.unwrap();
     assert_eq!(op.incoming.as_deref(), Some(&feature[..7]));
 }
+
+#[tokio::test]
+async fn several_commits_cherry_pick_in_order_and_revert_newest_first() {
+    let mut repo = repo();
+    repo.commit_file("f.txt", FIVE, "base");
+    repo.branch("feature");
+    let one = repo.commit_file("f.txt", "one\n2\n3\n4\n5\n", "one");
+    let two = repo.commit_file("f.txt", "one\ntwo\n3\n4\n5\n", "two");
+    repo.checkout("main");
+    let outcome = git()
+        .cherry_pick_many(repo.path(), &[one.clone(), two.clone()])
+        .await
+        .unwrap();
+    assert_eq!(outcome, IntegrateOutcome::Done);
+    assert_eq!(repo.read("f.txt"), "one\ntwo\n3\n4\n5\n");
+    assert_eq!(repo.git(&["log", "-2", "--format=%s"]), "two\none");
+
+    let picked_two = head(&repo);
+    let picked_one = repo.git(&["rev-parse", "HEAD~1"]);
+    let outcome = git()
+        .revert_many(repo.path(), &[picked_two, picked_one])
+        .await
+        .unwrap();
+    assert_eq!(outcome, IntegrateOutcome::Done);
+    assert_eq!(repo.read("f.txt"), FIVE);
+    assert!(operation(&repo).await.is_none());
+    assert_invalid(git().cherry_pick_many(repo.path(), &[]).await);
+}
+
+#[tokio::test]
+async fn a_conflict_in_a_multi_pick_stops_with_the_rest_to_go() {
+    let mut repo = conflicting();
+    let feature = repo.git(&["rev-parse", "feature"]);
+    repo.checkout("feature");
+    let later = repo.commit_file("g.txt", "later\n", "later");
+    repo.checkout("main");
+    let outcome = git()
+        .cherry_pick_many(repo.path(), &[feature, later])
+        .await
+        .unwrap();
+    assert_eq!(outcome, IntegrateOutcome::Conflicts);
+    assert_eq!(
+        operation(&repo).await.unwrap().kind,
+        OperationKind::CherryPick
+    );
+    repo.write("f.txt", FIVE);
+    repo.git(&["add", "f.txt"]);
+    let outcome = git().continue_operation(repo.path()).await.unwrap();
+    assert_eq!(outcome, IntegrateOutcome::Done);
+    assert_eq!(repo.read("g.txt"), "later\n");
+    assert!(operation(&repo).await.is_none());
+}

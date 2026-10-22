@@ -44,6 +44,10 @@ export interface RepoUiState {
   fileReturn: { view: "history" | "changes"; selectedFile: SelectedFile | null } | null;
   draft: CommitDraft;
   selection: Selection;
+  /** Commits selected together (Ctrl/Cmd+click, Shift+click), in history order, newest
+   * first; `selection` is the one of them the details and single-commit actions use. Empty
+   * while one commit (or none) is selected. */
+  selectedOids: string[];
   selectedFile: SelectedFile | null;
   search: { field: SearchField; query: string };
   /** Commit to scroll to and select once it has been loaded. */
@@ -56,6 +60,8 @@ export interface RepoUiState {
   closeFile(): void;
   setDraft(draft: Partial<CommitDraft>): void;
   select(selection: Selection): void;
+  /** Selects several commits; `primary` (one of them) is the focused one. */
+  selectMany(oids: string[], primary: string): void;
   selectFile(file: SelectedFile | null): void;
   setSearch(search: Partial<RepoUiState["search"]>): void;
   reveal(oid: string): void;
@@ -71,6 +77,7 @@ export function createRepoStore(repo: string): StoreApi<RepoUiState> {
     view: "history",
     draft: { message: "", amend: false },
     selection: null,
+    selectedOids: [],
     selectedFile: null,
     search: { field: "message", query: "" },
     revealOid: null,
@@ -105,7 +112,16 @@ export function createRepoStore(repo: string): StoreApi<RepoUiState> {
       const same =
         prev?.kind === selection?.kind &&
         (prev?.kind !== "commit" || (selection?.kind === "commit" && prev.oid === selection.oid));
-      if (!same) set({ selection, selectedFile: null });
+      if (!same) set({ selection, selectedFile: null, selectedOids: [] });
+      else if (get().selectedOids.length > 0) set({ selectedOids: [] });
+    },
+    selectMany(oids, primary) {
+      const prev = get().selection;
+      set({
+        selection: { kind: "commit", oid: primary },
+        selectedOids: oids.length > 1 ? oids : [],
+        ...(prev?.kind === "commit" && prev.oid === primary ? {} : { selectedFile: null }),
+      });
     },
     selectFile(selectedFile) {
       set({ selectedFile });

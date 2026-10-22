@@ -298,6 +298,35 @@ export function useBranching(repo: string) {
         );
       },
 
+      /** Cherry-picks several commits, `oids` oldest first. */
+      cherryPickMany: async (oids: string[]) => {
+        const outcome = await run(() => ipc.cherryPickMany(repo, oids), t("branching.pickFailed"), {
+          refs: true,
+          onError: dirtyRefusal,
+        });
+        reportOutcome(
+          outcome,
+          t("branching.pickedMany", {
+            commits: plural("count.commits", oids.length),
+            branch: current(),
+          }),
+          t("branching.pickConflicts"),
+        );
+      },
+
+      /** Reverts several commits, `oids` newest first. */
+      revertMany: async (oids: string[]) => {
+        const outcome = await run(() => ipc.revertMany(repo, oids), t("branching.revertFailed"), {
+          refs: true,
+          onError: dirtyRefusal,
+        });
+        reportOutcome(
+          outcome,
+          t("branching.revertedMany", { commits: plural("count.commits", oids.length) }),
+          t("branching.revertConflicts"),
+        );
+      },
+
       /** Applies a patch file; resolves true unless it failed (conflicts count as applied). */
       applyPatch: async (file: string, mode: PatchApplyMode, commits: number) => {
         const outcome = await run(
