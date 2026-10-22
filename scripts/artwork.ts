@@ -154,7 +154,7 @@ const ARTS: Art[] = [
         <p style="font-size:40px;font-weight:500;letter-spacing:-0.01em">
           A fast, clear Git client</p>
         <p class="muted" style="font-size:28px">Free and open source for Linux, Windows and
-          macOS · tylia.dev</p>
+          macOS</p>
       </div>`,
   },
   // The README's header, on GitHub's light and dark page (transparent, 2× for sharp text).

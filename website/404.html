@@ -11,8 +11,10 @@
     <meta name="robots" content="noindex" />
     <title>Page not found · Tylia</title>
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="/style.css" />
+    <!-- Pages serves this for any missing path, at any depth: resolve links from the site root. -->
+    <base href="/tylia/" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body class="page-fill">
     <svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
@@ -30,7 +32,7 @@
 
     <header class="site-header">
       <div class="wrap">
-        <a class="brand" href="/" aria-label="Tylia home">
+        <a class="brand" href="./" aria-label="Tylia home">
           <svg class="logo" aria-hidden="true" focusable="false"><use href="#i-logo" /></svg>
           <span>Tylia</span>
         </a>
@@ -45,7 +47,7 @@
           </svg>
           <h1 id="nf-title">Page not found</h1>
           <p>There is nothing at this address. The page may have moved.</p>
-          <a class="btn btn-primary" href="/">Go to the home page</a>
+          <a class="btn btn-primary" href="./">Go to the home page</a>
         </div>
       </section>
     </main>

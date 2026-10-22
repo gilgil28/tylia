@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "description": "A calm, fast desktop Git client",
   "license": "MIT OR Apache-2.0",
-  "homepage": "https://tylia.dev",
+  "homepage": "https://github.com/gilgil28/tylia",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gilgil28/tylia.git"

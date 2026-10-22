@@ -37,7 +37,7 @@
     "category": "DeveloperTool",
     "shortDescription": "A calm, fast desktop Git client",
     "publisher": "The Tylia contributors",
-    "homepage": "https://tylia.dev",
+    "homepage": "https://github.com/gilgil28/tylia",
     "icon": [
       "icons/32x32.png",
       "icons/64x64.png",

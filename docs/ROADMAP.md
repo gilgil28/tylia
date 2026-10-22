@@ -583,7 +583,9 @@ run`).
 
 - [ ] GitHub acceptance run (HTTPS token and SSH) once the repository is pushed (Phase 3).
 - [ ] First real release: push `main` and a tag, check the draft and every asset,
-      publish, and confirm tylia.dev's links (docs/RELEASING.md).
+      publish, and confirm the download links (docs/RELEASING.md). _v0.2.0 was released
+      2026-10-22. No website domain for now: links point at the repository, and the
+      site can go to https://gilgil28.github.io/tylia/ by hand._
 - [ ] macOS: run the dmg on a Mac (or a hosted runner with screenshots).
 - [ ] Linux performance on the user's CachyOS machine: `git/git` first rows and
       scrolling, against the Phase 1 numbers.

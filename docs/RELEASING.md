@@ -20,13 +20,17 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
    `tauri.conf.json`, ship one release signed with the **old** key, and switch the secrets
    to the new key from the release after that.
 
-2. **GitHub Pages.** Settings → Pages → Source: "GitHub Actions". Custom domain:
-   `tylia.dev`, then tick **Enforce HTTPS** once the certificate is issued. DNS for the
-   apex domain: `A` records to 185.199.108.153, 185.199.109.153, 185.199.110.153 and
-   185.199.111.153 (and `AAAA` to 2606:50c0:8000::153, 2606:50c0:8001::153,
-   2606:50c0:8002::153 and 2606:50c0:8003::153). `.dev` is on the HSTS preload list, so
-   the site only works over HTTPS. Verify the domain for your account (your profile's
-   Settings → Pages → Verified domains) so nobody else can claim it.
+2. **Website (optional, not published yet).** The project has no domain; links point at
+   the repository. To publish `website/` at **https://gilgil28.github.io/tylia/**: Settings
+   → Pages → Source: "GitHub Actions", then run the **Pages** workflow by hand (Actions →
+   Pages → Run workflow). It fills in the download links from the latest release. To have
+   it follow every release, add `release: types: [published]` back to its triggers.
+   - **With a domain later:** add `website/CNAME` with the domain and set it under Settings →
+     Pages → Custom domain (DNS: `A` records to 185.199.108.153–185.199.111.153, `AAAA` to
+     2606:50c0:8000::153–2606:50c0:8003::153); tick **Enforce HTTPS** once the certificate
+     is issued, and verify the domain for your account so nobody else can claim it. Then
+     change `<base href>` in `website/404.html` to `/`, the absolute URLs in
+     `website/index.html`, and the `homepage` fields.
 3. **AUR.** Create the `tylia-bin` package on aur.archlinux.org with a maintainer SSH key.
    The package sources are in `packaging/aur/tylia-bin`.
 
@@ -57,9 +61,10 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
 
 5. Check the draft: every asset is there, and `latest.json` lists `linux-x86_64`,
    `windows-x86_64` and `darwin-*` entries. Install at least one build. Then **publish**
-   the release. Publishing it by hand matters: it triggers the **Pages** workflow, which
-   rebuilds tylia.dev with this version's download links. A release published by the
-   workflow's own token would not start other workflows.
+   the release (Release label: **None**; a pre-release would be skipped by
+   `releases/latest`, which the update check and download links use). Once the website is
+   published and follows releases, publishing by hand matters: a release published by the
+   workflow's own token would not start the Pages workflow.
 6. Update the AUR package from an Arch machine or container:
    `packaging/aur/update.sh X.Y.Z`. Check `makepkg -si` installs and starts Tylia, then
    commit `PKGBUILD` and `.SRCINFO` and push them to `ssh://aur@aur.archlinux.org/tylia-bin.git`.

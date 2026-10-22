@@ -19,12 +19,14 @@ near the top of the README.
   2026-10-22 instead of a `tylia-dev` organization) — use this URL in README, `Cargo.toml`
   (`repository`), `package.json` (`repository`, `bugs`), issue templates, SECURITY.md, the
   website, packaging, the updater endpoint and the releases link the app may open.
-- Website: **https://tylia.dev** — use it as `homepage` in `Cargo.toml`/`package.json`,
-  in README and the About dialog. `.dev` is HTTPS-only (HSTS preload); the site will be
-  served by GitHub Pages from the repo (Phase 6). Security contact placeholder in
-  SECURITY.md: `security@tylia.dev` (mark as "to be set up" until the mailbox exists).
+- Website: the domain `tylia.dev` was not registered (decided 2026-10-22: no domain for
+  now). `homepage` in `Cargo.toml`, `package.json`, `tauri.conf.json` and packaging points
+  at the GitHub repository. The site in `website/` is ready for GitHub Pages' default
+  address, https://gilgil28.github.io/tylia/, and published by hand (docs/RELEASING.md).
+  Security reports go through GitHub's private vulnerability reporting only.
 - Identifiers: product name `Tylia`; bundle identifier `dev.tylia.app` (reverse-DNS of
-  tylia.dev); Cargo packages `tylia` (app) and `tylia-git` (core); binary `tylia`.
+  tylia.dev, kept although the domain isn't ours: it names the settings folder of
+  installed copies); Cargo packages `tylia` (app) and `tylia-git` (core); binary `tylia`.
 - Keep the name in exactly one place per ecosystem (`package.json` `name`/`productName`,
   `tauri.conf.json` `productName`/`identifier`, Cargo package names).
 
