@@ -2,7 +2,7 @@
 # Repackages the .deb from the GitHub release. Bump with ../update.sh <version>.
 
 pkgname=tylia-bin
-pkgver=0.1.0
+pkgver=0.2.0
 pkgrel=1
 pkgdesc="A calm, fast desktop Git client"
 arch=('x86_64')

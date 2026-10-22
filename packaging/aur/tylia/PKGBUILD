@@ -1,0 +1,54 @@
+# Maintainer: The Tylia contributors <https://github.com/gilgil28/tylia>
+# Builds Tylia from the release's source tarball. Bump with ../update.sh <version>.
+
+pkgname=tylia
+pkgver=0.2.0
+pkgrel=1
+pkgdesc="A calm, fast desktop Git client"
+arch=('x86_64' 'aarch64')
+url="https://gilgil28.github.io/tylia/"
+license=('MIT OR Apache-2.0')
+depends=('webkit2gtk-4.1' 'gtk3' 'glib2' 'cairo' 'gdk-pixbuf2' 'libsoup3' 'dbus' 'git' 'hicolor-icon-theme')
+makedepends=('rust' 'nodejs' 'pnpm')
+conflicts=('tylia-bin')
+# makepkg's LTO flags reach the C code that some crates compile, which Rust's linker
+# can't take; the release profile already uses LTO for the Rust code. It also strips the
+# binary, so a -debug package would be empty.
+options=('!lto' '!debug')
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/gilgil28/tylia/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('SKIP')
+
+prepare() {
+  cd "${pkgname}-${pkgver}"
+  export RUSTUP_TOOLCHAIN=stable
+  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+  # The packaged pnpm may be newer than package.json's packageManager; use it as is.
+  npm_config_manage_package_manager_versions=false pnpm install --frozen-lockfile
+}
+
+build() {
+  cd "${pkgname}-${pkgver}"
+  # The binary goes to the workspace's target/ (Tauri runs Cargo from src-tauri).
+  export RUSTUP_TOOLCHAIN=stable CARGO_NET_OFFLINE=true
+  npm_config_manage_package_manager_versions=false pnpm tauri build --no-bundle -- --locked
+}
+
+package() {
+  cd "${pkgname}-${pkgver}"
+  install -Dm755 target/release/tylia "${pkgdir}/usr/bin/tylia"
+  # The same desktop entry and metainfo as the deb and rpm (src-tauri/tauri.linux.conf.json).
+  sed -e 's/{{name}}/Tylia/' -e "s/{{comment}}/${pkgdesc}/" -e 's/{{exec}}/tylia/g' \
+    -e 's/{{icon}}/tylia/' packaging/linux/tylia.desktop > Tylia.desktop
+  install -Dm644 Tylia.desktop "${pkgdir}/usr/share/applications/Tylia.desktop"
+  install -Dm644 packaging/linux/io.github.gilgil28.tylia.metainfo.xml \
+    "${pkgdir}/usr/share/metainfo/io.github.gilgil28.tylia.metainfo.xml"
+  local size
+  for size in 32 64 128; do
+    install -Dm644 "src-tauri/icons/${size}x${size}.png" \
+      "${pkgdir}/usr/share/icons/hicolor/${size}x${size}/apps/tylia.png"
+  done
+  install -Dm644 src-tauri/icons/128x128@2x.png "${pkgdir}/usr/share/icons/hicolor/256x256/apps/tylia.png"
+  install -Dm644 src-tauri/icons/icon.png "${pkgdir}/usr/share/icons/hicolor/512x512/apps/tylia.png"
+  install -Dm644 LICENSE-MIT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-MIT"
+  install -Dm644 LICENSE-APACHE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-APACHE"
+}

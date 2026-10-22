@@ -1,7 +1,7 @@
 # Releasing Tylia
 
-How a version goes from a tag to installers, the website and the AUR. Tylia uses
-[semantic versioning](https://semver.org); tags are `vX.Y.Z`.
+How a version goes from a tag to installers, the website and the package managers. Tylia
+uses [semantic versioning](https://semver.org); tags are `vX.Y.Z`.
 
 ## One-time setup
 
@@ -30,8 +30,15 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
      is issued, and verify the domain for your account so nobody else can claim it. Then
      change `<base href>` in `website/404.html` to `/`, the absolute URLs in
      `website/index.html`, and the `homepage` fields.
-3. **AUR.** Create the `tylia-bin` package on aur.archlinux.org with a maintainer SSH key.
-   The package sources are in `packaging/aur/tylia-bin`.
+3. **AUR.** An account on aur.archlinux.org with a maintainer SSH key (My Account → SSH
+   Public Key). New registrations have been paused because of spam; until they reopen,
+   email accountsupport@archlinux.org with the username you want. Two packages:
+   - `packaging/aur/tylia-bin` repackages the release `.deb`;
+   - `packaging/aur/tylia` builds from the tag's source tarball.
+
+   A package is created on the AUR by its first push: clone
+   `ssh://aur@aur.archlinux.org/<name>.git` (empty), copy `PKGBUILD` and `.SRCINFO` into
+   it, commit and push.
 
 4. **Scoop.** A public repository `gilgil28/scoop-bucket` with `bucket/tylia.json` (from
    `packaging/scoop/tylia.json`). Users add it with
@@ -90,9 +97,11 @@ How a version goes from a tag to installers, the website and the AUR. Tylia uses
    `releases/latest`, which the update check and download links use). Publishing by hand
    matters: it starts the Pages workflow, which a release published by the workflow's own
    token would not.
-6. Update the AUR package from an Arch machine or container:
-   `packaging/aur/update.sh X.Y.Z`. Check `makepkg -si` installs and starts Tylia, then
-   commit `PKGBUILD` and `.SRCINFO` and push them to `ssh://aur@aur.archlinux.org/tylia-bin.git`.
+6. Update the AUR packages from an Arch machine or container:
+   `packaging/aur/update.sh X.Y.Z` (both packages). Check that `makepkg -si` in each
+   directory installs and starts Tylia, then commit `PKGBUILD` and `.SRCINFO` here and
+   push each directory to `ssh://aur@aur.archlinux.org/tylia-bin.git` and
+   `ssh://aur@aur.archlinux.org/tylia.git`.
 7. Point Scoop, Homebrew and winget at the release: `packaging/release-manifests.sh X.Y.Z`
    (Git Bash works) fills in the versions and checksums of the portable zip, the dmg and
    the NSIS installer, and moves the winget manifests to the new version. Commit, then copy
