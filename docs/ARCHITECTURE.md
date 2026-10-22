@@ -682,3 +682,25 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   shows the "not a repository" toast.
 - **macOS** sends folders opened from Finder or dropped on the Dock icon as
   `RunEvent::Opened`; they join the same queue.
+- **Windows installers** (`src-tauri/tauri.windows.conf.json`, merged by Tauri on Windows):
+  - **NSIS** installs for the current user (no admin), Start Menu folder `Tylia`, English.
+    `windows/hooks.nsh` adds two welcome-page options, both on by default and in passive
+    / silent installs: the `tylia` command and "Open in Tylia" in Explorer
+    (`Software\Classes\Directory\shell\Tylia` and `Directory\Background\shell\Tylia`,
+    `"tylia.exe" "%V"`). The desktop shortcut starts unticked. An update (passive, no
+    welcome page) keeps the earlier choice: the menu key's presence and an `OnPath` marker
+    under `Software\Tylia` record it. Uninstalling removes both; settings stay unless the
+    user ticks Tauri's "Delete the application data".
+  - **The `tylia` command:** `bin\tylia.cmd` (a bundle resource) is what goes on `PATH`.
+    `tylia.exe` is a GUI-subsystem program, so Windows gives it no console: the shim
+    starts it without waiting for paths, and pipes `--help` / `--version` output through
+    `findstr` for options. `PATH` is edited through the .NET registry API (Windows
+    PowerShell, `HKCU\Environment`), because NSIS strings stop at 1024 characters. The
+    edit keeps `REG_EXPAND_SZ` and removes only Tylia's entry. The folder is passed in an
+    environment variable, never quoted into the command.
+  - **MSI** (per machine): `windows/wix-fragment.wxs` writes the same Explorer entries
+    under HKLM and appends `[INSTALLDIR]bin` to the system `PATH` with WiX's `Environment`
+    element; Windows Installer removes both. No options: managed deployments configure
+    machines their own way.
+  - Windows 11 shows "Open in Tylia" under "Show more options"; a top-level entry needs a
+    packaged (MSIX) app, which is out of scope.

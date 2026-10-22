@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tylia's additions to Tauri's MSI (bundle.windows.wix.fragmentPaths / componentRefs): the
+     same integration as the NSIS installer (hooks.nsh), for all users, since the MSI installs
+     per machine. "Open in Tylia" in Explorer's menus for folders and folder backgrounds, and
+     the `tylia` command (bin\tylia.cmd) on the system PATH. Windows Installer removes both
+     with the product. See docs/ARCHITECTURE.md §5.19.
+     Tauri compiles this file with `candle -arch x64`, so the components are 64-bit and the
+     registry entries land where 64-bit Explorer reads them (not in WOW6432Node). -->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="TyliaExplorerMenu" Guid="6E2B7C35-1F0A-4C55-9B87-3B1D2A8F4E61">
+        <RegistryKey Root="HKLM" Key="Software\Classes\Directory\shell\Tylia">
+          <RegistryValue Type="string" Value="Open in Tylia" KeyPath="yes" />
+          <RegistryValue Name="Icon" Type="string" Value="[INSTALLDIR]tylia.exe,0" />
+          <RegistryValue Key="command" Type="string" Value="&quot;[INSTALLDIR]tylia.exe&quot; &quot;%V&quot;" />
+        </RegistryKey>
+        <RegistryKey Root="HKLM" Key="Software\Classes\Directory\Background\shell\Tylia">
+          <RegistryValue Type="string" Value="Open in Tylia" />
+          <RegistryValue Name="Icon" Type="string" Value="[INSTALLDIR]tylia.exe,0" />
+          <RegistryValue Key="command" Type="string" Value="&quot;[INSTALLDIR]tylia.exe&quot; &quot;%V&quot;" />
+        </RegistryKey>
+      </Component>
+      <Component Id="TyliaCommandOnPath" Guid="9C4F1D2E-7B3A-4E8D-A6C1-52F0B9E3D7A4">
+        <RegistryValue Root="HKLM" Key="Software\Tylia" Name="OnPath" Type="integer" Value="1" KeyPath="yes" />
+        <Environment Id="TyliaPath" Name="PATH" Value="[INSTALLDIR]bin" Part="last" Action="set" System="yes" Permanent="no" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

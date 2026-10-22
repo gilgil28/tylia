@@ -4,3 +4,6 @@
 *.icns binary
 *.woff2 binary
 *.webp binary
+*.bmp binary
+# cmd.exe misreads batch files with LF line endings.
+*.cmd text eol=crlf

@@ -426,6 +426,16 @@ Windows:
   - **Hooks:** `installerHooks` (`src-tauri/windows/hooks.nsh`) for OS integration (D).
 - [ ] **MSI:** the same branding and the same registry entries, via a WiX
       `fragmentPaths` fragment.
+- _Progress 2026-10-22 (NSIS + MSI): built, not installed yet (ARCHITECTURE §5.19). NSIS:
+  `installMode: "currentUser"`, Start Menu folder `Tylia`, English; the desktop shortcut
+  starts unticked; Tauri's uninstaller already keeps settings unless "Delete the
+  application data" is ticked, so no hook was needed for that. The welcome page offers
+  "Add the tylia command to PATH" and "Open in Tylia" (both on); screenshot reviewed.
+  Verified without installing: `bin\tylia.cmd` with the release exe (`--version`,
+  `--help` and errors reach the console); the PATH edit against a scratch registry key
+  (2,352-character PATH, `%VAR%` kept, no duplicates, removal leaves the rest); the MSI's
+  Registry / Environment / File tables (64-bit components, HKLM, system PATH). Still to
+  do: install, update and uninstall on a clean machine (Windows Sandbox)._
 - [ ] **winget:** manifest `Tylia.Tylia` (installer type `nullsoft`, user scope).
       Submitted to microsoft/winget-pkgs. The release workflow opens the update PR on
       each release (e.g. `vedantmgoyal9/winget-releaser`; verify the current action and
