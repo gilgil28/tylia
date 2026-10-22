@@ -1,0 +1,6 @@
+# Git's system-level configuration inside Tylia's Flatpak (/app/etc/gitconfig). Your own
+# ~/.gitconfig is read after it and can add to or override it.
+[credential]
+	# Keeps HTTPS sign-ins in the desktop's keyring (Secret Service). The host's Git
+	# Credential Manager or helpers installed outside the sandbox can't run in here.
+	helper = libsecret

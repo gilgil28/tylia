@@ -731,6 +731,15 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   - **AppStream ID:** `io.github.gilgil28.tylia`, the Flathub app ID, in every package, so
     software centres show the distribution packages and the Flatpak as one app. The bundle
     identifier `dev.tylia.app` is separate: it names the settings folder.
+- **Flatpak** (`packaging/flatpak/`, GNOME 51 runtime): builds Git 2.56 from its release
+  tarball into `/app` (with `git-credential-libsecret`, the system-level
+  `credential.helper=libsecret` in `/app/etc/gitconfig`), then Tylia from the tag's tarball
+  with the generated offline cargo / pnpm sources (`update-sources.sh`). Permissions:
+  network, home, Wayland / X11, DRI, the ssh and gpg agents, and the Secret Service. Settings
+  live in `~/.var/app/io.github.gilgil28.tylia/config/dev.tylia.app`. The sandbox has no
+  host programs: the bundled Git can't run external diff / merge tools or the host's
+  credential helpers (the system's Git, below, can), and "Open in terminal" finds no
+  terminal.
 - **The system's Git in the Flatpak** (Settings → Git, `settings.hostGit`, off by default):
   `Git::flatpak_host()` runs `flatpak-spawn --host --watch-bus --directory=<cwd>
 --env=<each variable> git …`, so nothing of the sandbox's own environment leaks to the

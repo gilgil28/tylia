@@ -108,6 +108,8 @@ uses [semantic versioning](https://semver.org); tags are `vX.Y.Z`.
    `scoop/tylia.json` to the bucket and `homebrew/tylia.rb` to the tap. The winget workflow
    opens its pull request by itself; without it, copy the new winget folder into a
    winget-pkgs pull request.
+8. Flathub: `packaging/flatpak/update-sources.sh X.Y.Z`, then a pull request in the app's
+   Flathub repository (see "Flatpak" below).
 
 Installed copies with "Check for updates" on find the new version at their next start.
 Anyone can check from Settings → General → "Check now". The check fetches
@@ -148,9 +150,46 @@ Release builds are **not code-signed** until certificates exist. What users see:
 Updates are protected separately from code signing: every update bundle carries a
 minisign signature from the updater key, and the app refuses one that doesn't verify.
 
-## Flatpak (later)
+## Flatpak (Flathub)
 
-Not packaged yet. Tylia runs the system `git`, so in a Flatpak sandbox it would need
-`flatpak-spawn --host git` (the `--talk-name=org.freedesktop.Flatpak` permission) or a
-bundled Git, plus access to the repositories on disk (`--filesystem=home` or portals).
-Both weaken the sandbox, so this needs a design decision first.
+The manifest is `packaging/flatpak/io.github.gilgil28.tylia.yml` (app ID
+`io.github.gilgil28.tylia`, GNOME 51 runtime). It bundles Git, since the runtime has none;
+Settings → Git can switch to the system's Git (docs/ARCHITECTURE.md §5.19). Flathub builds
+offline, so `cargo-sources.json` and `node-sources.json` list every dependency; they are
+generated, never edited by hand.
+
+- **After a dependency change:** `packaging/flatpak/update-sources.sh` (needs git, python3,
+  pipx and curl, e.g. in an Arch container), then commit the two JSON files.
+- **Check a build:** in a Linux machine or a privileged container with flatpak and
+  flatpak-builder:
+
+  ```sh
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  cd packaging/flatpak
+  flatpak-builder --install-deps-from=flathub --install --force-clean build-dir io.github.gilgil28.tylia.yml
+  flatpak run io.github.gilgil28.tylia
+  flatpak run --command=flatpak-builder-lint org.flatpak.Builder manifest io.github.gilgil28.tylia.yml
+  ```
+
+  The manifest builds the tag's tarball, so before the release exists, point the `tylia`
+  source at a `type: dir` copy of the repository in a scratch manifest.
+
+- **Rust:** Flathub's `rust-stable` extension must be at least the workspace's
+  `rust-version`. On 2026-10-22 it was 1.98 against Tylia's 1.99; a build only passed with
+  `--ignore-rust-version` (test only, never in the manifest).
+- **First submission:** fork https://github.com/flathub/flathub, branch from `new-pr`,
+  add the manifest, `gitconfig` and both JSON files (after `update-sources.sh X.Y.Z` for the
+  released version), and open a pull request against `new-pr`. The linter flags three
+  permissions that need an exception; the justification for the pull request:
+  - `--filesystem=home`: a Git client works on repositories anywhere in the home folder,
+    including their hooks and nested submodules, which portals can't grant.
+  - `--socket=ssh-auth`: SSH remotes authenticate with the user's ssh-agent keys.
+  - `--socket=gpg-agent`: commits and tags are signed with the user's GPG keys.
+
+  The screenshot URLs point at the website; Flathub mirrors them when it builds.
+
+- **Each release:** `packaging/flatpak/update-sources.sh X.Y.Z` points the manifest at the
+  tag's tarball (with its checksum) and regenerates the sources; commit here, then open a
+  pull request with the same files in the app's repository on Flathub
+  (`flathub/io.github.gilgil28.tylia`, created when the submission is accepted). Flathub
+  updates installed copies; Tylia never offers updates inside the Flatpak.

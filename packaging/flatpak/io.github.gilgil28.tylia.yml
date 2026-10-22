@@ -1,0 +1,119 @@
+# Flatpak manifest for Flathub. Build and run it locally with
+#   flatpak-builder --user --install --force-clean build-dir io.github.gilgil28.tylia.yml
+#   flatpak run io.github.gilgil28.tylia
+# The cargo and pnpm sources are generated: after a dependency or version change, run
+# ./update-sources.sh (see docs/RELEASING.md → Flatpak).
+id: io.github.gilgil28.tylia
+runtime: org.gnome.Platform
+runtime-version: "51"
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+  - org.freedesktop.Sdk.Extension.node24
+command: tylia
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  # Fetch, pull, push and clone.
+  - --share=network
+  # Repositories live anywhere in the home folder, and Git reads ~/.gitconfig and ~/.ssh.
+  - --filesystem=home
+  # The user's ssh-agent for SSH remotes, and gpg-agent for signed commits.
+  - --socket=ssh-auth
+  - --socket=gpg-agent
+  # git-credential-libsecret stores HTTPS sign-ins in the desktop's keyring.
+  - --talk-name=org.freedesktop.secrets
+modules:
+  # Tylia runs Git as a program; the runtime has none, so the Flatpak brings its own.
+  - name: git
+    buildsystem: simple
+    build-options:
+      # Parts of Git are written in Rust (no crates to fetch).
+      append-path: /usr/lib/sdk/rust-stable/bin
+    build-commands:
+      - make -j"$FLATPAK_BUILDER_N_JOBS" prefix=/app NO_PERL=1 NO_PYTHON=1 NO_TCLTK=1 NO_GETTEXT=1
+        USE_LIBPCRE2=1 INSTALL_SYMLINKS=1 all
+      - make prefix=/app NO_PERL=1 NO_PYTHON=1 NO_TCLTK=1 NO_GETTEXT=1 USE_LIBPCRE2=1
+        INSTALL_SYMLINKS=1 install
+      - make -C contrib/credential/libsecret
+      - install -Dm755 contrib/credential/libsecret/git-credential-libsecret
+        /app/libexec/git-core/git-credential-libsecret
+      # Git's system-level configuration; the user's ~/.gitconfig still comes after it.
+      - install -Dm644 gitconfig /app/etc/gitconfig
+    cleanup:
+      - /share/gitweb
+      - /share/git-gui
+      - /share/gitk
+    sources:
+      - type: archive
+        url: https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.56.0.tar.xz
+        sha256: 26c56c296b38c0695b26fa95f475f1d01704d2d38e73465ca30b0b2f5dc789d3
+        x-checker-data:
+          type: anitya
+          project-id: 5350
+          stable-only: true
+          url-template: https://mirrors.edge.kernel.org/pub/software/scm/git/git-$version.tar.xz
+      - type: file
+        path: gitconfig
+
+  - name: tylia
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/node24/bin:/run/build/tylia/pnpm/bin
+      env:
+        CARGO_HOME: /run/build/tylia/cargo
+        CARGO_NET_OFFLINE: "true"
+        CI: "true"
+        XDG_CACHE_HOME: /run/build/tylia/flatpak-node/cache
+        npm_config_cache: /run/build/tylia/flatpak-node/npm-cache
+        npm_config_offline: "true"
+    build-commands:
+      # Settings for every pnpm call (node-sources.json already set storeDir here). The
+      # release-age check needs each package's publish time from the registry, and the
+      # check before `pnpm tauri` would reinstall; the lockfile pins exact versions and
+      # integrity hashes anyway.
+      - |
+        cat >> pnpm-workspace.yaml <<EOF
+        offline: true
+        minimumReleaseAge: 0
+        verifyDepsBeforeRun: false
+        EOF
+      - pnpm install --frozen-lockfile
+      - pnpm tauri build --no-bundle -- --offline --locked
+      - install -Dm755 target/release/tylia /app/bin/tylia
+      # The same desktop entry and metainfo as the other Linux packages, under the app ID.
+      - sed -e 's/{{name}}/Tylia/' -e 's/{{comment}}/A calm, fast desktop Git client/'
+        -e 's/{{exec}}/tylia/g' -e 's/{{icon}}/io.github.gilgil28.tylia/'
+        packaging/linux/tylia.desktop > io.github.gilgil28.tylia.desktop
+      - install -Dm644 io.github.gilgil28.tylia.desktop
+        /app/share/applications/io.github.gilgil28.tylia.desktop
+      - sed 's/>Tylia.desktop</>io.github.gilgil28.tylia.desktop</'
+        packaging/linux/io.github.gilgil28.tylia.metainfo.xml > metainfo.xml
+      - install -Dm644 metainfo.xml /app/share/metainfo/io.github.gilgil28.tylia.metainfo.xml
+      - for size in 32 64 128; do install -Dm644 src-tauri/icons/${size}x${size}.png
+        /app/share/icons/hicolor/${size}x${size}/apps/io.github.gilgil28.tylia.png; done
+      - install -Dm644 src-tauri/icons/128x128@2x.png
+        /app/share/icons/hicolor/256x256/apps/io.github.gilgil28.tylia.png
+      - install -Dm644 src-tauri/icons/icon.png
+        /app/share/icons/hicolor/512x512/apps/io.github.gilgil28.tylia.png
+    sources:
+      - type: archive
+        url: https://github.com/gilgil28/tylia/archive/refs/tags/v0.3.0.tar.gz
+        # Filled in by ./update-sources.sh <version> once the tag exists.
+        sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+      # pnpm itself, for the build only (the SDK's Node has npm only). pnpm 12 is a native
+      # executable; its `pnpm` npm package would download it on first use.
+      - type: archive
+        url: https://registry.npmjs.org/@pnpm/exe.linux-x64/-/exe.linux-x64-12.14.0.tgz
+        sha256: 1de98ed2e9621113b0887b06322b461efb9df73d913fc1d151039b10b7117a41
+        dest: pnpm/bin
+        only-arches: [x86_64]
+      - type: archive
+        url: https://registry.npmjs.org/@pnpm/exe.linux-arm64/-/exe.linux-arm64-12.14.0.tgz
+        sha256: e7ca24224eb626a032828ec584c67903ad2f389911b849d009ed70a19f70d8d3
+        dest: pnpm/bin
+        only-arches: [aarch64]
+      - cargo-sources.json
+      - node-sources.json
