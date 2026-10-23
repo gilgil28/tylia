@@ -7,6 +7,12 @@ can change behaviour.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Linux:** the window appears as soon as it has rendered, about 2.7 seconds sooner. It
+  used to wait for a 3-second fallback, as the webview paints nothing while the window is
+  hidden.
+
 ## [0.3.0] - 2026-10-23
 
 Patches, archives and custom actions; the history acts on several commits at once; the
