@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, Copy, GitMerge, Info } from "lucide-react";
+import { Check, Copy, GitMerge, Info, Tag as TagIcon } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 
 import { shortHash, timeLabel } from "@/app/format";
@@ -19,7 +19,7 @@ import { SplitPane } from "@/ui/SplitPane";
 import { commitDiffRequest, DiffPane } from "./DiffPane";
 import { FileList, FileViewToggle, type ListedFile } from "./FileList";
 import { SeveralCommits } from "./SeveralCommits";
-import { SignatureBadge } from "./SignatureBadge";
+import { SignatureBadge, TagSignatureBadge } from "./SignatureBadge";
 
 function CopyHash({ oid }: { oid: string }) {
   const [copied, setCopied] = useState(false);
@@ -46,6 +46,11 @@ function CopyHash({ oid }: { oid: string }) {
 function CommitHeader({ repo, details }: { repo: string; details: CommitDetails }) {
   const dateFormat = useSettings((s) => s.settings.dateFormat);
   const reveal = useRepoUi((s) => s.reveal);
+  const refs = useQuery({ queryKey: ["refs", repo], queryFn: () => ipc.getRefs(repo) }).data;
+  const tags = useMemo(
+    () => (refs?.tags ?? []).filter((tag) => tag.oid === details.oid),
+    [refs, details.oid],
+  );
   const { author, committer } = details;
   const sameCommitter = committer.email === author.email && committer.name === author.name;
   return (
@@ -75,7 +80,7 @@ function CommitHeader({ repo, details }: { repo: string; details: CommitDetails 
         <CopyHash oid={details.oid} />
         <SignatureBadge repo={repo} oid={details.oid} />
       </div>
-      {(!sameCommitter || details.parents.length > 0) && (
+      {(!sameCommitter || details.parents.length > 0 || tags.length > 0) && (
         <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-small">
           {!sameCommitter && (
             <>
@@ -98,6 +103,24 @@ function CommitHeader({ repo, details }: { repo: string; details: CommitDetails 
                   >
                     {shortHash(p)}
                   </button>
+                ))}
+              </dd>
+            </>
+          )}
+          {tags.length > 0 && (
+            <>
+              <dt className="text-fg-muted">{t("details.tags")}</dt>
+              <dd className="flex flex-col gap-1">
+                {tags.map((tag) => (
+                  <span key={tag.name} className="flex flex-wrap items-center gap-x-3">
+                    <span className="flex min-w-0 items-center gap-1 text-fg-secondary">
+                      <TagIcon size={12} strokeWidth={1.75} aria-hidden />
+                      <span className="truncate" data-selectable>
+                        {tag.name}
+                      </span>
+                    </span>
+                    {tag.annotated && <TagSignatureBadge repo={repo} name={tag.name} />}
+                  </span>
                 ))}
               </dd>
             </>

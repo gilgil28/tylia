@@ -906,5 +906,13 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   letter to `SignatureStatus`; when Git says `N` but the commit object has a `gpgsig`
   header (an SSH signature without `gpg.ssh.allowedSignersFile`), it's `cannotCheck`, not
   unsigned. Only in the details pane, as its own query (`SignatureBadge`) after the
-  details: checking runs the signing program, too slow for every history row. Tags are not
-  checked yet.
+  details: checking runs the signing program, too slow for every history row (`%G?` made
+  `git log` over `git/git` 8× slower, ROADMAP Phase 11 D). `verify_tag` reads the tag's
+  `%(objecttype)` and `%(contents:signature)` first (lightweight or unsigned: `unsigned`,
+  without running anything), then `verify-tag --raw`, whose stderr is GnuPG status lines
+  (GPG and X.509, mapped like Git's own `%G?`: `GOODSIG`, `BADSIG`, `ERRSIG`, …, with
+  `TRUST_UNDEFINED` / `TRUST_NEVER` making a good one untrusted) or `ssh-keygen`'s
+  messages (`Good "git" signature for <principal>`; without "for" the key isn't an allowed
+  signer). `for-each-ref`'s `%(signature)` atoms only work for commits. The details pane
+  lists the tags on the commit with a badge per annotated tag (`TagSignatureBadge`, keyed
+  by tag name and refetched when shown, as a tag can be replaced).

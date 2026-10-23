@@ -1107,6 +1107,7 @@ export const en = {
   "details.author": "Author",
   "details.committer": "Committer",
   "details.parents": "Parents",
+  "details.tags": "Tags",
   "details.copyHash": "Copy hash",
   "details.hashCopied": "Copied {hash}",
   "details.flat": "List",

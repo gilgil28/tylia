@@ -1,11 +1,11 @@
-// Whether the commit's signature is good (ROADMAP Phase 11 D). Checked on its own, after
-// the details, as it runs the signing program; nothing is shown for an unsigned commit.
+// Whether a commit's or tag's signature is good (ROADMAP Phase 11 D). Checked on its own,
+// after the details, as it runs the signing program; nothing is shown when it's unsigned.
 
 import { useQuery } from "@tanstack/react-query";
 import { ShieldAlert, ShieldCheck, ShieldQuestion, type LucideIcon } from "lucide-react";
 
 import { t, type MessageKey } from "@/i18n";
-import { ipc, type SignatureStatus } from "@/ipc";
+import { ipc, type SignatureCheck, type SignatureStatus } from "@/ipc";
 import { cn } from "@/ui/cn";
 
 const LOOK: Record<Exclude<SignatureStatus, "unsigned">, [LucideIcon, string, MessageKey]> = {
@@ -16,17 +16,12 @@ const LOOK: Record<Exclude<SignatureStatus, "unsigned">, [LucideIcon, string, Me
   cannotCheck: [ShieldQuestion, "text-fg-muted", "signature.cannotCheck"],
 };
 
-export function SignatureBadge({ repo, oid }: { repo: string; oid: string }) {
-  const { data } = useQuery({
-    queryKey: ["signature", repo, oid],
-    queryFn: () => ipc.verifyCommit(repo, oid),
-    staleTime: Infinity,
-  });
-  if (!data || data.status === "unsigned") return null;
-  const [Icon, color, label] = LOOK[data.status];
+function Badge({ check }: { check: SignatureCheck | undefined }) {
+  if (!check || check.status === "unsigned") return null;
+  const [Icon, color, label] = LOOK[check.status];
   const details = [
-    data.signer && t("signature.signer", { signer: data.signer }),
-    data.key && t("signature.key", { key: data.key }),
+    check.signer && t("signature.signer", { signer: check.signer }),
+    check.key && t("signature.key", { key: check.key }),
   ]
     .filter(Boolean)
     .join("\n");
@@ -39,4 +34,22 @@ export function SignatureBadge({ repo, oid }: { repo: string; oid: string }) {
       {t(label)}
     </span>
   );
+}
+
+export function SignatureBadge({ repo, oid }: { repo: string; oid: string }) {
+  const { data } = useQuery({
+    queryKey: ["signature", repo, oid],
+    queryFn: () => ipc.verifyCommit(repo, oid),
+    staleTime: Infinity,
+  });
+  return <Badge check={data} />;
+}
+
+/** A tag's signature; keyed by its name, as a tag can be moved to another object. */
+export function TagSignatureBadge({ repo, name }: { repo: string; name: string }) {
+  const { data } = useQuery({
+    queryKey: ["tag-signature", repo, name],
+    queryFn: () => ipc.verifyTag(repo, name),
+  });
+  return <Badge check={data} />;
 }

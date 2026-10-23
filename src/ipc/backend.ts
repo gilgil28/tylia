@@ -153,6 +153,8 @@ export interface Backend {
   getCommit(repo: string, oid: string): Promise<CommitDetails>;
   /** Checks the commit's signature (runs the signing program; one commit at a time). */
   verifyCommit(repo: string, oid: string): Promise<SignatureCheck>;
+  /** Checks the tag's signature; lightweight tags are unsigned. */
+  verifyTag(repo: string, name: string): Promise<SignatureCheck>;
   getDiff(repo: string, request: DiffRequest): Promise<FileDiff>;
   searchHistory(
     repo: string,

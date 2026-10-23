@@ -81,3 +81,15 @@ test("a signed commit says so in its details, an unsigned one says nothing", asy
   await expect(page.getByRole("heading", { name: "Make edge width configurable" })).toBeVisible();
   await expect(page.getByText("Signed", { exact: true })).toHaveCount(0);
 });
+
+test("a commit's tags are listed in its details with their signatures", async ({ page }) => {
+  await openDemo(page);
+  const sidebar = page.getByRole("navigation");
+  await sidebar.getByRole("button", { name: /^Tags/ }).click();
+  await sidebar.getByRole("button", { name: "v0.1.0", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Prepare 0.1.0" })).toBeVisible();
+  const details = page.getByRole("definition").filter({ hasText: "v0.1.0" });
+  await expect(details).toBeVisible();
+  const badge = details.getByText("Signed", { exact: true });
+  await expect(badge).toHaveAttribute("title", /By Ada Moreno/);
+});

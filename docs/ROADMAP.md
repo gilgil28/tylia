@@ -1099,13 +1099,19 @@ ends with **v0.4.0**.
 
 #### D. Signed commits, verified
 
-- [ ] Show whether a commit's GPG / SSH / X.509 signature is good, bad, from an unknown
+- [x] Show whether a commit's GPG / SSH / X.509 signature is good, bad, from an unknown
       key or missing (`git log --format=%G?` in the history batch where it stays fast,
       `git verify-commit` in the details pane), with the signer, and the same for tags.
       Measure the cost on `git/git` with `TYLIA_PERF` before turning it on in the list.
-      _Partly built 2026-10-23: the details pane shows it for the selected commit (an SSH
-      signature without allowed signers counts as "can't check", not unsigned); SSH-signed
-      test. Still open: tags, and the history list (not measured)._
+      _Built 2026-10-23 in the details pane: the selected commit's signature (an SSH
+      signature without allowed signers counts as "can't check", not unsigned), and a
+      "Tags" row listing the tags on it with each signed tag's status (`verify-tag --raw`,
+      GnuPG status lines or `ssh-keygen`'s messages); SSH-signed commit and tag tests, GPG
+      parsing from real `git/git` output. **Not in the history list:** measured on
+      `git/git` (82,563 commits, 70 signed), `%G?` takes all rows from 80 ms to 640 ms in
+      `git log` alone, as Git must read every commit object instead of the commit-graph,
+      and runs the signing program for each signed commit (~2 ms each without the key,
+      more with it); a fully signed history would take minutes._
 
 #### Release
 

@@ -372,6 +372,15 @@ export const backend: Backend = {
           key: "SHA256:3mX9fQ2pLk7c0bV1yRzT8uWnE4hJ6gA5sD0oK2iU9qY",
         }
       : { status: "unsigned", signer: null, key: null },
+  // The demo's first release tag is signed; other tags aren't.
+  verifyTag: async (_repo, name) =>
+    name === "v0.1.0"
+      ? {
+          status: "good",
+          signer: "Ada Moreno <ada@example.com>",
+          key: "E1F036B1FEE7221FC778ECEFB0B5E88696AFE6CB",
+        }
+      : { status: "unsigned", signer: null, key: null },
   getCommit: async (_repo, oid) => {
     const details = fixture.commits[oid];
     if (details) return details;

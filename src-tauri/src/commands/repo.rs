@@ -140,6 +140,12 @@ pub async fn verify_commit(repo: String, oid: String) -> Result<SignatureCheck, 
     Ok(git()?.verify_commit(Path::new(&repo), &oid).await?)
 }
 
+/// The tag's signature, checked with its signing program.
+#[tauri::command]
+pub async fn verify_tag(repo: String, name: String) -> Result<SignatureCheck, IpcError> {
+    Ok(git()?.verify_tag(Path::new(&repo), &name).await?)
+}
+
 #[tauri::command]
 pub async fn get_diff(repo: String, request: DiffRequest) -> Result<FileDiff, IpcError> {
     Ok(git()?.diff(Path::new(&repo), &request).await?)

@@ -101,6 +101,7 @@ pub fn run(open: Vec<PathBuf>) {
             commands::discard_backups,
             commands::restore_backup,
             commands::verify_commit,
+            commands::verify_tag,
             commands::open_repo,
             launch::take_open_requests,
             commands::init_repo,

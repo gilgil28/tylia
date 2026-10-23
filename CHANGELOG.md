@@ -21,7 +21,8 @@ can change behaviour.
   since. Copies are kept for 14 days, and always the last 50.
 - **Signed commits:** the details pane says whether a commit's GPG, SSH or X.509
   signature is good, bad, from a key that can't be checked here, or expired, with the
-  signer and key in its tooltip.
+  signer and key in its tooltip. The tags on a commit are listed there too, each with
+  its own signature.
 - **Recently lost** (sidebar): commits no branch reaches any more, after a reset, a
   rebase, an amend or a deleted branch, newest first, with what lost them. Open one to see
   it, then create a branch there, check it out or cherry-pick it. "Search deeper" also
