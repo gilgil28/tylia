@@ -955,18 +955,32 @@ the user's hosting accounts, OAuth apps, a Mac or Windows.
 
 #### A. Performance on Linux (first)
 
-- [ ] **Backend:** `history-timing` on `git/git` (with and without a commit-graph), against
+- [x] **Backend:** `history-timing` on `git/git` (with and without a commit-graph), against
       Phase 1 on Windows: first rows 160–190 ms warm, all rows ~1.1 s.
+      _2026-10-23, release build, 85,767 rows, warm cache: with a commit-graph first rows
+      47–54 ms, all rows ~600 ms; without one 509–538 ms and ~810 ms. Faster than Windows
+      throughout. Cold-cache runs need sudo (dropping the page cache); not done._
 - [ ] **UI timing on WebKitGTK:** Phase 1 measured the UI over CDP, which only WebView2
       has. Add a way to measure first rows, all rows and scrolling frame times in the real
       app on any platform (it also serves the Mac run later). **Decide:** recommended a
       `TYLIA_PERF=<file>` environment variable: the frontend records its timings and a
       scripted scroll through the history, and Rust writes them as JSON to the file. Off
       and free when the variable isn't set.
+      _Done 2026-10-23 as recommended (`src/app/perf.ts`, ARCHITECTURE §5.11). Its first
+      run found the window-show bug in D._
 - [ ] **Targets** (ARCHITECTURE §5.4) on `git/git`: first rows < 300 ms, scrolling at
       60 fps, status refresh < 500 ms, a 5k-line diff < 150 ms to first paint. Also compare
       the NVIDIA workaround with `WEBKIT_DISABLE_DMABUF_RENDERER=1`, to back the choice in
       "Known issues" with numbers.
+      _2026-10-23, `TYLIA_PERF`, release build, 3840×2160 at 144 Hz, NVIDIA workaround on
+      (times from page load): `openRepo` ~108 ms, first batch ~200 ms, **first rows on
+      screen 231–265 ms** (2.9 s before the D fix), all rows on screen ~860 ms. Scrolling
+      (wheel 90 px/frame, pages, jumps): median 17 ms, p95 18 ms, 1–4 slow frames in
+      120–600, so a steady **60 fps, but the display runs at 144 Hz** (see D). Status
+      ~155 ms. With `WEBKIT_DISABLE_DMABUF_RENDERER=1` instead: idle frames every 8 ms
+      (~120 fps), wheel median 10 ms, but jumps 16 ms with 46 ms spikes, as frames are
+      copied by the CPU; all rows on screen ~1.0 s. Not measured yet: the 5k-line diff;
+      a run under XWayland (`GDK_BACKEND=x11`) never finished._
 - **Acceptance:** numbers recorded here, each target met or a fix / follow-up item for it.
 
 #### B. GitHub acceptance run (from Phase 3)
@@ -991,7 +1005,15 @@ the user's hosting accounts, OAuth apps, a Mac or Windows.
 
 #### D. Fixes found in Phase 10
 
-- (filled in as they are found)
+- [x] **Linux: the window waited 3 s to appear.** `main.tsx` showed it after two animation
+      frames, which WebKitGTK doesn't run for a hidden window, so every launch waited for
+      the fallback in `window.rs`. A 100 ms timer stands in. _Fixed 2026-10-23: first rows
+      on screen 2.9 s → 0.23 s._
+- [ ] **60 fps on a 144 Hz display** (NVIDIA, Wayland, with the explicit-sync workaround).
+      Find out whether the workaround (implicit sync), WebKitGTK or the compositor caps it;
+      compare with a non-NVIDIA GPU if one is available.
+- [ ] **A perf run under XWayland never finishes** (`GDK_BACKEND=x11`): check whether the
+      window shows and frames run there at all.
 
 #### Release
 

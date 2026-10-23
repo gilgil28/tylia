@@ -330,6 +330,13 @@ end]` in half-row units; rows keep only their dot and curves (30 MB for `git/git
 - **Performance check:** `cargo run --release -p tylia-git --example history-timing -- <repo>`
   (refs, first rows, all rows, payload size). Without a commit-graph, `log --date-order`
   only starts after walking all history; Tylia writes one after its own clones.
+- **UI timing in the real app** (any platform): `TYLIA_PERF=<file> tylia <repo>` records
+  marks per repository (`openStart`, `opened`, `historyStart`, `historyFirstBatch`,
+  `historyDone`, `firstRowsPainted`, `allRowsPainted`; ms from page load), then, in the
+  active tab, the idle frame interval, three scripted scrolls of the history (90 px per
+  frame, a page per frame, jumps) as median / p95 / max / slow frames, and five status
+  calls; Rust writes the JSON and quits (`src/app/perf.ts`, `write_perf_report`). Restored
+  tabs load alongside, so read the marks of the repository named in `repo`.
 - **Submodules** are loaded separately (`get_submodules`) and only while the sidebar section
   is open: `git submodule status` alone took 660 ms on `git/git`.
 
