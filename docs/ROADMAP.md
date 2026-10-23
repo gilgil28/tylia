@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 9 — Workflow polish, hosting accounts and v0.4.0** (2026-10-22: A–E built, tested and pushed; untested against the real hosting APIs and a real LFS server; the OAuth device flow waits for the user's OAuth apps; v0.3.0 and v0.4.0 not yet released, waiting for review). Phase 8 is built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox. Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
+Current phase: **Phase 9 — Workflow polish and hosting accounts** (2026-10-23: released as **v0.3.0** together with Phase 8, as one release instead of v0.3.0 and v0.4.0; untested against the real hosting APIs and a real LFS server; the OAuth device flow waits for the user's OAuth apps). Phase 8 is built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox. Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
 
 ## Product vision
 
@@ -782,9 +782,14 @@ Details and tests: Phase 7 E.
 
 #### Release
 
-- [ ] CHANGELOG `[0.3.0]`, version bump in `package.json` and `Cargo.toml`, tag `v0.3.0`
+- [x] CHANGELOG `[0.3.0]`, version bump in `package.json` and `Cargo.toml`, tag `v0.3.0`
       (the user publishes the draft with Release label "None"), then the channels above.
       Check `latest.json` now carries the notes. Update this ROADMAP and stop for review.
+      _2026-10-23: tagged `v0.3.0` with Phase 9 included (the user chose one release over
+      two). Before the tag, a first run on the user's CachyOS machine found two Linux bugs,
+      fixed in it: the NVIDIA / Wayland crash at start (see "Known issues") and "System"
+      staying light on a dark KDE. The AUR package was built and installed there (icon,
+      theme and live theme switching checked). The channels wait for the user's accounts._
 
 ### Phase 9 — Workflow polish, hosting accounts and v0.4.0
 
@@ -927,9 +932,8 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
 
 #### Release
 
-- [ ] CHANGELOG `[0.4.0]`, version bump, tag `v0.4.0` (the user publishes the draft), then
-      every channel that exists by then (RELEASING.md). Update this ROADMAP and stop for
-      review.
+- [x] ~~CHANGELOG `[0.4.0]`, version bump, tag `v0.4.0`~~ Released in **v0.3.0** with
+      Phase 8 (2026-10-23, the user's choice); the OAuth device flow (C) is still open.
 
 ## Known issues
 

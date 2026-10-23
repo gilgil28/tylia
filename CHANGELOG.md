@@ -7,6 +7,14 @@ can change behaviour.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-23
+
+Patches, archives and custom actions; the history acts on several commits at once; the
+Clone dialog lists your GitHub, GitLab and Bitbucket repositories; Git LFS gets a UI; and
+Changes now flow upwards, from Unstaged to Staged to the commit. Tylia also installs from
+Scoop, Homebrew, winget, the AUR and Flatpak, and opens from file managers and the command
+line on every OS.
+
 ### Added
 
 - **Patches:**
@@ -57,7 +65,6 @@ can change behaviour.
 - **Changes flow upwards:** Staged is now above Unstaged (conflicts stay on top), so
   staging moves a file up towards the commit box. ↑ / ↓ cross between the lists.
 - Muted text in a focused selection is easier to read in the light theme.
-
 - The update dialog says how to update copies installed with pacman (the AUR) or Scoop,
   instead of offering an installer that would leave a second copy.
 
@@ -202,5 +209,6 @@ The first version, built and tested locally; its contents shipped in 0.2.0.
 - **Packages:** Windows installer (NSIS) and MSI, macOS universal dmg, Linux AppImage,
   deb and rpm, and an AUR package (`tylia-bin`).
 
-[Unreleased]: https://github.com/gilgil28/tylia/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/gilgil28/tylia/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/gilgil28/tylia/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/gilgil28/tylia/releases/tag/v0.2.0

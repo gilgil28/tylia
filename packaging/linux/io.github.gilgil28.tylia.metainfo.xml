@@ -78,6 +78,16 @@
   </requires>
 
   <releases>
+    <release version="0.3.0" date="2026-10-23">
+      <url type="details">https://github.com/gilgil28/tylia/releases/tag/v0.3.0</url>
+      <description>
+        <p>
+          Patches, archives and custom actions; several commits at once in the history;
+          your GitHub, GitLab and Bitbucket repositories in the Clone dialog; Git LFS
+          support; and Staged above Unstaged, so changes flow upwards to the commit.
+        </p>
+      </description>
+    </release>
     <release version="0.2.0" date="2026-10-22">
       <url type="details">https://github.com/gilgil28/tylia/releases/tag/v0.2.0</url>
       <description>
