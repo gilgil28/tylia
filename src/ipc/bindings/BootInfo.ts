@@ -5,4 +5,8 @@ import type { Settings } from "./Settings";
 /**
  * Injected into the page as `window.__TYLIA_BOOT__`.
  */
-export type BootInfo = { platform: string, distribution: Distribution, settings: Settings, };
+export type BootInfo = { platform: string, distribution: Distribution, settings: Settings, 
+/**
+ * The desktop's preference where the webview can't tell (Linux); `null` elsewhere.
+ */
+systemDark: boolean | null, };

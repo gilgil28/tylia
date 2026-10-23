@@ -7,10 +7,14 @@ import { toast } from "@/ui/Toast";
 import { boot } from "./boot";
 import { resolveTheme } from "./theme";
 
-const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+const systemDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+/** The desktop's preference as Rust reads it (Linux, where WebKitGTK's query only goes by
+ *  the GTK theme's name); `null` falls back to the media query. */
+let desktopDark = boot.systemDark;
 
 function applyTheme(preference: ThemePreference) {
-  document.documentElement.dataset.theme = resolveTheme(preference, systemDark.matches);
+  const systemDark = desktopDark ?? systemDarkQuery.matches;
+  document.documentElement.dataset.theme = resolveTheme(preference, systemDark);
 }
 
 /** UI font sizes offered in Settings (DESIGN §4.4: 12/13/14/15). */
@@ -49,4 +53,8 @@ export const useSettings = create<SettingsState>((set, get) => ({
   },
 }));
 
-systemDark.addEventListener("change", () => applyTheme(useSettings.getState().settings.theme));
+systemDarkQuery.addEventListener("change", () => applyTheme(useSettings.getState().settings.theme));
+void ipc.onSystemThemeChanged((dark) => {
+  desktopDark = dark;
+  applyTheme(useSettings.getState().settings.theme);
+});

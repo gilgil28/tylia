@@ -4573,6 +4573,7 @@ dependencies = [
  "tokio",
  "ts-rs",
  "tylia-git",
+ "zbus",
 ]
 
 [[package]]

@@ -14,6 +14,7 @@ use ts_rs::TS;
 
 use crate::commands::{Distribution, distribution};
 use crate::settings::{Settings, ThemePreference};
+use crate::system_theme;
 
 /// `--bg-app` for each theme (docs/DESIGN.md §4.2).
 const BG_DARK: Color = Color(0x0F, 0x11, 0x15, 0xFF);
@@ -30,6 +31,8 @@ pub struct BootInfo {
     pub platform: String,
     pub distribution: Distribution,
     pub settings: Settings,
+    /// The desktop's preference where the webview can't tell (Linux); `null` elsewhere.
+    pub system_dark: Option<bool>,
 }
 
 pub fn create_main(app: &AppHandle, settings: &Settings) -> tauri::Result<WebviewWindow> {
@@ -37,6 +40,7 @@ pub fn create_main(app: &AppHandle, settings: &Settings) -> tauri::Result<Webvie
         platform: std::env::consts::OS.to_owned(),
         distribution: distribution(),
         settings: settings.clone(),
+        system_dark: system_theme::is_dark(),
     };
     let boot_json = serde_json::to_string(&boot).expect("BootInfo serializes");
 
@@ -77,18 +81,22 @@ pub fn create_main(app: &AppHandle, settings: &Settings) -> tauri::Result<Webvie
 /// Sets the native theme (window frame, menus) and the background shown before and
 /// between paints.
 pub fn apply_theme(window: &WebviewWindow, preference: ThemePreference) {
-    let _ = window.set_theme(native_theme(preference));
-    let dark = match preference {
-        ThemePreference::Dark => true,
-        ThemePreference::Light => false,
-        ThemePreference::System => window.theme().is_ok_and(|t| t == Theme::Dark),
+    let native = native_theme(preference);
+    let _ = window.set_theme(native);
+    let dark = match native {
+        Some(theme) => theme == Theme::Dark,
+        None => window.theme().is_ok_and(|t| t == Theme::Dark),
     };
     let _ = window.set_background_color(Some(if dark { BG_DARK } else { BG_LIGHT }));
 }
 
+/// `None` follows the OS; on Linux "System" is set from the desktop's preference, as GTK
+/// may not know it (`system_theme`).
 fn native_theme(preference: ThemePreference) -> Option<Theme> {
     match preference {
-        ThemePreference::System => None,
+        ThemePreference::System => {
+            system_theme::is_dark().map(|dark| if dark { Theme::Dark } else { Theme::Light })
+        }
         ThemePreference::Light => Some(Theme::Light),
         ThemePreference::Dark => Some(Theme::Dark),
     }

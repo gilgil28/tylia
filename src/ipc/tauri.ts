@@ -204,6 +204,8 @@ export const backend: Backend = {
   homeDir: () => homeDir(),
   takeOpenRequests: () => invoke("take_open_requests"),
   onOpenRequested: (handler) => listen("open-requested", () => handler()),
+  onSystemThemeChanged: (handler) =>
+    listen<boolean | null>("system-theme-changed", (e) => handler(e.payload)),
   onFolderDrop: ({ over, drop }) =>
     getCurrentWebview().onDragDropEvent((e) => {
       const p = e.payload;

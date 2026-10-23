@@ -9,6 +9,7 @@ mod operation;
 mod path_index;
 mod settings;
 mod state;
+mod system_theme;
 mod terminal;
 mod ui_state;
 mod watcher;
@@ -75,6 +76,7 @@ pub fn run(open: Vec<PathBuf>) {
             let settings = store.load();
             state::set_git(&settings);
             window::create_main(app.handle(), &settings)?;
+            system_theme::watch(app.handle().clone());
             app.manage(AppState::new(
                 store,
                 UiStateStore::new(&config_dir),

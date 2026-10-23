@@ -16,6 +16,7 @@
     boot = {
       platform: /Mac/.test(ua) ? "macos" : /Windows/.test(ua) ? "windows" : "linux",
       distribution: "other",
+      systemDark: null,
       settings: Object.assign(
         {
           theme: "system",
@@ -47,7 +48,10 @@
   if (params.get("distribution")) boot.distribution = params.get("distribution");
   var dark =
     boot.settings.theme === "dark" ||
-    (boot.settings.theme === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+    (boot.settings.theme === "system" &&
+      (boot.systemDark != null
+        ? boot.systemDark
+        : matchMedia("(prefers-color-scheme: dark)").matches));
   document.documentElement.dataset.theme = dark ? "dark" : "light";
   document.documentElement.dataset.platform = boot.platform;
   document.documentElement.dataset.density = boot.settings.density || "comfortable";

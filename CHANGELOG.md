@@ -66,6 +66,9 @@ can change behaviour.
 - **Linux with an NVIDIA graphics card on Wayland:** Tylia no longer closes at start with
   "Error 71 (Protocol error)". Setting `__NV_DISABLE_EXPLICIT_SYNC` yourself overrides
   the fix.
+- **Linux:** the "System" theme follows the desktop's light or dark setting (KDE, GNOME and
+  others), and changes with it, instead of staying light when the GTK theme's name doesn't
+  say "dark".
 - On Windows, cancelling a clone could leave the half-cloned folder behind.
 - **Flatpak:** "Open in terminal" opens your computer's terminal (with the same one-time
   permission as "Use the system's Git") instead of saying none was found. With "Use the

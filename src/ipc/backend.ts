@@ -370,6 +370,11 @@ export interface Backend {
   /** More folders are waiting for `takeOpenRequests`. */
   onOpenRequested(handler: () => void): Promise<Unlisten>;
   /** Folders dropped on the window. */
+  /**
+   * The desktop's light / dark preference changed, where Rust reads it (`boot.systemDark`
+   * is not `null`); `null` when it has none.
+   */
+  onSystemThemeChanged(handler: (dark: boolean | null) => void): Promise<Unlisten>;
   onFolderDrop(handlers: {
     over: (active: boolean) => void;
     drop: (paths: string[]) => void;

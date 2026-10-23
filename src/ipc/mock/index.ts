@@ -651,6 +651,7 @@ export const backend: Backend = {
     return "wt.exe";
   },
   homeDir: async () => HOME,
+  onSystemThemeChanged: async () => () => {},
   onFolderDrop: async () => () => {},
 
   window: {
