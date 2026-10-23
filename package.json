@@ -2,7 +2,7 @@
   "name": "tylia",
   "productName": "Tylia",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A calm, fast desktop Git client",
   "license": "MIT OR Apache-2.0",
   "homepage": "https://gilgil28.github.io/tylia/",

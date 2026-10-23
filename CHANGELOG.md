@@ -7,6 +7,11 @@ can change behaviour.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-23
+
+Never lose work: every operation can be undone, discarded changes and lost commits can be
+brought back, and the details pane says whether a commit's or tag's signature is good.
+
 ### Added
 
 - **Undo and redo** (Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z outside text fields, the palette, and
@@ -236,6 +241,7 @@ The first version, built and tested locally; its contents shipped in 0.2.0.
 - **Packages:** Windows installer (NSIS) and MSI, macOS universal dmg, Linux AppImage,
   deb and rpm, and an AUR package (`tylia-bin`).
 
-[Unreleased]: https://github.com/gilgil28/tylia/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/gilgil28/tylia/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/gilgil28/tylia/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/gilgil28/tylia/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/gilgil28/tylia/releases/tag/v0.2.0

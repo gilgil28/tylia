@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 11 — Never lose work: undo and recovery** (2026-10-23: A–C built and tested, D partly — signature checks in the details pane; waiting for the user's real-app check and review; v0.4.0 not yet released). Phase 10 — Linux on real hardware: A done (every target met; the window-show fix), B and C wait for the user. Phase 9 shipped in **v0.3.0** together with Phase 8 (https://github.com/gilgil28/tylia/releases/tag/v0.3.0); the OAuth device flow waits for the user's OAuth apps. Phases 0–6 delivered; Phase 7 closed early with **v0.2.0**, the first public release, and the website at https://gilgil28.github.io/tylia/.
+Current phase: **Phase 11 — Never lose work: undo and recovery** (2026-10-23: A–D built and tested, released as **v0.4.0**; waiting for the user's real-app check of undo and review). Phase 10 — Linux on real hardware: A done (every target met; the window-show fix), B and C wait for the user. Phase 9 shipped in **v0.3.0** together with Phase 8 (https://github.com/gilgil28/tylia/releases/tag/v0.3.0); the OAuth device flow waits for the user's OAuth apps. Phases 0–6 delivered; Phase 7 closed early with **v0.2.0**, the first public release, and the website at https://gilgil28.github.io/tylia/.
 
 ## Product vision
 
@@ -1115,8 +1115,10 @@ ends with **v0.4.0**.
 
 #### Release
 
-- [ ] CHANGELOG `[0.4.0]`, version bump, tag `v0.4.0` (the user publishes the draft).
+- [x] CHANGELOG `[0.4.0]`, version bump, tag `v0.4.0` (the user publishes the draft).
       Update this ROADMAP and stop for review.
+      _2026-10-23: tagged `v0.4.0`. The undo checklist in the real app is still the user's
+      to run; publishing the draft waits for it._
 
 ## Known issues
 
