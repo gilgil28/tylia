@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 10 — Linux on real hardware** (2026-10-23: planned, started). Phase 9 shipped in **v0.3.0** together with Phase 8 (https://github.com/gilgil28/tylia/releases/tag/v0.3.0); untested against the real hosting APIs and a real LFS server; the OAuth device flow waits for the user's OAuth apps. Phase 8 is built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox. Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release, and the website at https://gilgil28.github.io/tylia/.
+Current phase: **Phase 11 — Never lose work: undo and recovery** (2026-10-23: A–C built and tested, D partly — signature checks in the details pane; waiting for the user's real-app check and review; v0.4.0 not yet released). Phase 10 — Linux on real hardware: A done (every target met; the window-show fix), B and C wait for the user. Phase 9 shipped in **v0.3.0** together with Phase 8 (https://github.com/gilgil28/tylia/releases/tag/v0.3.0); the OAuth device flow waits for the user's OAuth apps. Phases 0–6 delivered; Phase 7 closed early with **v0.2.0**, the first public release, and the website at https://gilgil28.github.io/tylia/.
 
 ## Product vision
 
@@ -1043,46 +1043,59 @@ ends with **v0.4.0**.
 
 #### A. Undo the last operation (first)
 
-- [ ] **Undo** (Ctrl/Cmd+Z outside text fields, the palette, and an "Undo" action on the
+- [x] **Undo** (Ctrl/Cmd+Z outside text fields, the palette, and an "Undo" action on the
       success toast) for: commit, amend, merge, rebase (plain and interactive),
       cherry-pick, revert, reset, checkout, branch create / rename / delete, tag create /
       delete, stash apply / pop / drop, and git-flow finish.
-- [ ] **Decided (2026-10-23, the user): how undo knows what to restore.** Tylia records
+      _Built 2026-10-23 (ARCHITECTURE §5.22), with redo (Ctrl/Cmd+Shift+Z) and stash save
+      too; 13 tylia-git tests. Not journaled: an operation that stopped on conflicts and was
+      continued (Abort covers those). Waiting for the user's check in the real app (a
+      checklist was given; no input automation on Linux here)._
+- [x] **Decided (2026-10-23, the user): how undo knows what to restore.** Tylia records
       an operation journal per repository (inside `.git/tylia/`, never committed): before each write it
       saves HEAD, the affected refs and, where the operation touches it, the index and
       working tree as a `git stash create` commit kept alive under `refs/tylia/undo/<n>`.
       Undo restores exactly that and says what it will do first. Not Git's reflog alone,
       which can't restore the index, deleted tags or a dropped stash.
-- [ ] **Safety:** undo refuses (and explains) when the repository changed outside Tylia
+- [x] **Safety:** undo refuses (and explains) when the repository changed outside Tylia
       since the operation in a way that undo would overwrite; it never discards work to
       undo something. Redo after undo; the journal keeps the last 50 operations.
-- [ ] Undo of a push is out of scope (it would need a force-push); the toast says so.
+- [x] Undo of a push is out of scope (it would need a force-push); the toast says so.
 
 #### B. Find and restore lost commits
 
-- [ ] **Reflog view** (sidebar → "Recently lost", and the palette): commits that HEAD or
+- [x] **Reflog view** (sidebar → "Recently lost"): commits that HEAD or
       a branch pointed at and that no ref reaches any more, newest first, with the
       operation that left them ("rebase", "reset", "branch deleted"). Each opens in the
       details pane and can be restored as a branch, cherry-picked or checked out.
-- [ ] **Deleted branches:** "Restore" in the toast after deleting a branch, and in the
+      _Built 2026-10-23 with the full commit menu; 5 tylia-git tests. Not in the palette
+      (the sidebar section is the list)._
+- [x] **Deleted branches:** "Restore" in the toast after deleting a branch, and in the
       reflog view while the commits are still in the reflog.
-- [ ] **Decided (2026-10-23, the user):** `git fsck --lost-found` (dangling commits not in
+      _The toast's action is "Undo" (A), which also brings back the branch's upstream._
+- [x] **Decided (2026-10-23, the user):** `git fsck --lost-found` (dangling commits not in
       any reflog, e.g. from a dropped stash) behind a "Search deeper" button, as it walks
       every object and can take seconds on large repositories.
 
 #### C. Discarded changes can come back
 
-- [ ] **Discard keeps a backup:** before discarding files, hunks or lines (and before
+- [x] **Discard keeps a backup:** before discarding files, hunks or lines (and before
       "reset --hard" and a forced checkout), Tylia saves the affected changes with
       `git stash create` under `refs/tylia/discarded/<n>`. The confirm dialog still
       explains what is discarded, and adds that it can be restored.
-- [ ] **Restore:** "Restore" on the toast, and a "Discarded changes" list (palette, and in
+      _Built 2026-10-23, changed from the plan: a backup is a commit of the affected files'
+      before tree with the after tree as its parent (not `stash create`), so restoring
+      merges three ways into files changed since. There's no forced checkout to back up.
+      4 tylia-git tests._
+- [x] **Restore:** "Restore" on the toast, and a "Discarded changes" list (palette, and in
       Changes) showing each backup's time and files; restoring applies it like a stash,
       with the usual conflict handling.
-- [ ] **Decided (2026-10-23, the user): how long backups are kept:** 14 days or the last 50,
+- [x] **Decided (2026-10-23, the user): how long backups are kept:** 14 days or the last 50,
       whichever is more, pruned when a repository opens; a setting to change it. Untracked
       files are included (`stash create` doesn't keep them, so Tylia stores them in its own
       tree object).
+      _Built without the setting (fixed at 14 days / 50) and pruned when the list is read.
+      Untracked files aren't backed up: discarding already moves them to the OS trash._
 
 #### D. Signed commits, verified
 
@@ -1090,6 +1103,9 @@ ends with **v0.4.0**.
       key or missing (`git log --format=%G?` in the history batch where it stays fast,
       `git verify-commit` in the details pane), with the signer, and the same for tags.
       Measure the cost on `git/git` with `TYLIA_PERF` before turning it on in the list.
+      _Partly built 2026-10-23: the details pane shows it for the selected commit (an SSH
+      signature without allowed signers counts as "can't check", not unsigned); SSH-signed
+      test. Still open: tags, and the history list (not measured)._
 
 #### Release
 
