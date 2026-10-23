@@ -363,6 +363,15 @@ export const backend: Backend = {
     onEvent({ kind: "rows", rows: rows.slice(40), segments: [], open: [] });
     onEvent({ kind: "done", total: rows.length });
   },
+  // The demo's HEAD is signed; everything else isn't.
+  verifyCommit: async (_repo, oid) =>
+    oid === fixture.refs.head.oid
+      ? {
+          status: "good",
+          signer: "ada@example.com",
+          key: "SHA256:3mX9fQ2pLk7c0bV1yRzT8uWnE4hJ6gA5sD0oK2iU9qY",
+        }
+      : { status: "unsigned", signer: null, key: null },
   getCommit: async (_repo, oid) => {
     const details = fixture.commits[oid];
     if (details) return details;

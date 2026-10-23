@@ -71,6 +71,7 @@ export const backend: Backend = {
   streamHistory: (repo, options, head, onEvent) =>
     invoke("stream_history", { repo, options, head, onEvent: channel<HistoryEvent>(onEvent) }),
   getCommit: (repo, oid) => invoke("get_commit", { repo, oid }),
+  verifyCommit: (repo, oid) => invoke("verify_commit", { repo, oid }),
   getDiff: (repo, request) => invoke("get_diff", { repo, request }),
   searchHistory: (repo, options, field, query) =>
     invoke("search_history", { repo, options, field, query }),

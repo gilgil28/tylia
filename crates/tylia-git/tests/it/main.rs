@@ -24,4 +24,5 @@ mod repo;
 mod repo_config;
 mod runner;
 mod undo;
+mod verify;
 mod worktree;

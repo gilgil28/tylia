@@ -19,6 +19,7 @@ import { SplitPane } from "@/ui/SplitPane";
 import { commitDiffRequest, DiffPane } from "./DiffPane";
 import { FileList, FileViewToggle, type ListedFile } from "./FileList";
 import { SeveralCommits } from "./SeveralCommits";
+import { SignatureBadge } from "./SignatureBadge";
 
 function CopyHash({ oid }: { oid: string }) {
   const [copied, setCopied] = useState(false);
@@ -42,7 +43,7 @@ function CopyHash({ oid }: { oid: string }) {
   );
 }
 
-function CommitHeader({ details }: { details: CommitDetails }) {
+function CommitHeader({ repo, details }: { repo: string; details: CommitDetails }) {
   const dateFormat = useSettings((s) => s.settings.dateFormat);
   const reveal = useRepoUi((s) => s.reveal);
   const { author, committer } = details;
@@ -72,6 +73,7 @@ function CommitHeader({ details }: { details: CommitDetails }) {
           {timeLabel(author.time, dateFormat).text}
         </span>
         <CopyHash oid={details.oid} />
+        <SignatureBadge repo={repo} oid={details.oid} />
       </div>
       {(!sameCommitter || details.parents.length > 0) && (
         <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-small">
@@ -214,7 +216,7 @@ function CommitSide({
   }
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <CommitHeader details={commit.data} />
+      <CommitHeader repo={repo} details={commit.data} />
       <ListHeader
         title={`${t("details.files")} · ${plural("count.files", files.length)}`}
         view={layout.fileView}

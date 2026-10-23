@@ -105,6 +105,8 @@ export type { LostCommit } from "./bindings/LostCommit";
 export type { DiscardBackup } from "./bindings/DiscardBackup";
 export type { DiscardKind } from "./bindings/DiscardKind";
 export type { RestoreOutcome } from "./bindings/RestoreOutcome";
+export type { SignatureCheck } from "./bindings/SignatureCheck";
+export type { SignatureStatus } from "./bindings/SignatureStatus";
 export type { UndoState } from "./bindings/UndoState";
 export type { UrlProtocol } from "./bindings/UrlProtocol";
 export type { UpdateInfo } from "./bindings/UpdateInfo";

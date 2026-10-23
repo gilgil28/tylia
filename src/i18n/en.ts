@@ -1207,6 +1207,14 @@ export const en = {
   "composer.amendCommit": "Amend",
   "composer.committed": "Committed {hash}",
 
+  "signature.good": "Signed",
+  "signature.goodUntrusted": "Signed, key not confirmed",
+  "signature.goodExpired": "Signed, key expired or revoked",
+  "signature.bad": "Bad signature",
+  "signature.cannotCheck": "Signed, can’t check",
+  "signature.signer": "By {signer}",
+  "signature.key": "Key {key}",
+
   "backups.title": "Discarded changes",
   "backups.open": "Discarded changes…",
   "backups.description":

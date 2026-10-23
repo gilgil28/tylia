@@ -60,6 +60,7 @@ import type { UndoState } from "./bindings/UndoState";
 import type { LostCommit } from "./bindings/LostCommit";
 import type { DiscardBackup } from "./bindings/DiscardBackup";
 import type { RestoreOutcome } from "./bindings/RestoreOutcome";
+import type { SignatureCheck } from "./bindings/SignatureCheck";
 import type { UpdateInfo } from "./bindings/UpdateInfo";
 import type { WorkingStatus } from "./bindings/WorkingStatus";
 import type { Worktree } from "./bindings/Worktree";
@@ -150,6 +151,8 @@ export interface Backend {
     onEvent: (event: HistoryEvent) => void,
   ): Promise<void>;
   getCommit(repo: string, oid: string): Promise<CommitDetails>;
+  /** Checks the commit's signature (runs the signing program; one commit at a time). */
+  verifyCommit(repo: string, oid: string): Promise<SignatureCheck>;
   getDiff(repo: string, request: DiffRequest): Promise<FileDiff>;
   searchHistory(
     repo: string,

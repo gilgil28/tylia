@@ -8,8 +8,8 @@ use tauri::{AppHandle, State};
 use ts_rs::TS;
 use tylia_git::{
     CommitDetails, DiffRequest, FileDiff, HistoryBatch, LfsStatus, LogOptions, PathIndex,
-    PathSuggestion, Progress, RefsSnapshot, RepoInfo, SearchField, Submodule, WorkingStatus,
-    Worktree,
+    PathSuggestion, Progress, RefsSnapshot, RepoInfo, SearchField, SignatureCheck, Submodule,
+    WorkingStatus, Worktree,
 };
 
 use crate::error::IpcError;
@@ -132,6 +132,12 @@ pub async fn stream_history(
 #[tauri::command]
 pub async fn get_commit(repo: String, oid: String) -> Result<CommitDetails, IpcError> {
     Ok(git()?.commit_details(Path::new(&repo), &oid).await?)
+}
+
+/// The commit's signature, checked with its signing program.
+#[tauri::command]
+pub async fn verify_commit(repo: String, oid: String) -> Result<SignatureCheck, IpcError> {
+    Ok(git()?.verify_commit(Path::new(&repo), &oid).await?)
 }
 
 #[tauri::command]

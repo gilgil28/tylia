@@ -19,6 +19,9 @@ can change behaviour.
   keep a copy first. "Restore" on the message after discarding, or "Discarded changes"
   (palette, or the button above Unstaged), brings them back, merged into files you changed
   since. Copies are kept for 14 days, and always the last 50.
+- **Signed commits:** the details pane says whether a commit's GPG, SSH or X.509
+  signature is good, bad, from a key that can't be checked here, or expired, with the
+  signer and key in its tooltip.
 - **Recently lost** (sidebar): commits no branch reaches any more, after a reset, a
   rebase, an amend or a deleted branch, newest first, with what lost them. Open one to see
   it, then create a branch there, check it out or cherry-pick it. "Search deeper" also

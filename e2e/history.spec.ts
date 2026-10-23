@@ -70,3 +70,14 @@ test("recently lost commits open in the details pane and search deeper finds mor
   await sidebar.getByRole("button", { name: "Search deeper" }).click();
   await expect(sidebar.getByText("On main: work in progress")).toBeVisible();
 });
+
+test("a signed commit says so in its details, an unsigned one says nothing", async ({ page }) => {
+  await openDemo(page);
+  await page.getByText("Parse commit trailers").first().click();
+  const badge = page.getByText("Signed", { exact: true });
+  await expect(badge).toBeVisible();
+  await expect(badge).toHaveAttribute("title", /By ada@example\.com/);
+  await page.getByText("Make edge width configurable").first().click();
+  await expect(page.getByRole("heading", { name: "Make edge width configurable" })).toBeVisible();
+  await expect(page.getByText("Signed", { exact: true })).toHaveCount(0);
+});

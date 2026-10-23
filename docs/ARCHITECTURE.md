@@ -901,3 +901,10 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   backups beyond the newest 50 that are older than 14 days. Discards return the backup id
   for the toast's Restore; the "Discarded changes" dialog (palette, Changes' unstaged
   header) lists them.
+- **Signatures** (`crates/tylia-git/src/verify.rs`): `verify_commit` runs `log -1 --no-walk
+--format=%G?%x00%GS%x00%GF%x00%GK` (Git runs gpg / ssh-keygen / gpgsm) and maps the
+  letter to `SignatureStatus`; when Git says `N` but the commit object has a `gpgsig`
+  header (an SSH signature without `gpg.ssh.allowedSignersFile`), it's `cannotCheck`, not
+  unsigned. Only in the details pane, as its own query (`SignatureBadge`) after the
+  details: checking runs the signing program, too slow for every history row. Tags are not
+  checked yet.

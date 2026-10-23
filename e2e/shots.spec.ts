@@ -49,6 +49,14 @@ for (const theme of THEMES) {
       });
     }
 
+    test("signed commit", async ({ page }) => {
+      await page.setViewportSize(SIZES[0]);
+      await openDemo(page, theme);
+      await page.getByText("Parse commit trailers").first().click();
+      await expect(page.getByText("Signed", { exact: true })).toBeVisible();
+      await shot(page, `signed-commit-${theme}`);
+    });
+
     test("discarded changes", async ({ page }) => {
       await page.setViewportSize(SIZES[0]);
       await openDemo(page, theme);
