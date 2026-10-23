@@ -4,8 +4,9 @@
 use std::path::Path;
 
 use tauri::State;
-use tylia_git::{IntegrateOutcome, RebaseTodo, TodoItem};
+use tylia_git::{IntegrateOutcome, RebaseTodo, TodoItem, UndoKind};
 
+use crate::commands::undo::journaled;
 use crate::error::IpcError;
 use crate::state::{AppState, git};
 
@@ -27,7 +28,10 @@ pub async fn rebase_interactive(
     state: State<'_, AppState>,
 ) -> Result<IntegrateOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?
-        .rebase_interactive(Path::new(&repo), &base, &plan)
-        .await?)
+    journaled(&repo, UndoKind::InteractiveRebase, || async {
+        Ok(git()?
+            .rebase_interactive(Path::new(&repo), &base, &plan)
+            .await?)
+    })
+    .await
 }

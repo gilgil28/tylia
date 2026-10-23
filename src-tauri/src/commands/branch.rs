@@ -8,9 +8,10 @@ use tauri::State;
 use tauri::ipc::Channel;
 use tylia_git::{
     BlockOutcome, BlockResolution, CheckoutOutcome, CheckoutRequest, ConflictFile, ConflictSide,
-    FastForward, IntegrateOutcome, Progress, ResetMode, StashOutcome, StashRequest,
+    FastForward, IntegrateOutcome, Progress, ResetMode, StashOutcome, StashRequest, UndoKind,
 };
 
+use crate::commands::undo::journaled;
 use crate::error::IpcError;
 use crate::operation::Operation;
 use crate::state::{AppState, git};
@@ -24,9 +25,12 @@ pub async fn create_branch(
     state: State<'_, AppState>,
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?
-        .create_branch(Path::new(&repo), &name, &start, checkout)
-        .await?)
+    journaled(&repo, UndoKind::CreateBranch, || async {
+        Ok(git()?
+            .create_branch(Path::new(&repo), &name, &start, checkout)
+            .await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -36,7 +40,10 @@ pub async fn checkout(
     state: State<'_, AppState>,
 ) -> Result<CheckoutOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.checkout(Path::new(&repo), &request).await?)
+    journaled(&repo, UndoKind::Checkout, || async {
+        Ok(git()?.checkout(Path::new(&repo), &request).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -47,9 +54,12 @@ pub async fn rename_branch(
     state: State<'_, AppState>,
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?
-        .rename_branch(Path::new(&repo), &name, &new_name)
-        .await?)
+    journaled(&repo, UndoKind::RenameBranch, || async {
+        Ok(git()?
+            .rename_branch(Path::new(&repo), &name, &new_name)
+            .await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -60,7 +70,10 @@ pub async fn delete_branch(
     state: State<'_, AppState>,
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.delete_branch(Path::new(&repo), &name, force).await?)
+    journaled(&repo, UndoKind::DeleteBranch, || async {
+        Ok(git()?.delete_branch(Path::new(&repo), &name, force).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -104,9 +117,12 @@ pub async fn create_tag(
     state: State<'_, AppState>,
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?
-        .create_tag(Path::new(&repo), &name, &target, message.as_deref())
-        .await?)
+    journaled(&repo, UndoKind::CreateTag, || async {
+        Ok(git()?
+            .create_tag(Path::new(&repo), &name, &target, message.as_deref())
+            .await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -116,7 +132,10 @@ pub async fn delete_tag(
     state: State<'_, AppState>,
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.delete_tag(Path::new(&repo), &name).await?)
+    journaled(&repo, UndoKind::DeleteTag, || async {
+        Ok(git()?.delete_tag(Path::new(&repo), &name).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -144,7 +163,10 @@ pub async fn stash_save(
     state: State<'_, AppState>,
 ) -> Result<bool, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.stash_save(Path::new(&repo), &request).await?)
+    journaled(&repo, UndoKind::StashSave, || async {
+        Ok(git()?.stash_save(Path::new(&repo), &request).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -155,7 +177,15 @@ pub async fn stash_apply(
     state: State<'_, AppState>,
 ) -> Result<StashOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.stash_apply(Path::new(&repo), index, pop).await?)
+    let kind = if pop {
+        UndoKind::StashPop
+    } else {
+        UndoKind::StashApply
+    };
+    journaled(&repo, kind, || async {
+        Ok(git()?.stash_apply(Path::new(&repo), index, pop).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -165,7 +195,10 @@ pub async fn stash_drop(
     state: State<'_, AppState>,
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.stash_drop(Path::new(&repo), index).await?)
+    journaled(&repo, UndoKind::StashDrop, || async {
+        Ok(git()?.stash_drop(Path::new(&repo), index).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -176,7 +209,10 @@ pub async fn merge(
     state: State<'_, AppState>,
 ) -> Result<IntegrateOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.merge(Path::new(&repo), &rev, ff).await?)
+    journaled(&repo, UndoKind::Merge, || async {
+        Ok(git()?.merge(Path::new(&repo), &rev, ff).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -186,7 +222,10 @@ pub async fn rebase(
     state: State<'_, AppState>,
 ) -> Result<IntegrateOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.rebase(Path::new(&repo), &onto).await?)
+    journaled(&repo, UndoKind::Rebase, || async {
+        Ok(git()?.rebase(Path::new(&repo), &onto).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -196,7 +235,10 @@ pub async fn cherry_pick(
     state: State<'_, AppState>,
 ) -> Result<IntegrateOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.cherry_pick(Path::new(&repo), &oid).await?)
+    journaled(&repo, UndoKind::CherryPick, || async {
+        Ok(git()?.cherry_pick(Path::new(&repo), &oid).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -206,7 +248,10 @@ pub async fn revert(
     state: State<'_, AppState>,
 ) -> Result<IntegrateOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.revert(Path::new(&repo), &oid).await?)
+    journaled(&repo, UndoKind::Revert, || async {
+        Ok(git()?.revert(Path::new(&repo), &oid).await?)
+    })
+    .await
 }
 
 /// Cherry-picks `oids` (oldest first) as one operation.
@@ -217,7 +262,10 @@ pub async fn cherry_pick_many(
     state: State<'_, AppState>,
 ) -> Result<IntegrateOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.cherry_pick_many(Path::new(&repo), &oids).await?)
+    journaled(&repo, UndoKind::CherryPick, || async {
+        Ok(git()?.cherry_pick_many(Path::new(&repo), &oids).await?)
+    })
+    .await
 }
 
 /// Reverts `oids` (newest first) as one operation.
@@ -228,7 +276,10 @@ pub async fn revert_many(
     state: State<'_, AppState>,
 ) -> Result<IntegrateOutcome, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.revert_many(Path::new(&repo), &oids).await?)
+    journaled(&repo, UndoKind::Revert, || async {
+        Ok(git()?.revert_many(Path::new(&repo), &oids).await?)
+    })
+    .await
 }
 
 #[tauri::command]
@@ -239,7 +290,10 @@ pub async fn reset(
     state: State<'_, AppState>,
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.reset(Path::new(&repo), &oid, mode).await?)
+    journaled(&repo, UndoKind::Reset, || async {
+        Ok(git()?.reset(Path::new(&repo), &oid, mode).await?)
+    })
+    .await
 }
 
 #[tauri::command]

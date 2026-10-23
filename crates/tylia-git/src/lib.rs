@@ -34,6 +34,7 @@ mod runner;
 mod stash;
 mod status;
 mod tag;
+mod undo;
 mod version;
 mod worktree;
 
@@ -70,5 +71,6 @@ pub use repo_config::{ConfigScope, ConfigValue, RemoteSettings, RepoConfig, UrlP
 pub use runner::{AccessFailure, Git, GitOutput, OpContext, RunOptions};
 pub use stash::{StashOutcome, StashRequest};
 pub use status::{FileStatus, OperationKind, RepoOperation, StatusEntry, WorkingStatus};
+pub use undo::{UndoKind, UndoPending, UndoState};
 pub use version::{GitInfo, GitVersion, MIN_GIT_VERSION};
 pub use worktree::{add_to_gitignore, repo_path};

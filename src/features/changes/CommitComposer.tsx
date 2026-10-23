@@ -13,6 +13,7 @@ import { Button } from "@/ui/Button";
 import { Checkbox } from "@/ui/Checkbox";
 import { cn } from "@/ui/cn";
 import { IconButton } from "@/ui/IconButton";
+import { useUndo } from "@/features/undo/undo";
 import { Kbd } from "@/ui/Kbd";
 import { Menu } from "@/ui/Menu";
 import { Textarea } from "@/ui/Textarea";
@@ -42,6 +43,7 @@ export function CommitComposer({ repo, stagedCount }: { repo: string; stagedCoun
   const recent = useWorkspace((s) => s.recentMessages[repo]) ?? [];
   const addRecentMessage = useWorkspace((s) => s.addRecentMessage);
   const run = useRepoAction(repo);
+  const undo = useUndo(repo);
   const pushAfterCommit = useSettings((s) => s.settings.pushAfterCommit);
   const updateSettings = useSettings((s) => s.update);
   const [busy, setBusy] = useState(false);
@@ -71,7 +73,11 @@ export function CommitComposer({ repo, stagedCount }: { repo: string; stagedCoun
     });
     setBusy(false);
     if (oid) {
-      toast({ kind: "success", title: t("composer.committed", { hash: shortHash(oid) }) });
+      toast({
+        kind: "success",
+        title: t("composer.committed", { hash: shortHash(oid) }),
+        action: undo.toastAction,
+      });
       addRecentMessage(repo, message);
       setDraft({ message: "", amend: false });
       setBeforeAmend(null);

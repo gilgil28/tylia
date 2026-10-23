@@ -193,6 +193,10 @@ export const backend: Backend = {
     return storage(UI_KEY, DEFAULT_UI);
   },
   writePerfReport: async (report) => console.info("perf report", report),
+  // The browser preview has no journal: nothing to undo.
+  undoState: async () => ({ undo: null, redo: null }),
+  undo: async () => ({ undo: null, redo: null }),
+  redo: async () => ({ undo: null, redo: null }),
   saveUiState: async (state) => {
     if (!new URLSearchParams(location.search).has("repo")) store(UI_KEY, state);
   },

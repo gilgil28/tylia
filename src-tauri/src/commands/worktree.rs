@@ -4,8 +4,9 @@ use std::path::Path;
 
 use tauri::{AppHandle, State};
 use tauri_plugin_opener::OpenerExt;
-use tylia_git::{LinesRequest, add_to_gitignore, repo_path};
+use tylia_git::{LinesRequest, UndoKind, add_to_gitignore, repo_path};
 
+use crate::commands::undo::journaled;
 use crate::error::IpcError;
 use crate::state::{AppState, git};
 use crate::terminal::{self, Env};
@@ -76,7 +77,15 @@ pub async fn commit(
     state: State<'_, AppState>,
 ) -> Result<String, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.commit(Path::new(&repo), &message, amend).await?)
+    let kind = if amend {
+        UndoKind::Amend
+    } else {
+        UndoKind::Commit
+    };
+    journaled(&repo, kind, || async {
+        Ok(git()?.commit(Path::new(&repo), &message, amend).await?)
+    })
+    .await
 }
 
 /// The HEAD commit's message, to prefill an amend.

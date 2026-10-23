@@ -48,7 +48,13 @@ impl LogOptions {
             LogOrder::Topo => "--topo-order",
         };
         match self.scope {
-            LogScope::All => vec![order, "--exclude=refs/stash", "--all"],
+            // Tylia's own refs (the undo journal's) are not history.
+            LogScope::All => vec![
+                order,
+                "--exclude=refs/stash",
+                "--exclude=refs/tylia/*",
+                "--all",
+            ],
             LogScope::Head => vec![order, "HEAD"],
         }
     }

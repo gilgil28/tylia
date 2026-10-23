@@ -20,6 +20,8 @@ export function useRepoEvents() {
         if (refs) {
           void client.invalidateQueries({ queryKey: ["refs", repo] });
           void client.invalidateQueries({ queryKey: ["repo-branch", repo] });
+          // Changes made outside Tylia can make the last operation impossible to undo.
+          void client.invalidateQueries({ queryKey: ["undo", repo] });
         }
         if (worktree || refs) {
           void client.invalidateQueries({ queryKey: ["status", repo] });

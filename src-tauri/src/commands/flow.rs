@@ -3,8 +3,9 @@
 use std::path::Path;
 
 use tauri::State;
-use tylia_git::{FlowConfig, FlowFinishRequest, FlowFinished, FlowKind, FlowState};
+use tylia_git::{FlowConfig, FlowFinishRequest, FlowFinished, FlowKind, FlowState, UndoKind};
 
+use crate::commands::undo::journaled;
 use crate::error::IpcError;
 use crate::state::{AppState, git};
 
@@ -42,5 +43,8 @@ pub async fn flow_finish(
     state: State<'_, AppState>,
 ) -> Result<FlowFinished, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.flow_finish(Path::new(&repo), &request).await?)
+    journaled(&repo, UndoKind::FlowFinish, || async {
+        Ok(git()?.flow_finish(Path::new(&repo), &request).await?)
+    })
+    .await
 }

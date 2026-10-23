@@ -6,6 +6,7 @@ import { useMemo } from "react";
 
 import { useRepoAction } from "@/features/changes/useRepoAction";
 import { useBranchDialog } from "@/features/branching/dialog-store";
+import { useUndo } from "@/features/undo/undo";
 import { t } from "@/i18n";
 import { ipc, type FlowConfig, type FlowKind } from "@/ipc";
 import { toast } from "@/ui/Toast";
@@ -45,6 +46,7 @@ export function classifyFlowBranch(
 
 export function useFlow(repo: string) {
   const run = useRepoAction(repo);
+  const undo = useUndo(repo);
   const client = useQueryClient();
   const openDialog = useBranchDialog((s) => s.open);
 
@@ -107,9 +109,10 @@ export function useFlow(repo: string) {
           ]
             .filter(Boolean)
             .join(" "),
+          action: undo.toastAction,
         });
         return true;
       },
     };
-  }, [repo, run, client, openDialog]);
+  }, [repo, run, client, openDialog, undo.toastAction]);
 }

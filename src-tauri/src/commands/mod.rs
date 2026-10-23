@@ -15,6 +15,7 @@ mod rebase;
 mod remote;
 mod repo;
 mod repo_settings;
+mod undo;
 mod update;
 mod worktree;
 
@@ -33,5 +34,6 @@ pub use rebase::*;
 pub use remote::*;
 pub use repo::*;
 pub use repo_settings::*;
+pub use undo::*;
 pub use update::*;
 pub use worktree::*;

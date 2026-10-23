@@ -842,3 +842,37 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   are network operations through the usual runner: progress, cancel, askpass, the
   toolbar's operation state. The toolbar's LFS badge is their menu; the locks dialog reads
   the server each time it opens and lets you release only your own locks.
+
+## 5.22 Undo and redo (Phase 11)
+
+- **Journal** (`crates/tylia-git/src/undo.rs`): `undo_begin(kind)` captures HEAD (branch or
+  detached oid), every `refs/heads` and `refs/tags` ref, the stash list (`refs/stash`'s
+  reflog: oid + message), all `branch.*` config, and — for kinds that touch them — the index
+  and working tree as a `git stash create` commit (`Changes::Clean` when clean; untracked
+  files are not captured, and no journaled operation changes them). `undo_finish` captures
+  again and stores only what changed as an entry with a `before` and an `after` side in
+  `<git dir>/tylia/journal.json` (per worktree), unless nothing changed or an operation is
+  in progress (conflicts: the banner's Abort covers those; continuing them isn't journaled).
+  The last 50 entries are kept.
+- **Keep-alive refs:** every object an entry names gets a ref
+  `refs/tylia/undo/<journal key>/<id>/<n>` (`update-ref --stdin`), deleted when the entry is
+  pruned or a new operation ends redo. The key separates linked worktrees' journals, which
+  share refs. History excludes `refs/tylia/*` (`LogScope::All`).
+- **Undo / redo** restore one side over the other (`restore`): first check that the
+  repository is exactly in the side being left (HEAD, each changed ref, the stash list if it
+  changed, and the index + working tree compared by tree ids of fresh `stash create`
+  captures), else refuse with nothing changed. Then one `update-ref --stdin` transaction
+  (each update checks the old value), `symbolic-ref HEAD` or a detached `update-ref
+--no-deref HEAD`, the changed branches' config sections, and for worktree kinds
+  `reset --hard HEAD` (loses nothing: just checked) plus `stash apply --index` of the
+  target's capture; finally the stash list is rebuilt with `stash store`. Redo is the same in
+  the other direction; a new entry drops undone ones.
+- **App** (`src-tauri/src/commands/undo.rs`): `journaled(repo, kind, write)` wraps each local
+  write inside its write lock (commit / amend, merge, rebase, interactive rebase,
+  cherry-pick, revert, reset, checkout, branch create / rename / delete, tag create /
+  delete, stash save / apply / pop / drop, git-flow finish). If capturing fails the write
+  still runs. Pushes and other network operations are not journaled.
+- **Frontend** (`src/features/undo/undo.ts`): the `["undo", repo]` query (refreshed by every
+  `useRepoAction` write and by watcher ref changes), `repo.undo` / `repo.redo` actions
+  (Mod+Z, Mod+Shift+Z, marked `notWhileTyping` so text fields keep their own undo), and an
+  "Undo" action on the success toasts of journaled operations.

@@ -7,6 +7,15 @@ can change behaviour.
 
 ## [Unreleased]
 
+### Added
+
+- **Undo and redo** (Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z outside text fields, the palette, and
+  "Undo" on the message after an operation): commits and amends, merges, rebases,
+  cherry-picks, reverts, resets, checkouts, creating, renaming and deleting branches and
+  tags, stashes and git-flow finishes. Undo brings back staged and unstaged changes too,
+  so even a hard reset can be undone. It refuses, changing nothing, if the repository
+  changed since in a way it would overwrite. Pushes can't be undone.
+
 ### Fixed
 
 - **Linux:** the window appears as soon as it has rendered, about 2.7 seconds sooner. It

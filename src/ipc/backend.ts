@@ -56,6 +56,7 @@ import type { StashOutcome } from "./bindings/StashOutcome";
 import type { StashRequest } from "./bindings/StashRequest";
 import type { Submodule } from "./bindings/Submodule";
 import type { TodoItem } from "./bindings/TodoItem";
+import type { UndoState } from "./bindings/UndoState";
 import type { UpdateInfo } from "./bindings/UpdateInfo";
 import type { WorkingStatus } from "./bindings/WorkingStatus";
 import type { Worktree } from "./bindings/Worktree";
@@ -264,6 +265,11 @@ export interface Backend {
   stashSave(repo: string, request: StashRequest): Promise<boolean>;
   stashApply(repo: string, index: number, pop: boolean): Promise<StashOutcome>;
   stashDrop(repo: string, index: number): Promise<void>;
+  /** What Tylia's operation journal can undo and redo (Phase 11). */
+  undoState(repo: string): Promise<UndoState>;
+  /** Undoes the last operation; refuses when the repository changed since. */
+  undo(repo: string): Promise<UndoState>;
+  redo(repo: string): Promise<UndoState>;
   merge(repo: string, rev: string, ff: FastForward): Promise<IntegrateOutcome>;
   rebase(repo: string, onto: string): Promise<IntegrateOutcome>;
   cherryPick(repo: string, oid: string): Promise<IntegrateOutcome>;

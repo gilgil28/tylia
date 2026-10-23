@@ -24,6 +24,8 @@ import {
   SquarePen,
   SquareSplitHorizontal,
   SquareTerminal,
+  Redo2,
+  Undo2,
 } from "lucide-react";
 
 import { useRegisterActions, type Action } from "@/app/actions";
@@ -49,6 +51,7 @@ import {
   saveCommitPatches,
 } from "@/features/patch/patch";
 import { useRemoteDialog } from "@/features/remote/RemoteDialogs";
+import { operationName, useUndo } from "@/features/undo/undo";
 import { t } from "@/i18n";
 import { workingDiffRequest } from "@/features/changes/StagingDiffPane";
 import { commitDiffRequest } from "@/features/commit-details/DiffPane";
@@ -90,6 +93,9 @@ export function useRepoActions(
   const selection = useRepoUi((s) => s.selection);
   const selectedOids = useRepoUi((s) => s.selectedOids);
   const customActions = useSettings((s) => s.settings.customActions);
+  const undo = useUndo(repo);
+  const undoKind = undo.state?.undo;
+  const redoKind = undo.state?.redo;
 
   // The selected file's diff, for the external diff tool.
   const diffRequest = (): DiffRequest | null => {
@@ -102,6 +108,31 @@ export function useRepoActions(
   };
 
   const actions: Action[] = [
+    {
+      id: "repo.undo",
+      title: undoKind
+        ? t("undo.undo", { operation: operationName(undoKind) })
+        : t("undo.undoPlain"),
+      group: "repository",
+      icon: Undo2,
+      shortcut: "Mod+Z",
+      notWhileTyping: true,
+      keywords: ["revert", "back", "restore"],
+      disabled: !undoKind || busy,
+      run: undo.undo,
+    },
+    {
+      id: "repo.redo",
+      title: redoKind
+        ? t("undo.redo", { operation: operationName(redoKind) })
+        : t("undo.redoPlain"),
+      group: "repository",
+      icon: Redo2,
+      shortcut: "Mod+Shift+Z",
+      notWhileTyping: true,
+      disabled: !redoKind || busy,
+      run: undo.redo,
+    },
     {
       id: "view.changes",
       title: t("actions.showChanges"),

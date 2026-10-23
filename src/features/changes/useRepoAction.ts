@@ -65,6 +65,7 @@ export function useRepoAction(repo: string) {
             (q.queryKey[2] as DiffRequest | null)?.target.kind !== "commit",
         });
         if (refs) void client.invalidateQueries({ queryKey: ["refs", repo] });
+        void client.invalidateQueries({ queryKey: ["undo", repo] });
       }
     },
     [client, repo],

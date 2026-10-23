@@ -69,7 +69,7 @@ const isTyping = (el: Element | null) =>
 
 /**
  * One keydown listener runs registered actions by shortcut. While typing, only shortcuts
- * with Mod work; while a dialog is open, only those marked to work over dialogs (the palette
+ * with Mod work (and not those marked `notWhileTyping`); while a dialog is open, only those marked to work over dialogs (the palette
  * itself is a dialog). Unmodified keys never trigger actions in text fields.
  */
 export function useShortcutDispatcher() {
@@ -78,11 +78,12 @@ export function useShortcutDispatcher() {
       if (e.defaultPrevented || e.repeat) return;
       const pressed = eventShortcut(e);
       if (!pressed) return;
-      if (isTyping(document.activeElement) && !pressed.startsWith("Mod")) return;
+      const typing = isTyping(document.activeElement);
+      if (typing && !pressed.startsWith("Mod")) return;
       if (document.querySelector("[role=dialog], [role=alertdialog]")) return;
       const bindings = useSettings.getState().settings.shortcuts;
       const action = allActions().find((a) => effectiveShortcut(a, bindings) === pressed);
-      if (!action || action.disabled) return;
+      if (!action || action.disabled || (typing && action.notWhileTyping)) return;
       e.preventDefault();
       action.run();
     };

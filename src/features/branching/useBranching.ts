@@ -8,6 +8,7 @@ import { queryClient } from "@/app/query-client";
 import { shortHash } from "@/app/format";
 import { useRepoAction } from "@/features/changes/useRepoAction";
 import { useRepoUi } from "@/features/repo/repo-store";
+import { useUndo } from "@/features/undo/undo";
 import { plural, t } from "@/i18n";
 import {
   ipc,
@@ -44,6 +45,7 @@ export function targetLabel(target: CheckoutTarget): string {
 
 export function useBranching(repo: string) {
   const run = useRepoAction(repo);
+  const undo = useUndo(repo);
   const setView = useRepoUi((s) => s.setView);
   const openDialog = useBranchDialog((s) => s.open);
 
@@ -54,7 +56,7 @@ export function useBranching(repo: string) {
 
   /** Toasts an integration outcome; conflicts point to the Changes view. */
   const reportOutcome = useCallback(
-    (outcome: IntegrateOutcome | undefined, done: string, stopped: string) => {
+    (outcome: IntegrateOutcome | undefined, done: string, stopped: string, undoable = true) => {
       if (!outcome) return;
       if (outcome === "conflicts") {
         toast({
@@ -78,10 +80,11 @@ export function useBranching(repo: string) {
       } else if (outcome === "upToDate") {
         toast({ kind: "success", title: t("branching.upToDate", { branch: current() }) });
       } else {
-        toast({ kind: "success", title: done });
+        // Continuing after conflicts isn't journaled: Undo there would mean an older entry.
+        toast({ kind: "success", title: done, action: undoable ? undo.toastAction : undefined });
       }
     },
-    [repo, current, setView],
+    [repo, current, setView, undo.toastAction],
   );
 
   /** Merge / rebase / pick / revert refused over local changes: say so and offer Stash. */
@@ -125,6 +128,7 @@ export function useBranching(repo: string) {
             target.kind === "detached"
               ? t("branching.checkedOutCommit", { hash: label })
               : t("branching.switched", { name: label }),
+          action: undo.toastAction,
         });
       } else if (outcome === "stashConflicts") {
         toast({
@@ -151,6 +155,7 @@ export function useBranching(repo: string) {
             title: andCheckout
               ? t("branching.createdAndSwitched", { name })
               : t("branching.created", { name }),
+            action: undo.toastAction,
           });
         }
         return ok === true;
@@ -176,7 +181,12 @@ export function useBranching(repo: string) {
             },
           },
         );
-        if (ok) toast({ kind: "success", title: t("branching.deleted", { name }) });
+        if (ok)
+          toast({
+            kind: "success",
+            title: t("branching.deleted", { name }),
+            action: undo.toastAction,
+          });
       },
 
       setUpstream: async (branch: string, upstream: string | null) =>
@@ -192,7 +202,12 @@ export function useBranching(repo: string) {
           t("branching.tagFailed", { name }),
           { refs: true },
         );
-        if (ok) toast({ kind: "success", title: t("branching.tagCreated", { name }) });
+        if (ok)
+          toast({
+            kind: "success",
+            title: t("branching.tagCreated", { name }),
+            action: undo.toastAction,
+          });
         return ok === true;
       },
 
@@ -202,7 +217,12 @@ export function useBranching(repo: string) {
           t("branching.tagDeleteFailed", { name }),
           { refs: true },
         );
-        if (ok) toast({ kind: "success", title: t("branching.tagDeleted", { name }) });
+        if (ok)
+          toast({
+            kind: "success",
+            title: t("branching.tagDeleted", { name }),
+            action: undo.toastAction,
+          });
       },
 
       stashSave: async (request: StashRequest) => {
@@ -210,7 +230,8 @@ export function useBranching(repo: string) {
           refs: true,
         });
         if (saved === false) toast({ kind: "success", title: t("branching.nothingToStash") });
-        else if (saved) toast({ kind: "success", title: t("branching.stashed") });
+        else if (saved)
+          toast({ kind: "success", title: t("branching.stashed"), action: undo.toastAction });
       },
 
       stashApply: async (index: number, pop: boolean) => {
@@ -220,7 +241,11 @@ export function useBranching(repo: string) {
           { refs: true },
         );
         if (outcome === "applied") {
-          toast({ kind: "success", title: pop ? t("branching.popped") : t("branching.applied") });
+          toast({
+            kind: "success",
+            title: pop ? t("branching.popped") : t("branching.applied"),
+            action: undo.toastAction,
+          });
         } else if (outcome === "conflicts") {
           toast({
             kind: "error",
@@ -237,7 +262,7 @@ export function useBranching(repo: string) {
           t("branching.dropFailed"),
           { refs: true },
         );
-        if (ok) toast({ kind: "success", title: t("branching.dropped") });
+        if (ok) toast({ kind: "success", title: t("branching.dropped"), action: undo.toastAction });
       },
 
       merge: async (rev: string, label: string, ff: FastForward = "allow") => {
@@ -251,6 +276,7 @@ export function useBranching(repo: string) {
           toast({
             kind: "success",
             title: t("branching.fastForwarded", { branch: into, name: label }),
+            action: undo.toastAction,
           });
           return;
         }
@@ -367,6 +393,7 @@ export function useBranching(repo: string) {
           toast({
             kind: "success",
             title: t("branching.resetDone", { branch, hash: shortHash(oid) }),
+            action: undo.toastAction,
           });
         }
       },
@@ -379,14 +406,14 @@ export function useBranching(repo: string) {
             refs: true,
           },
         );
-        reportOutcome(outcome, t("branching.continued"), t("branching.nextConflicts"));
+        reportOutcome(outcome, t("branching.continued"), t("branching.nextConflicts"), false);
       },
 
       skipOperation: async () => {
         const outcome = await run(() => ipc.skipOperation(repo), t("branching.skipFailed"), {
           refs: true,
         });
-        reportOutcome(outcome, t("branching.skipped"), t("branching.nextConflicts"));
+        reportOutcome(outcome, t("branching.skipped"), t("branching.nextConflicts"), false);
       },
 
       abortOperation: async () => {
@@ -407,7 +434,7 @@ export function useBranching(repo: string) {
       mergeTool: (path: string) =>
         run(() => ipc.mergeTool(repo, path), t("branching.mergeToolFailed")),
     };
-  }, [repo, run, openDialog, setView, current, reportOutcome, dirtyRefusal]);
+  }, [repo, run, openDialog, setView, current, reportOutcome, dirtyRefusal, undo]);
 }
 
 export type Branching = ReturnType<typeof useBranching>;

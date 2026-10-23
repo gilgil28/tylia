@@ -28,6 +28,8 @@ export interface Action {
   hidden?: boolean;
   /** Listed only once the palette has a query (e.g. one item per branch or recent repo). */
   searchOnly?: boolean;
+  /** Its shortcut does nothing in text fields, which keep it (Mod+Z undoes typing there). */
+  notWhileTyping?: boolean;
   run: () => void;
 }
 
