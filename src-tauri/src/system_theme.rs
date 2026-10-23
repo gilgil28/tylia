@@ -8,6 +8,7 @@
 use tauri::AppHandle;
 
 /// Emitted with `Option<bool>` (dark) when the desktop's preference changes.
+#[cfg(target_os = "linux")]
 pub const CHANGED_EVENT: &str = "system-theme-changed";
 
 /// `Some(true)` when the desktop prefers dark, `Some(false)` light, `None` when unknown.
