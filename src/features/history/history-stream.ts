@@ -3,6 +3,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 
+import { perfMark } from "@/app/perf";
 import { SegmentIndex, type Segment } from "@/features/graph/segment-index";
 import { ipc, type HistoryRow, type LogOptions } from "@/ipc";
 
@@ -34,6 +35,7 @@ export class HistoryStream {
   /** (Re)starts streaming. Old rows stay visible until the first new batch arrives. */
   start(repo: string, options: LogOptions, head: string | null) {
     const generation = ++this.generation;
+    perfMark(repo, "historyStart");
     let fresh = true;
     const reset = () => {
       if (!fresh) return;
@@ -49,6 +51,7 @@ export class HistoryStream {
         if (generation !== this.generation) return;
         reset();
         if (event.kind === "rows") {
+          perfMark(repo, "historyFirstBatch");
           for (const row of event.rows) {
             this.index.set(row.oid, this.rows.length);
             this.rows.push(row);
@@ -56,6 +59,7 @@ export class HistoryStream {
           this.segments.add(event.segments as Segment[]);
           this.segments.setOpen(event.open as Segment[]);
         } else {
+          perfMark(repo, "historyDone");
           this.done = true;
         }
         this.emit();

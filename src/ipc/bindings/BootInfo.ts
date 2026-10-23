@@ -9,4 +9,8 @@ export type BootInfo = { platform: string, distribution: Distribution, settings:
 /**
  * The desktop's preference where the webview can't tell (Linux); `null` elsewhere.
  */
-systemDark: boolean | null, };
+systemDark: boolean | null, 
+/**
+ * A performance run (`TYLIA_PERF=<file>`): the frontend times itself and reports.
+ */
+perf: boolean, };

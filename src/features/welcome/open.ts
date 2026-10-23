@@ -1,5 +1,6 @@
 // Opening repositories from a path, the folder picker or a drop, with errors as toasts.
 
+import { perfMark } from "@/app/perf";
 import { useWorkspace } from "@/app/workspace";
 import { t } from "@/i18n";
 import { ipc, isIpcError } from "@/ipc";
@@ -26,7 +27,11 @@ export function showOpenError(path: string, err: unknown) {
 
 export async function openRepoAt(path: string): Promise<boolean> {
   try {
-    useWorkspace.getState().openRepo(await ipc.openRepo(path));
+    const start = performance.now();
+    const repo = await ipc.openRepo(path);
+    perfMark(repo.path, "openStart", start);
+    perfMark(repo.path, "opened");
+    useWorkspace.getState().openRepo(repo);
     return true;
   } catch (err) {
     showOpenError(path, err);

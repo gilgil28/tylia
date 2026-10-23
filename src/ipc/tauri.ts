@@ -29,6 +29,7 @@ export const backend: Backend = {
   setSettings: (settings) => invoke("set_settings", { settings }),
   loadUiState: () => invoke("load_ui_state"),
   saveUiState: (value) => invoke("save_ui_state", { value }),
+  writePerfReport: (report) => invoke("write_perf_report", { report }),
   checkUpdate: () => invoke("check_update"),
   installUpdate: (onProgress) =>
     invoke("install_update", { onProgress: channel<DownloadProgress>(onProgress) }),

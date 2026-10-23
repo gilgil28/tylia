@@ -86,6 +86,8 @@ export interface Backend {
   /** The frontend's own persisted state (tabs, recents, layout); `null` on first run. */
   loadUiState(): Promise<unknown>;
   saveUiState(state: unknown): Promise<void>;
+  /** Ends a performance run (`TYLIA_PERF`): Rust writes the report and quits. */
+  writePerfReport(report: unknown): Promise<void>;
   /** Asks the release server for a newer Tylia; `null` when this is the latest. Only on the
    * user's request or with "Check for updates" on (no other network request is made). */
   checkUpdate(): Promise<UpdateInfo | null>;

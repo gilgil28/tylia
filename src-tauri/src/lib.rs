@@ -92,6 +92,7 @@ pub fn run(open: Vec<PathBuf>) {
             commands::set_settings,
             commands::load_ui_state,
             commands::save_ui_state,
+            commands::write_perf_report,
             commands::open_repo,
             launch::take_open_requests,
             commands::init_repo,

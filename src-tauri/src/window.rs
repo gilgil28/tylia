@@ -33,6 +33,8 @@ pub struct BootInfo {
     pub settings: Settings,
     /// The desktop's preference where the webview can't tell (Linux); `null` elsewhere.
     pub system_dark: Option<bool>,
+    /// A performance run (`TYLIA_PERF=<file>`): the frontend times itself and reports.
+    pub perf: bool,
 }
 
 pub fn create_main(app: &AppHandle, settings: &Settings) -> tauri::Result<WebviewWindow> {
@@ -41,6 +43,7 @@ pub fn create_main(app: &AppHandle, settings: &Settings) -> tauri::Result<Webvie
         distribution: distribution(),
         settings: settings.clone(),
         system_dark: system_theme::is_dark(),
+        perf: crate::commands::perf_report_path().is_some(),
     };
     let boot_json = serde_json::to_string(&boot).expect("BootInfo serializes");
 

@@ -17,6 +17,7 @@
       platform: /Mac/.test(ua) ? "macos" : /Windows/.test(ua) ? "windows" : "linux",
       distribution: "other",
       systemDark: null,
+      perf: false,
       settings: Object.assign(
         {
           theme: "system",

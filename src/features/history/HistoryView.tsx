@@ -17,6 +17,7 @@ import { useRegisterActions } from "@/app/actions";
 import { useSettings } from "@/app/settings";
 import { useDebounced } from "@/app/useDebounced";
 import { isMod } from "@/app/keyboard";
+import { perfEnabled, perfMark, runPerf } from "@/app/perf";
 import { useWorkspace, type ColumnId, type RepoLayout } from "@/app/workspace";
 import { useBranchDialog } from "@/features/branching/dialog-store";
 import { CommitItems, CommitsItems, useMenuContext } from "@/features/branching/menus";
@@ -165,6 +166,20 @@ export function HistoryView({
     estimateSize: () => rowHeight,
     overscan: 10,
   });
+
+  // Performance runs (TYLIA_PERF): the first rows on screen, all of them, then the scroll.
+  const hasRows = stream.rows.length > 0;
+  useEffect(() => {
+    if (perfEnabled && hasRows) requestAnimationFrame(() => perfMark(repo, "firstRowsPainted"));
+  }, [repo, hasRows]);
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    if (!perfEnabled || !active || !stream.done || !scroller) return;
+    requestAnimationFrame(() => {
+      perfMark(repo, "allRowsPainted");
+      void runPerf(repo, scroller, stream.rows.length);
+    });
+  }, [repo, stream, stream.done, active]);
 
   let selectedIndex = -1;
   if (selection?.kind === "commit") {

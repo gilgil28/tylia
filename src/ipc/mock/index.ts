@@ -192,6 +192,7 @@ export const backend: Backend = {
     }
     return storage(UI_KEY, DEFAULT_UI);
   },
+  writePerfReport: async (report) => console.info("perf report", report),
   saveUiState: async (state) => {
     if (!new URLSearchParams(location.search).has("repo")) store(UI_KEY, state);
   },
