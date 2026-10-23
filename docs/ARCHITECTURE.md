@@ -876,3 +876,13 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   `useRepoAction` write and by watcher ref changes), `repo.undo` / `repo.redo` actions
   (Mod+Z, Mod+Shift+Z, marked `notWhileTyping` so text fields keep their own undo), and an
   "Undo" action on the success toasts of journaled operations.
+- **Lost commits** (`crates/tylia-git/src/lost.rs`): `lost_commits` reads every reflog
+  (`reflog show --all --date=unix -z`, skipping `refs/stash`), keeps one entry per commit
+  (a branch's reflog over HEAD's), then `rev-list --parents --stdin --not
+--exclude=refs/tylia/* --exclude=refs/stash --all` gives the commits no ref reaches; only
+  tips are listed (a lost commit with a lost child is part of the child's chain), each with
+  the number of lost commits it brings back, newest first, at most 200. `dangling_commits`
+  ("Search deeper") is `fsck --unreachable --no-reflogs`: commits no ref or reflog knows,
+  e.g. a dropped stash. The sidebar's "Recently lost" section stores `lost:open` in
+  `collapsedSections` (it starts closed) and loads only while open; items select the commit
+  (the details pane loads any oid) and have the usual commit menu.

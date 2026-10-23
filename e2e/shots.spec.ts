@@ -49,6 +49,16 @@ for (const theme of THEMES) {
       });
     }
 
+    test("recently lost commits", async ({ page }) => {
+      await page.setViewportSize(SIZES[0]);
+      await openDemo(page, theme);
+      const sidebar = page.getByRole("navigation");
+      await sidebar.getByRole("button", { name: "Recently lost" }).click();
+      await sidebar.getByRole("button", { name: "Search deeper" }).click();
+      await expect(sidebar.getByText("On main: work in progress")).toBeVisible();
+      await shot(page, `sidebar-lost-${theme}`);
+    });
+
     test("uncommitted changes, split diff", async ({ page }) => {
       await page.setViewportSize(SIZES[0]);
       await openDemo(page, theme);

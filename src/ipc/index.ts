@@ -101,6 +101,7 @@ export type { TodoAction } from "./bindings/TodoAction";
 export type { TodoCommit } from "./bindings/TodoCommit";
 export type { TodoItem } from "./bindings/TodoItem";
 export type { UndoKind } from "./bindings/UndoKind";
+export type { LostCommit } from "./bindings/LostCommit";
 export type { UndoState } from "./bindings/UndoState";
 export type { UrlProtocol } from "./bindings/UrlProtocol";
 export type { UpdateInfo } from "./bindings/UpdateInfo";

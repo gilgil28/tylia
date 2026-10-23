@@ -197,6 +197,45 @@ export const backend: Backend = {
   undoState: async () => ({ undo: null, redo: null }),
   undo: async () => ({ undo: null, redo: null }),
   redo: async () => ({ undo: null, redo: null }),
+  // Two of the demo's commits stand in for lost ones, so the details pane can show them.
+  lostCommits: async () => {
+    const [a, b] = fixture.history.slice(2, 4);
+    const hour = Math.floor(Date.now() / 1000) - 3600;
+    return [
+      {
+        oid: a!.oid,
+        subject: a!.subject,
+        author: a!.authorName,
+        time: hour,
+        reflog: "refs/heads/main",
+        reason: "reset: moving to HEAD~2",
+        commits: 2,
+      },
+      {
+        oid: b!.oid,
+        subject: b!.subject,
+        author: b!.authorName,
+        time: hour - 86_400,
+        reflog: "HEAD",
+        reason: "commit (amend): " + b!.subject,
+        commits: 1,
+      },
+    ];
+  },
+  danglingCommits: async () => {
+    const c = fixture.history[6]!;
+    return [
+      {
+        oid: c.oid,
+        subject: "On main: work in progress",
+        author: c.authorName,
+        time: c.time,
+        reflog: null,
+        reason: null,
+        commits: 1,
+      },
+    ];
+  },
   saveUiState: async (state) => {
     if (!new URLSearchParams(location.search).has("repo")) store(UI_KEY, state);
   },

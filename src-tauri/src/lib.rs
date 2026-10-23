@@ -96,6 +96,8 @@ pub fn run(open: Vec<PathBuf>) {
             commands::undo_state,
             commands::undo,
             commands::redo,
+            commands::lost_commits,
+            commands::dangling_commits,
             commands::open_repo,
             launch::take_open_requests,
             commands::init_repo,

@@ -57,6 +57,7 @@ import type { StashRequest } from "./bindings/StashRequest";
 import type { Submodule } from "./bindings/Submodule";
 import type { TodoItem } from "./bindings/TodoItem";
 import type { UndoState } from "./bindings/UndoState";
+import type { LostCommit } from "./bindings/LostCommit";
 import type { UpdateInfo } from "./bindings/UpdateInfo";
 import type { WorkingStatus } from "./bindings/WorkingStatus";
 import type { Worktree } from "./bindings/Worktree";
@@ -270,6 +271,10 @@ export interface Backend {
   /** Undoes the last operation; refuses when the repository changed since. */
   undo(repo: string): Promise<UndoState>;
   redo(repo: string): Promise<UndoState>;
+  /** Commits the reflogs know that nothing reaches any more, newest first. */
+  lostCommits(repo: string): Promise<LostCommit[]>;
+  /** Unreachable commits no reflog knows (`git fsck`; slow on large repositories). */
+  danglingCommits(repo: string): Promise<LostCommit[]>;
   merge(repo: string, rev: string, ff: FastForward): Promise<IntegrateOutcome>;
   rebase(repo: string, onto: string): Promise<IntegrateOutcome>;
   cherryPick(repo: string, oid: string): Promise<IntegrateOutcome>;

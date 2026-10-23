@@ -56,3 +56,17 @@ test("each history column resizes on its own", async ({ page }) => {
   await page.getByRole("separator", { name: /Resize Author/i }).dblclick();
   await expect.poll(() => width(page, "author")).toBeCloseTo(before.author, 0);
 });
+
+test("recently lost commits open in the details pane and search deeper finds more", async ({
+  page,
+}) => {
+  await openDemo(page);
+  const sidebar = page.getByRole("navigation");
+  await sidebar.getByRole("button", { name: "Recently lost" }).click();
+  const lost = sidebar.getByRole("button", { name: /^\S.*\+1$/ });
+  await expect(lost).toHaveCount(1);
+  await lost.click();
+  await expect(page.getByRole("heading").first()).toBeVisible();
+  await sidebar.getByRole("button", { name: "Search deeper" }).click();
+  await expect(sidebar.getByText("On main: work in progress")).toBeVisible();
+});

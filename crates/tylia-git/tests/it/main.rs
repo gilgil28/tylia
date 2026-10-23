@@ -13,6 +13,7 @@ mod file_view;
 mod flow;
 mod integrate;
 mod lfs;
+mod lost;
 mod patch;
 mod patch_file;
 mod paths;

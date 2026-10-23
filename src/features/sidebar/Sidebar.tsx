@@ -8,6 +8,7 @@ import {
   FolderGit2,
   FolderOpen,
   GitBranch,
+  GitCommitHorizontal,
   History,
   Package,
   Plus,
@@ -23,7 +24,13 @@ import { useMemo, useState, type ReactElement, type ReactNode } from "react";
 import { revealLabel } from "@/app/labels";
 import { useWorkspace } from "@/app/workspace";
 import { useBranchDialog } from "@/features/branching/dialog-store";
-import { BranchItems, StashItems, TagItems, useMenuContext } from "@/features/branching/menus";
+import {
+  BranchItems,
+  CommitItems,
+  StashItems,
+  TagItems,
+  useMenuContext,
+} from "@/features/branching/menus";
 import { updateSubmodules } from "@/features/remote/operations";
 import { useRemoteDialog } from "@/features/remote/RemoteDialogs";
 import { useRepoSettings } from "@/features/repo-settings/store";
@@ -31,8 +38,10 @@ import { useRepoUi } from "@/features/repo/repo-store";
 import { openRepoAt } from "@/features/welcome/open";
 import { joinPath } from "@/features/welcome/paths";
 import { t } from "@/i18n";
-import { ipc, type Branch, type RefsSnapshot, type WorkingStatus } from "@/ipc";
+import { relativeTime, shortHash } from "@/app/format";
+import { ipc, type Branch, type LostCommit, type RefsSnapshot, type WorkingStatus } from "@/ipc";
 import { Badge } from "@/ui/Badge";
+import { Button } from "@/ui/Button";
 import { cn } from "@/ui/cn";
 import { IconButton } from "@/ui/IconButton";
 import { Input } from "@/ui/Input";
@@ -155,6 +164,20 @@ function AheadBehind({ ahead, behind }: { ahead: number; behind: number }) {
 
 const matches = (name: string, filter: string) => name.toLowerCase().includes(filter);
 
+/** Stored in `collapsedSections` while "Recently lost" is open (it starts closed). */
+const LOST_OPEN = "lost:open";
+
+/** `abc1234 · 3 hours ago`, then where it was lost from and why. */
+function lostTitle(c: LostCommit): string {
+  const where = c.reflog
+    ? t("sidebar.lostFrom", {
+        ref: c.reflog.replace(/^refs\/heads\//, ""),
+        reason: c.reason ?? "",
+      })
+    : t("sidebar.lostDangling");
+  return `${shortHash(c.oid)} · ${relativeTime(c.time)}\n${where}`;
+}
+
 /** Gives `children` a context menu. */
 function WithMenu({ menu, children }: { menu: ReactNode; children: ReactElement }) {
   if (!menu) return children;
@@ -199,7 +222,6 @@ export function Sidebar({
         : [...collapsed, id],
     });
   const isCollapsed = (id: string) => !f && collapsed.includes(id);
-
   const branches = useMemo(
     () => (refs?.branches ?? []).filter((b) => !f || matches(b.name, f)),
     [refs, f],
@@ -230,6 +252,21 @@ export function Sidebar({
   });
   const worktrees = (worktreeQuery.data ?? []).filter((w) => !f || matches(w.branch ?? w.path, f));
   const changed = status?.entries.length ?? 0;
+  // "Recently lost" starts closed, and listing it reads every reflog: it stores "open".
+  const lostOpen = collapsed.includes(LOST_OPEN);
+  const [deeper, setDeeper] = useState(false);
+  const lostQuery = useQuery({
+    queryKey: ["lost", repo],
+    queryFn: () => ipc.lostCommits(repo),
+    enabled: lostOpen,
+  });
+  const danglingQuery = useQuery({
+    queryKey: ["dangling", repo],
+    queryFn: () => ipc.danglingCommits(repo),
+    enabled: lostOpen && deeper,
+  });
+  const lost = (lostQuery.data ?? []).filter((c) => !f || matches(c.subject, f));
+  const dangling = (danglingQuery.data ?? []).filter((c) => !f || matches(c.subject, f));
 
   const branchExpanded = (!f && expanded) || allFolders(branches.map((b) => b.name));
 
@@ -414,6 +451,76 @@ export function Sidebar({
                 </div>
               </WithMenu>
             ))
+          )}
+        </Section>
+
+        <Section
+          id={LOST_OPEN}
+          title={t("sidebar.lost")}
+          count={lost.length}
+          collapsed={!lostOpen}
+          onToggle={toggle}
+        >
+          {lostQuery.isPending ? null : lostQuery.isError ? (
+            <span className="pl-5 text-fg-muted">{t("sidebar.lostFailed")}</span>
+          ) : (
+            <>
+              {lost.length === 0 && (
+                <span className="flex h-(--row-h) items-center pl-5 text-fg-muted">
+                  {t("sidebar.lostNone")}
+                </span>
+              )}
+              {[...lost, ...dangling].map((c) => (
+                <WithMenu
+                  key={c.oid}
+                  menu={
+                    ctx && <CommitItems ctx={ctx} M={ContextMenu} oid={c.oid} subject={c.subject} />
+                  }
+                >
+                  <div className="flex flex-col">
+                    <Item
+                      icon={GitCommitHorizontal}
+                      label={c.subject}
+                      title={lostTitle(c)}
+                      muted={!c.reflog}
+                      trailing={
+                        c.commits > 1 && (
+                          <span
+                            className="shrink-0 text-caption text-fg-muted tabular-nums"
+                            title={t("sidebar.lostMoreTitle", { count: c.commits })}
+                          >
+                            {t("sidebar.lostMore", { count: c.commits - 1 })}
+                          </span>
+                        )
+                      }
+                      onClick={() => {
+                        setView("history");
+                        select({ kind: "commit", oid: c.oid });
+                      }}
+                    />
+                  </div>
+                </WithMenu>
+              ))}
+              {!deeper ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  icon={Search}
+                  className="mt-1 ml-4 self-start"
+                  onClick={() => setDeeper(true)}
+                >
+                  {t("sidebar.searchDeeper")}
+                </Button>
+              ) : danglingQuery.isPending ? (
+                <span className="pl-5 text-caption text-fg-muted">
+                  {t("sidebar.searchingDeeper")}
+                </span>
+              ) : (
+                dangling.length === 0 && (
+                  <span className="pl-5 text-caption text-fg-muted">{t("sidebar.deeperNone")}</span>
+                )
+              )}
+            </>
           )}
         </Section>
 

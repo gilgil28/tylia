@@ -15,6 +15,10 @@ can change behaviour.
   tags, stashes and git-flow finishes. Undo brings back staged and unstaged changes too,
   so even a hard reset can be undone. It refuses, changing nothing, if the repository
   changed since in a way it would overwrite. Pushes can't be undone.
+- **Recently lost** (sidebar): commits no branch reaches any more, after a reset, a
+  rebase, an amend or a deleted branch, newest first, with what lost them. Open one to see
+  it, then create a branch there, check it out or cherry-pick it. "Search deeper" also
+  finds commits no reflog remembers, such as a dropped stash.
 
 ### Fixed
 
