@@ -886,3 +886,18 @@ drop`. Refused (`InvalidInput`) before Git runs: unknown / missing / duplicate o
   e.g. a dropped stash. The sidebar's "Recently lost" section stores `lost:open` in
   `collapsedSections` (it starts closed) and loads only while open; items select the commit
   (the details pane loads any oid) and have the usual commit menu.
+- **Discard backups** (`crates/tylia-git/src/backup.rs`): before discarding files or lines,
+  and before a hard reset (all changed tracked files), `backup_begin` snapshots the paths
+  as a tree through a temporary index (a copy of the real one, `git add -A -- <paths>`,
+  `write-tree`); `backup_finish` snapshots them again and, if they differ, stores
+  `commit-tree <before> -p <commit-tree after>` under `refs/tylia/discarded/<ms>`, with the
+  kind (`files` / `lines` / `reset`) as subject and the paths as body (Tylia's identity, no
+  signing). Untracked files aren't backed up: they go to the OS trash. `restore_backup`
+  merges each path three ways (base: after, theirs: before, ours: the working tree,
+  compared by `hash-object` so filters and line endings don't matter): unchanged since →
+  the before version is written (`cat-file --filters`) or the file deleted; otherwise
+  `merge-file` with labelled conflict markers, and binary or deleted-on-one-side files are
+  skipped. The backup is dropped once everything came back cleanly. Listing prunes
+  backups beyond the newest 50 that are older than 14 days. Discards return the backup id
+  for the toast's Restore; the "Discarded changes" dialog (palette, Changes' unstaged
+  header) lists them.

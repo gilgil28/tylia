@@ -110,3 +110,22 @@ for (const theme of ["light", "dark"]) {
     await expect(first).toHaveAttribute("aria-selected", "false");
   });
 }
+
+test("a discard can be restored from its toast and from Discarded changes", async ({ page }) => {
+  await openChanges(page);
+  await page.getByRole("option", { name: /parser\.rs/ }).click();
+  await page.keyboard.press("Delete");
+  const confirm = page.getByRole("dialog", { name: "Discard changes?" });
+  await expect(confirm.getByText(/Tylia keeps a copy/)).toBeVisible();
+  await confirm.getByRole("button", { name: /^Discard/ }).click();
+  await expect(page.getByText("Discarded changes in src/parser.rs", { exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Restore" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Discarded changes", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Discarded changes" });
+  await expect(dialog.getByText("src/parser.rs")).toBeVisible();
+  await expect(dialog.getByText("src/graph.rs")).toBeVisible();
+  await dialog.getByRole("button", { name: "Restore" }).first().click();
+  await expect(page.getByText("Restored src/parser.rs", { exact: true })).toBeVisible();
+  await expect(dialog.getByText("src/parser.rs")).toHaveCount(0);
+});

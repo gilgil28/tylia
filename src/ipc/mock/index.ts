@@ -4,6 +4,7 @@
 
 import type { Backend } from "../backend";
 import type { CommitDetails } from "../bindings/CommitDetails";
+import type { DiscardBackup } from "../bindings/DiscardBackup";
 import type { FileDiff } from "../bindings/FileDiff";
 import type { HistoryRow } from "../bindings/HistoryRow";
 import type { IpcError } from "../bindings/IpcError";
@@ -33,6 +34,15 @@ interface Fixture {
 }
 
 const fixture = demo as unknown as Fixture;
+/** Backups of discarded changes, newest first: one from earlier, and the mock's discards. */
+let backups: DiscardBackup[] = [
+  {
+    id: "1700000000000",
+    time: Math.floor(Date.now() / 1000) - 7200,
+    kind: "lines",
+    files: ["src/graph.rs"],
+  },
+];
 /** Working-copy state; the mock's writes change it. */
 let status: WorkingStatus = structuredClone(fixture.status);
 /** Whether the demo repository has a commit-graph (writing one sets it). */
@@ -462,8 +472,22 @@ export const backend: Backend = {
         .map((e) => (gone.has(e.path) ? { ...e, unstaged: null } : e))
         .filter((e) => e.staged || e.unstaged),
     };
+    if (tracked.length === 0) return null;
+    backups.unshift({
+      id: String(Date.now()),
+      time: Math.floor(Date.now() / 1000),
+      kind: "files",
+      files: tracked,
+    });
+    return backups[0]!.id;
   },
-  applyLines: async () => {},
+  applyLines: async () => null,
+  discardBackups: async () => backups,
+  restoreBackup: async (_repo, id) => {
+    const backup = backups.find((b) => b.id === id);
+    backups = backups.filter((b) => b !== backup);
+    return { restored: backup?.files ?? [], conflicts: [], skipped: [] };
+  },
   commit: async () => {
     status = { ...status, entries: status.entries.filter((e) => e.unstaged) };
     status = { ...status, entries: status.entries.map((e) => ({ ...e, staged: null })) };

@@ -5,6 +5,7 @@
 mod common;
 
 mod archive;
+mod backup;
 mod branching;
 mod conflict;
 mod credential;

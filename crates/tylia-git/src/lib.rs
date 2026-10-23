@@ -5,6 +5,7 @@
 //! output is stable and machine-readable. This crate has no Tauri dependency.
 
 mod archive;
+mod backup;
 mod blame;
 mod branch;
 mod clone;
@@ -40,6 +41,7 @@ mod version;
 mod worktree;
 
 pub use archive::ArchiveFormat;
+pub use backup::{BackupPending, DiscardBackup, DiscardKind, RestoreOutcome};
 pub use blame::{Blame, BlameCommit, BlameContent, BlameLine, BlamePrevious};
 pub use branch::{CheckoutOutcome, CheckoutRequest, CheckoutTarget};
 pub use clone::{CloneRequest, Progress};

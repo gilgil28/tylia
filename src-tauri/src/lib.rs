@@ -98,6 +98,8 @@ pub fn run(open: Vec<PathBuf>) {
             commands::redo,
             commands::lost_commits,
             commands::dangling_commits,
+            commands::discard_backups,
+            commands::restore_backup,
             commands::open_repo,
             launch::take_open_requests,
             commands::init_repo,

@@ -70,6 +70,7 @@ export function useRepoAction(repo: string) {
           void client.invalidateQueries({ queryKey: ["dangling", repo] });
         }
         void client.invalidateQueries({ queryKey: ["undo", repo] });
+        void client.invalidateQueries({ queryKey: ["backups", repo] });
       }
     },
     [client, repo],

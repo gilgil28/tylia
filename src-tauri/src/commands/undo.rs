@@ -5,7 +5,7 @@ use std::future::Future;
 use std::path::Path;
 
 use tauri::State;
-use tylia_git::{LostCommit, UndoKind, UndoState};
+use tylia_git::{BackupPending, DiscardBackup, LostCommit, RestoreOutcome, UndoKind, UndoState};
 
 use crate::error::IpcError;
 use crate::state::{AppState, git};
@@ -30,6 +30,34 @@ where
         let _ = git.undo_finish(path, pending).await;
     }
     result
+}
+
+/// Runs a discard (the caller holds the write lock) after `begin` snapshotted what it
+/// throws away; returns the write's result and the backup's id. Like the journal, a backup
+/// that can't be taken doesn't stop the write.
+pub(crate) async fn backed_up<T, B, W, BFut, WFut>(
+    repo: &str,
+    begin: B,
+    write: W,
+) -> Result<(T, Option<String>), IpcError>
+where
+    B: FnOnce() -> BFut,
+    BFut: Future<Output = Result<Option<BackupPending>, tylia_git::GitError>>,
+    W: FnOnce() -> WFut,
+    WFut: Future<Output = Result<T, IpcError>>,
+{
+    let git = git()?;
+    let pending = begin().await.ok().flatten();
+    let result = write().await?;
+    let id = match pending {
+        Some(pending) => git
+            .backup_finish(Path::new(repo), pending)
+            .await
+            .ok()
+            .flatten(),
+        None => None,
+    };
+    Ok((result, id))
 }
 
 #[tauri::command]
@@ -58,4 +86,22 @@ pub async fn lost_commits(repo: String) -> Result<Vec<LostCommit>, IpcError> {
 #[tauri::command]
 pub async fn dangling_commits(repo: String) -> Result<Vec<LostCommit>, IpcError> {
     Ok(git()?.dangling_commits(Path::new(&repo)).await?)
+}
+
+/// Backups of discarded changes, newest first; old ones are pruned first.
+#[tauri::command]
+pub async fn discard_backups(repo: String) -> Result<Vec<DiscardBackup>, IpcError> {
+    let git = git()?;
+    let _ = git.prune_backups(Path::new(&repo)).await;
+    Ok(git.discard_backups(Path::new(&repo)).await?)
+}
+
+#[tauri::command]
+pub async fn restore_backup(
+    repo: String,
+    id: String,
+    state: State<'_, AppState>,
+) -> Result<RestoreOutcome, IpcError> {
+    let _guard = state.write_lock(&repo).await;
+    Ok(git()?.restore_backup(Path::new(&repo), &id).await?)
 }

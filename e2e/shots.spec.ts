@@ -49,6 +49,16 @@ for (const theme of THEMES) {
       });
     }
 
+    test("discarded changes", async ({ page }) => {
+      await page.setViewportSize(SIZES[0]);
+      await openDemo(page, theme);
+      await page.getByRole("button", { name: /^Changes/ }).click();
+      await page.getByRole("button", { name: "Discarded changes", exact: true }).click();
+      await expect(page.getByRole("dialog", { name: "Discarded changes" })).toBeVisible();
+      await page.waitForTimeout(300);
+      await shot(page, `discarded-changes-${theme}`);
+    });
+
     test("recently lost commits", async ({ page }) => {
       await page.setViewportSize(SIZES[0]);
       await openDemo(page, theme);

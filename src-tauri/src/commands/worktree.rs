@@ -4,9 +4,9 @@ use std::path::Path;
 
 use tauri::{AppHandle, State};
 use tauri_plugin_opener::OpenerExt;
-use tylia_git::{LinesRequest, UndoKind, add_to_gitignore, repo_path};
+use tylia_git::{DiscardKind, LineAction, LinesRequest, UndoKind, add_to_gitignore, repo_path};
 
-use crate::commands::undo::journaled;
+use crate::commands::undo::{backed_up, journaled};
 use crate::error::IpcError;
 use crate::state::{AppState, git};
 use crate::terminal::{self, Env};
@@ -43,29 +43,50 @@ pub async fn unstage_all(repo: String, state: State<'_, AppState>) -> Result<(),
     Ok(git()?.unstage_all(Path::new(&repo)).await?)
 }
 
-/// Discards working-tree changes; untracked files go to the OS trash.
+/// Discards working-tree changes; untracked files go to the OS trash. Returns the id of the
+/// tracked files' backup.
 #[tauri::command]
 pub async fn discard_files(
     repo: String,
     tracked: Vec<String>,
     untracked: Vec<String>,
     state: State<'_, AppState>,
-) -> Result<(), IpcError> {
+) -> Result<Option<String>, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?
-        .discard_files(Path::new(&repo), &tracked, &untracked)
-        .await?)
+    let git = git()?;
+    let path = Path::new(&repo);
+    let ((), backup) = backed_up(
+        &repo,
+        || git.backup_begin(path, DiscardKind::Files, &tracked),
+        || async { Ok(git.discard_files(path, &tracked, &untracked).await?) },
+    )
+    .await?;
+    Ok(backup)
 }
 
-/// Stages, unstages or discards selected lines (or whole hunks).
+/// Stages, unstages or discards selected lines (or whole hunks). A discard returns the id
+/// of its backup.
 #[tauri::command]
 pub async fn apply_lines(
     repo: String,
     request: LinesRequest,
     state: State<'_, AppState>,
-) -> Result<(), IpcError> {
+) -> Result<Option<String>, IpcError> {
     let _guard = state.write_lock(&repo).await;
-    Ok(git()?.apply_lines(Path::new(&repo), &request).await?)
+    let git = git()?;
+    let path = Path::new(&repo);
+    if request.action != LineAction::Discard {
+        git.apply_lines(path, &request).await?;
+        return Ok(None);
+    }
+    let paths = [request.path.clone()];
+    let ((), backup) = backed_up(
+        &repo,
+        || git.backup_begin(path, DiscardKind::Lines, &paths),
+        || async { Ok(git.apply_lines(path, &request).await?) },
+    )
+    .await?;
+    Ok(backup)
 }
 
 /// Commits the index; returns the new commit id.

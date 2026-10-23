@@ -15,6 +15,10 @@ can change behaviour.
   tags, stashes and git-flow finishes. Undo brings back staged and unstaged changes too,
   so even a hard reset can be undone. It refuses, changing nothing, if the repository
   changed since in a way it would overwrite. Pushes can't be undone.
+- **Discarded changes can come back:** discarding files, hunks or lines, and a hard reset,
+  keep a copy first. "Restore" on the message after discarding, or "Discarded changes"
+  (palette, or the button above Unstaged), brings them back, merged into files you changed
+  since. Copies are kept for 14 days, and always the last 50.
 - **Recently lost** (sidebar): commits no branch reaches any more, after a reset, a
   rebase, an amend or a deleted branch, newest first, with what lost them. Open one to see
   it, then create a branch there, check it out or cherry-pick it. "Search deeper" also

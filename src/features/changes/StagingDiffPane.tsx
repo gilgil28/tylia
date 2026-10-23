@@ -6,6 +6,7 @@ import { useWorkspace } from "@/app/workspace";
 import { DiffView } from "@/features/diff/DiffView";
 import { FileViewButtons } from "@/features/file-view/FileViewButtons";
 import { useRepoUi, type SelectedFile } from "@/features/repo/repo-store";
+import { useRestore } from "@/features/undo/backups";
 import { plural, t } from "@/i18n";
 import {
   ipc,
@@ -84,6 +85,7 @@ function FileStagingDiff({ repo, file }: { repo: string; file: SelectedFile }) {
   });
   const [confirmDiscard, setConfirmDiscard] = useState<[number, number][] | null>(null);
   const run = useRepoAction(repo);
+  const { discarded } = useRestore(repo);
 
   const target = file.target as Exclude<SelectedFile["target"], "commit" | "conflicted">;
   const request = workingDiffRequest({ ...file, target }, context, force);
@@ -111,7 +113,10 @@ function FileStagingDiff({ repo, file }: { repo: string; file: SelectedFile }) {
         : action === "discard"
           ? t("changes.discardFailed")
           : t("changes.stageFailed"),
-    ).then(() => setKeys(new Set()));
+    ).then((backup) => {
+      setKeys(new Set());
+      if (action === "discard") discarded(backup, [file.path]);
+    });
 
   const hunkActions = (hunk: Hunk, index: number) => {
     if (!data) return null;

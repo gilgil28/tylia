@@ -51,6 +51,7 @@ import {
   saveCommitPatches,
 } from "@/features/patch/patch";
 import { useRemoteDialog } from "@/features/remote/RemoteDialogs";
+import { useBackupsDialog } from "@/features/undo/backups";
 import { operationName, useUndo } from "@/features/undo/undo";
 import { t } from "@/i18n";
 import { workingDiffRequest } from "@/features/changes/StagingDiffPane";
@@ -132,6 +133,14 @@ export function useRepoActions(
       notWhileTyping: true,
       disabled: !redoKind || busy,
       run: undo.redo,
+    },
+    {
+      id: "changes.discarded",
+      title: t("backups.open"),
+      group: "changes",
+      icon: ArchiveRestore,
+      keywords: ["restore", "backup", "lost changes", "recover"],
+      run: () => useBackupsDialog.getState().open(repo),
     },
     {
       id: "view.changes",

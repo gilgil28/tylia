@@ -58,6 +58,8 @@ import type { Submodule } from "./bindings/Submodule";
 import type { TodoItem } from "./bindings/TodoItem";
 import type { UndoState } from "./bindings/UndoState";
 import type { LostCommit } from "./bindings/LostCommit";
+import type { DiscardBackup } from "./bindings/DiscardBackup";
+import type { RestoreOutcome } from "./bindings/RestoreOutcome";
 import type { UpdateInfo } from "./bindings/UpdateInfo";
 import type { WorkingStatus } from "./bindings/WorkingStatus";
 import type { Worktree } from "./bindings/Worktree";
@@ -180,8 +182,13 @@ export interface Backend {
   stageAll(repo: string): Promise<void>;
   unstageAll(repo: string): Promise<void>;
   /** Tracked files are restored from the index; untracked ones go to the OS trash. */
-  discardFiles(repo: string, tracked: string[], untracked: string[]): Promise<void>;
-  applyLines(repo: string, request: LinesRequest): Promise<void>;
+  /** Returns the id of the tracked files' backup (`null`: nothing to keep). */
+  discardFiles(repo: string, tracked: string[], untracked: string[]): Promise<string | null>;
+  /** A discard returns the id of its backup. */
+  applyLines(repo: string, request: LinesRequest): Promise<string | null>;
+  /** Backups of discarded changes, newest first (Phase 11 C). */
+  discardBackups(repo: string): Promise<DiscardBackup[]>;
+  restoreBackup(repo: string, id: string): Promise<RestoreOutcome>;
   /** Returns the new commit id. */
   commit(repo: string, message: string, amend: boolean): Promise<string>;
   headMessage(repo: string): Promise<string | null>;

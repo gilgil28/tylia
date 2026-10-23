@@ -533,7 +533,8 @@ export const en = {
   "branchDialog.reset": "Reset",
   "branchDialog.resetHardNext": "Reset…",
   "branchDialog.hardResetTitle": "Hard reset {branch}?",
-  "branchDialog.hardResetLoses": "This permanently discards uncommitted changes in {files}.",
+  "branchDialog.hardResetLoses":
+    "This discards uncommitted changes in {files}. Undo the reset, or restore them from Discarded changes.",
   "branchDialog.hardResetClean":
     "There are no uncommitted changes to lose; commits after it are no longer on the branch.",
   "branchDialog.hardResetConfirm": "Discard and reset",
@@ -1174,11 +1175,13 @@ export const en = {
   "trash.macos": "Trash",
   "trash.linux": "Trash",
   "discard.title": "Discard changes?",
-  "discard.tracked": "Uncommitted changes in {files} are discarded permanently.",
+  "discard.tracked":
+    "Uncommitted changes in {files} are discarded. Tylia keeps a copy you can restore from Discarded changes.",
   "discard.untracked": "{files} not yet tracked by Git move to the {trash}.",
   "discard.confirm": "Discard {files}",
   "discard.linesTitle": "Discard selected changes?",
-  "discard.lines": "{lines} in {name} are reverted permanently. Staged changes are kept.",
+  "discard.lines":
+    "{lines} in {name} are reverted; staged changes are kept. Tylia keeps a copy you can restore from Discarded changes.",
   "discard.linesConfirm": "Discard {lines}",
 
   "lines.stageHunk": "Stage hunk",
@@ -1203,6 +1206,24 @@ export const en = {
   "composer.commit": "Commit",
   "composer.amendCommit": "Amend",
   "composer.committed": "Committed {hash}",
+
+  "backups.title": "Discarded changes",
+  "backups.open": "Discarded changes…",
+  "backups.description":
+    "Tylia keeps what you discard for 14 days, and always your last 50 discards. Restoring merges into files you changed since.",
+  "backups.none": "Nothing discarded recently.",
+  "backups.kind.files": "Discarded files",
+  "backups.kind.lines": "Discarded lines",
+  "backups.kind.reset": "Hard reset",
+  "backups.restore": "Restore",
+  "backups.discarded": "Discarded changes in {files}",
+  "backups.restored": "Restored {files}",
+  "backups.conflicts": "Restored with conflicts in {files}",
+  "backups.conflictsHint": "Both versions are in the files between conflict markers.",
+  "backups.skipped":
+    "{files} changed since in a way that can’t be merged and were left as they are.",
+  "backups.restoreFailed": "Couldn’t restore the changes",
+  "backups.loadFailed": "Couldn’t list discarded changes",
 
   "undo.undo": "Undo {operation}",
   "undo.redo": "Redo {operation}",

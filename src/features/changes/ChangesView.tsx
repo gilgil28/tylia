@@ -15,6 +15,7 @@ import {
   SquareMinus,
   Unlock,
   Trash2,
+  ArchiveRestore,
 } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
@@ -27,6 +28,7 @@ import { extensionPattern, trackWithLfs, useLfsFiles, useLfsStatus } from "@/fea
 import { saveChangesPatch } from "@/features/patch/patch";
 import { setLfsLock } from "@/features/remote/operations";
 import { useRepoUi } from "@/features/repo/repo-store";
+import { useBackupsDialog, useRestore } from "@/features/undo/backups";
 import { joinPath } from "@/features/welcome/paths";
 import { plural, t } from "@/i18n";
 import { ipc, type WorkingStatus } from "@/ipc";
@@ -89,6 +91,7 @@ export function ChangesView({
   const selectFile = useRepoUi((s) => s.selectFile);
   const openFile = useRepoUi((s) => s.openFile);
   const run = useRepoAction(repo);
+  const { discarded } = useRestore(repo);
   const groups = useMemo(() => groupChanges(status), [status]);
   const allPaths = useMemo(() => (status?.entries ?? []).map((e) => e.path), [status]);
   const lfsFiles = useLfsFiles(repo, allPaths);
@@ -176,12 +179,13 @@ export function ChangesView({
     });
   const toggle = (entries: ChangedEntry[]) =>
     entries[0]?.area === "staged" ? unstage(entries) : stage(entries);
-  const discard = (entries: ChangedEntry[]) =>
-    run(
+  const discard = (entries: ChangedEntry[]) => {
+    const tracked = entries.filter((e) => e.target !== "untracked").map((e) => e.path);
+    return run(
       () =>
         ipc.discardFiles(
           repo,
-          entries.filter((e) => e.target !== "untracked").map((e) => e.path),
+          tracked,
           entries.filter((e) => e.target === "untracked").map((e) => e.path),
         ),
       t("changes.discardFailed"),
@@ -192,7 +196,8 @@ export function ChangesView({
             entries.map((e) => e.path),
           ),
       },
-    );
+    ).then((backup) => discarded(backup, tracked));
+  };
   const stageAll = () =>
     run(() => ipc.stageAll(repo), t("changes.stageFailed"), {
       optimistic: (s) =>
@@ -572,6 +577,12 @@ export function ChangesView({
                     label={t("changes.discardAll")}
                     compact
                     onClick={() => setDiscarding(groups.unstaged)}
+                  />
+                  <IconButton
+                    icon={ArchiveRestore}
+                    label={t("backups.title")}
+                    compact
+                    onClick={() => useBackupsDialog.getState().open(repo)}
                   />
                 </>
               }

@@ -14,6 +14,7 @@ import { useHistoryStream } from "@/features/history/history-stream";
 import { useRebaseActions } from "@/features/rebase/rebaseActions";
 import { HistoryFilterBar } from "@/features/history/HistoryFilterBar";
 import { RepoSettingsDialog } from "@/features/repo-settings/RepoSettingsDialog";
+import { BackupsDialog } from "@/features/undo/backups";
 import { HistoryView } from "@/features/history/HistoryView";
 import { ApplyPatchDialog } from "@/features/patch/ApplyPatchDialog";
 import { Sidebar } from "@/features/sidebar/Sidebar";
@@ -116,6 +117,7 @@ function RepoLoaded({ path, active }: { path: string; active: boolean }) {
       <BranchDialogs repo={path} refs={refs.data} status={status.data} />
       <ApplyPatchDialog repo={path} />
       <RepoSettingsDialog repo={path} name={path.split(/[\\/]/).pop() ?? path} />
+      <BackupsDialog repo={path} />
       <SplitPane
         className="flex-1"
         size={layout.sidebarWidth}

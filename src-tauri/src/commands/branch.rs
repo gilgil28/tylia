@@ -8,10 +8,11 @@ use tauri::State;
 use tauri::ipc::Channel;
 use tylia_git::{
     BlockOutcome, BlockResolution, CheckoutOutcome, CheckoutRequest, ConflictFile, ConflictSide,
-    FastForward, IntegrateOutcome, Progress, ResetMode, StashOutcome, StashRequest, UndoKind,
+    DiscardKind, FastForward, IntegrateOutcome, Progress, ResetMode, StashOutcome, StashRequest,
+    UndoKind,
 };
 
-use crate::commands::undo::journaled;
+use crate::commands::undo::{backed_up, journaled};
 use crate::error::IpcError;
 use crate::operation::Operation;
 use crate::state::{AppState, git};
@@ -291,7 +292,18 @@ pub async fn reset(
 ) -> Result<(), IpcError> {
     let _guard = state.write_lock(&repo).await;
     journaled(&repo, UndoKind::Reset, || async {
-        Ok(git()?.reset(Path::new(&repo), &oid, mode).await?)
+        if mode != ResetMode::Hard {
+            return Ok(git()?.reset(Path::new(&repo), &oid, mode).await?);
+        }
+        let git = git()?;
+        let path = Path::new(&repo);
+        backed_up(
+            &repo,
+            || git.backup_begin_all(path, DiscardKind::Reset),
+            || async { Ok(git.reset(path, &oid, mode).await?) },
+        )
+        .await
+        .map(|((), _)| ())
     })
     .await
 }
