@@ -334,8 +334,8 @@ end]` in half-row units; rows keep only their dot and curves (30 MB for `git/git
   marks per repository (`openStart`, `opened`, `historyStart`, `historyFirstBatch`,
   `historyDone`, `firstRowsPainted`, `allRowsPainted`; ms from page load), then, in the
   active tab, the idle frame interval, three scripted scrolls of the history (90 px per
-  frame, a page per frame, jumps) as median / p95 / max / slow frames, and five status
-  calls; Rust writes the JSON and quits (`src/app/perf.ts`, `write_perf_report`). Restored
+  frame, a page per frame, jumps) as median / p95 / max / slow frames, five status calls
+  and five loads of the first changed file's diff; Rust writes the JSON and quits (`src/app/perf.ts`, `write_perf_report`). Restored
   tabs load alongside, so read the marks of the repository named in `repo`.
 - **Submodules** are loaded separately (`get_submodules`) and only while the sidebar section
   is open: `git submodule status` alone took 660 ms on `git/git`.

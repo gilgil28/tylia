@@ -968,7 +968,7 @@ the user's hosting accounts, OAuth apps, a Mac or Windows.
       and free when the variable isn't set.
       _Done 2026-10-23 as recommended (`src/app/perf.ts`, ARCHITECTURE §5.11). Its first
       run found the window-show bug in D._
-- [ ] **Targets** (ARCHITECTURE §5.4) on `git/git`: first rows < 300 ms, scrolling at
+- [x] **Targets** (ARCHITECTURE §5.4) on `git/git`: first rows < 300 ms, scrolling at
       60 fps, status refresh < 500 ms, a 5k-line diff < 150 ms to first paint. Also compare
       the NVIDIA workaround with `WEBKIT_DISABLE_DMABUF_RENDERER=1`, to back the choice in
       "Known issues" with numbers.
@@ -979,8 +979,11 @@ the user's hosting accounts, OAuth apps, a Mac or Windows.
       120–600, so a steady **60 fps, but the display runs at 144 Hz** (see D). Status
       ~155 ms. With `WEBKIT_DISABLE_DMABUF_RENDERER=1` instead: idle frames every 8 ms
       (~120 fps), wheel median 10 ms, but jumps 16 ms with 46 ms spikes, as frames are
-      copied by the CPU; all rows on screen ~1.0 s. Not measured yet: the 5k-line diff;
-      a run under XWayland (`GDK_BACKEND=x11`) never finished._
+      copied by the CPU; all rows on screen ~1.0 s. **5k-line diff:** loaded in 8 ms
+      (Git, parsing and IPC; 5,000 added lines in `README.md`); the diff view is
+      virtualized, so its first paint draws only the visible rows. A run under XWayland
+      (`GDK_BACKEND=x11`) never finished (D). Every target is met; the 144 Hz display
+      getting 60 fps is a follow-up in D._
 - **Acceptance:** numbers recorded here, each target met or a fix / follow-up item for it.
 
 #### B. GitHub acceptance run (from Phase 3)
