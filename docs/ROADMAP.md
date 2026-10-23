@@ -1023,6 +1023,79 @@ the user's hosting accounts, OAuth apps, a Mac or Windows.
 - [ ] When D has fixes worth shipping: CHANGELOG, version bump (0.3.x for fixes only),
       tag, the user publishes the draft. Update this ROADMAP and stop for review.
 
+### Phase 11 — Never lose work: undo and recovery
+
+**Goal:** principle 4 ("Never lose work") goes from confirm dialogs to a real safety net.
+Every operation Tylia runs can be undone, lost commits and deleted branches can be found
+and restored, and discarded changes can be brought back. Sourcetree has none of this; it
+is where Tylia can be clearly better than the command line, not only as good as it. It
+ends with **v0.4.0**.
+
+**How to run this phase (clean session):**
+
+- **Before starting:** read `CLAUDE.md`, this section, `docs/ARCHITECTURE.md` §5.3 (running
+  Git, serialized writes) and §5.15 (branching operations), and `docs/DESIGN.md` for the
+  toast, banner and sidebar patterns. The items marked **Decide** have a recommendation;
+  confirm them with the user before building that part.
+- **While working:** the Phase 8 rules apply. Every recovery path gets tylia-git
+  integration tests on temp repos, including the case where the user changed things
+  outside Tylia in between.
+
+#### A. Undo the last operation (first)
+
+- [ ] **Undo** (Ctrl/Cmd+Z outside text fields, the palette, and an "Undo" action on the
+      success toast) for: commit, amend, merge, rebase (plain and interactive),
+      cherry-pick, revert, reset, checkout, branch create / rename / delete, tag create /
+      delete, stash apply / pop / drop, and git-flow finish.
+- [ ] **Decide: how undo knows what to restore.** Recommended: Tylia records an operation
+      journal per repository (inside `.git/tylia/`, never committed): before each write it
+      saves HEAD, the affected refs and, where the operation touches it, the index and
+      working tree as a `git stash create` commit kept alive under `refs/tylia/undo/<n>`.
+      Undo restores exactly that and says what it will do first. The alternative, reading
+      Git's reflog alone, can't restore the index, deleted tags or a dropped stash.
+- [ ] **Safety:** undo refuses (and explains) when the repository changed outside Tylia
+      since the operation in a way that undo would overwrite; it never discards work to
+      undo something. Redo after undo; the journal keeps the last 50 operations.
+- [ ] Undo of a push is out of scope (it would need a force-push); the toast says so.
+
+#### B. Find and restore lost commits
+
+- [ ] **Reflog view** (sidebar → "Recently lost", and the palette): commits that HEAD or
+      a branch pointed at and that no ref reaches any more, newest first, with the
+      operation that left them ("rebase", "reset", "branch deleted"). Each opens in the
+      details pane and can be restored as a branch, cherry-picked or checked out.
+- [ ] **Deleted branches:** "Restore" in the toast after deleting a branch, and in the
+      reflog view while the commits are still in the reflog.
+- [ ] **Decide:** also offer `git fsck --lost-found` (dangling commits not in any reflog,
+      e.g. from a dropped stash)? Recommended: yes, behind a "Search deeper" button, as it
+      walks every object and can take seconds on large repositories.
+
+#### C. Discarded changes can come back
+
+- [ ] **Discard keeps a backup:** before discarding files, hunks or lines (and before
+      "reset --hard" and a forced checkout), Tylia saves the affected changes with
+      `git stash create` under `refs/tylia/discarded/<n>`. The confirm dialog still
+      explains what is discarded, and adds that it can be restored.
+- [ ] **Restore:** "Restore" on the toast, and a "Discarded changes" list (palette, and in
+      Changes) showing each backup's time and files; restoring applies it like a stash,
+      with the usual conflict handling.
+- [ ] **Decide: how long backups are kept.** Recommended: 14 days or the last 50,
+      whichever is more, pruned when a repository opens; a setting to change it. Untracked
+      files are included (`stash create` doesn't keep them, so Tylia stores them in its own
+      tree object).
+
+#### D. Signed commits, verified
+
+- [ ] Show whether a commit's GPG / SSH / X.509 signature is good, bad, from an unknown
+      key or missing (`git log --format=%G?` in the history batch where it stays fast,
+      `git verify-commit` in the details pane), with the signer, and the same for tags.
+      Measure the cost on `git/git` with `TYLIA_PERF` before turning it on in the list.
+
+#### Release
+
+- [ ] CHANGELOG `[0.4.0]`, version bump, tag `v0.4.0` (the user publishes the draft).
+      Update this ROADMAP and stop for review.
+
 ## Known issues
 
 Workarounds that stand in for a real fix. Check each one now and then, and replace it
