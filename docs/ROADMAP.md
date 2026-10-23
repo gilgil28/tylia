@@ -1047,12 +1047,12 @@ ends with **v0.4.0**.
       success toast) for: commit, amend, merge, rebase (plain and interactive),
       cherry-pick, revert, reset, checkout, branch create / rename / delete, tag create /
       delete, stash apply / pop / drop, and git-flow finish.
-- [ ] **Decide: how undo knows what to restore.** Recommended: Tylia records an operation
-      journal per repository (inside `.git/tylia/`, never committed): before each write it
+- [ ] **Decided (2026-10-23, the user): how undo knows what to restore.** Tylia records
+      an operation journal per repository (inside `.git/tylia/`, never committed): before each write it
       saves HEAD, the affected refs and, where the operation touches it, the index and
       working tree as a `git stash create` commit kept alive under `refs/tylia/undo/<n>`.
-      Undo restores exactly that and says what it will do first. The alternative, reading
-      Git's reflog alone, can't restore the index, deleted tags or a dropped stash.
+      Undo restores exactly that and says what it will do first. Not Git's reflog alone,
+      which can't restore the index, deleted tags or a dropped stash.
 - [ ] **Safety:** undo refuses (and explains) when the repository changed outside Tylia
       since the operation in a way that undo would overwrite; it never discards work to
       undo something. Redo after undo; the journal keeps the last 50 operations.
@@ -1066,9 +1066,9 @@ ends with **v0.4.0**.
       details pane and can be restored as a branch, cherry-picked or checked out.
 - [ ] **Deleted branches:** "Restore" in the toast after deleting a branch, and in the
       reflog view while the commits are still in the reflog.
-- [ ] **Decide:** also offer `git fsck --lost-found` (dangling commits not in any reflog,
-      e.g. from a dropped stash)? Recommended: yes, behind a "Search deeper" button, as it
-      walks every object and can take seconds on large repositories.
+- [ ] **Decided (2026-10-23, the user):** `git fsck --lost-found` (dangling commits not in
+      any reflog, e.g. from a dropped stash) behind a "Search deeper" button, as it walks
+      every object and can take seconds on large repositories.
 
 #### C. Discarded changes can come back
 
@@ -1079,7 +1079,7 @@ ends with **v0.4.0**.
 - [ ] **Restore:** "Restore" on the toast, and a "Discarded changes" list (palette, and in
       Changes) showing each backup's time and files; restoring applies it like a stash,
       with the usual conflict handling.
-- [ ] **Decide: how long backups are kept.** Recommended: 14 days or the last 50,
+- [ ] **Decided (2026-10-23, the user): how long backups are kept:** 14 days or the last 50,
       whichever is more, pruned when a repository opens; a setting to change it. Untracked
       files are included (`stash create` doesn't keep them, so Tylia stores them in its own
       tree object).
