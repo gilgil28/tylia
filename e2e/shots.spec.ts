@@ -61,8 +61,8 @@ for (const theme of THEMES) {
       await page.setViewportSize(SIZES[0]);
       await openDemo(page, theme);
       const sidebar = page.getByRole("navigation");
-  await sidebar.getByRole("button", { name: /^Tags/ }).click();
-  await sidebar.getByRole("button", { name: "v0.1.0", exact: true }).click();
+      await sidebar.getByRole("button", { name: /^Tags/ }).click();
+      await sidebar.getByRole("button", { name: "v0.1.0", exact: true }).click();
       await expect(page.getByText("Signed", { exact: true })).toBeVisible();
       await shot(page, `signed-tag-${theme}`);
     });
