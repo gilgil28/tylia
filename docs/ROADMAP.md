@@ -1,6 +1,6 @@
 # Tylia roadmap
 
-Current phase: **Phase 9 — Workflow polish and hosting accounts** (2026-10-23: released as **v0.3.0** together with Phase 8, as one release instead of v0.3.0 and v0.4.0; untested against the real hosting APIs and a real LFS server; the OAuth device flow waits for the user's OAuth apps). Phase 8 is built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox. Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release (https://github.com/gilgil28/tylia/releases/tag/v0.2.0), and the website at https://gilgil28.github.io/tylia/. The GitHub acceptance run from Phase 3 is still open.
+Current phase: **Phase 10 — Linux on real hardware** (2026-10-23: planned, started). Phase 9 shipped in **v0.3.0** together with Phase 8 (https://github.com/gilgil28/tylia/releases/tag/v0.3.0); untested against the real hosting APIs and a real LFS server; the OAuth device flow waits for the user's OAuth apps. Phase 8 is built and verified locally except what needs the user’s accounts, a Mac or Windows Sandbox. Phases 0–6 delivered; Phase 7 closed early on 2026-10-22 with **v0.2.0**, the first public release, and the website at https://gilgil28.github.io/tylia/.
 
 ## Product vision
 
@@ -934,6 +934,69 @@ UI, and the Flatpak and Linux packaging gaps found in Phase 8 are closed. It end
 
 - [x] ~~CHANGELOG `[0.4.0]`, version bump, tag `v0.4.0`~~ Released in **v0.3.0** with
       Phase 8 (2026-10-23, the user's choice); the OAuth device flow (C) is still open.
+
+### Phase 10 — Linux on real hardware
+
+**Goal:** Tylia is checked end to end on a real Linux desktop (the user's CachyOS machine:
+KDE Plasma on Wayland, NVIDIA RTX 3070), not only in containers. Its first run there found
+two bugs that would have shipped (fixed in v0.3.0), so this phase measures performance
+against the Phase 1 targets, runs the GitHub acceptance run that has been open since
+Phase 3, and goes through every workflow by hand, fixing what turns up. Nothing in it needs
+the user's hosting accounts, OAuth apps, a Mac or Windows.
+
+**How to run this phase (clean session):**
+
+- **Before starting:** read `CLAUDE.md`, this section, `docs/ARCHITECTURE.md` §5.4 and §5.11
+  (targets and the timing example) and "Known issues" below.
+- **While working:** the Phase 8 rules apply (one commit per fix on its own branch,
+  fast-forwarded into `main`; push only when the user asks). Steps that need the user's
+  hands (clicking through the app, SSH keys) are prepared as short checklists for them.
+  Never take full-screen screenshots: capture the Tylia window only (`spectacle -b -n -a`).
+
+#### A. Performance on Linux (first)
+
+- [ ] **Backend:** `history-timing` on `git/git` (with and without a commit-graph), against
+      Phase 1 on Windows: first rows 160–190 ms warm, all rows ~1.1 s.
+- [ ] **UI timing on WebKitGTK:** Phase 1 measured the UI over CDP, which only WebView2
+      has. Add a way to measure first rows, all rows and scrolling frame times in the real
+      app on any platform (it also serves the Mac run later). **Decide:** recommended a
+      `TYLIA_PERF=<file>` environment variable: the frontend records its timings and a
+      scripted scroll through the history, and Rust writes them as JSON to the file. Off
+      and free when the variable isn't set.
+- [ ] **Targets** (ARCHITECTURE §5.4) on `git/git`: first rows < 300 ms, scrolling at
+      60 fps, status refresh < 500 ms, a 5k-line diff < 150 ms to first paint. Also compare
+      the NVIDIA workaround with `WEBKIT_DISABLE_DMABUF_RENDERER=1`, to back the choice in
+      "Known issues" with numbers.
+- **Acceptance:** numbers recorded here, each target met or a fix / follow-up item for it.
+
+#### B. GitHub acceptance run (from Phase 3)
+
+- [ ] Fetch, pull and push to `gilgil28/tylia` from Tylia over **HTTPS**, with the Git
+      credential this machine already has (no hosting account or token in Tylia needed).
+      On a scratch branch (`test/acceptance-…`), deleted afterwards; `main` is never
+      pushed from the test.
+- [ ] The same over **SSH**, if the user has a key on GitHub; the host-key prompt on first
+      contact; a rejected push (non-fast-forward) explains itself.
+
+#### C. Every workflow by hand on KDE Wayland
+
+- [ ] A checklist pass with the user: clone, stage hunks and lines, commit (amend, sign
+      if set up), branches, merge with conflicts, interactive rebase, stash, blame, file
+      history, tags, submodules, LFS, patches, archives, custom actions, the palette and
+      shortcuts, Settings, both themes and the theme following the desktop.
+- [ ] **Packages:** the v0.3.0 AppImage, deb (in a container) and a local Flatpak build run
+      here; "Open With Tylia" from Dolphin; `tylia <path>` from Konsole.
+- [ ] HiDPI / fractional scaling (if the user's display uses it) and the window frame with
+      and without "Native title bar".
+
+#### D. Fixes found in Phase 10
+
+- (filled in as they are found)
+
+#### Release
+
+- [ ] When D has fixes worth shipping: CHANGELOG, version bump (0.3.x for fixes only),
+      tag, the user publishes the draft. Update this ROADMAP and stop for review.
 
 ## Known issues
 
