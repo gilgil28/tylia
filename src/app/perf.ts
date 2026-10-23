@@ -72,10 +72,25 @@ export async function runPerf(repo: string, scroller: HTMLElement, rows: number)
     (i) => (scroller.scrollTop = ((i * 7919) % 120) * (max / 120)),
   );
   const status: number[] = [];
+  let changed: string | undefined;
   for (let i = 0; i < 5; i++) {
     const start = performance.now();
-    await ipc.getStatus(repo);
+    changed = (await ipc.getStatus(repo)).entries.find((e) => e.unstaged)?.path;
     status.push(performance.now() - start);
+  }
+  // The diff of the first changed file (make a large one to check the 5k-line target).
+  const diff: number[] = [];
+  for (let i = 0; changed && i < 5; i++) {
+    const start = performance.now();
+    await ipc.getDiff(repo, {
+      target: { kind: "unstaged" },
+      path: changed,
+      oldPath: null,
+      context: 3,
+      ignoreWhitespace: false,
+      force: false,
+    });
+    diff.push(performance.now() - start);
   }
   await ipc.writePerfReport({
     platform: boot.platform,
@@ -91,5 +106,6 @@ export async function runPerf(repo: string, scroller: HTMLElement, rows: number)
       jumps: stats(jumps, refresh),
     },
     statusMs: stats(status, Infinity),
+    diff: changed ? { path: changed, ms: stats(diff, Infinity) } : null,
   });
 }
